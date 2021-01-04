@@ -1,6 +1,6 @@
 ## hsk00
 
-Add/Replace games to your "Data Frog Y2 (568 in 1)" console
+Add/Replace games to your "Data Frog Y2 (568 in 1)" console. This is CLI tool. Download it from releases page
 
 🚧 **This is not ready yet** 🚧
 
@@ -18,7 +18,7 @@ If you can't lanuch games or change menu page, restore files with your backup
 **Example:**
 
 ```shell
-hsk00 make --in in/Famicom_Wars.nes --in in/Heavy_Barrel.nes --in in/Fantasy_Zone.nes --in in/Final_Fantasy_II.nes --in in/Gauntlet_II.nes   --out hsk06.asd  --hsk00 hsk00.asd --debug
+hsk00 make --in in/Famicom_Wars.nes --in in/Heavy_Barrel.nes --in in/Fantasy_Zone.nes --in in/Final_Fantasy_II.nes --in in/Gauntlet_II.nes   --out hsk06.asd  --hsk00 hsk00.asd
 ```
 
 This will generate new `hsk06.asd` and update `hsk00.asd`. Copy these two to `GameXX` directory. Your new games are available from number #25 to #30 (from `(06-1)*5` to `06 * 5`)
