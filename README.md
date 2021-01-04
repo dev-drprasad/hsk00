@@ -8,7 +8,7 @@ Add/Replace games to your "Data Frog Y2 (568 in 1)" console
 
 ⚠️ BEFORE YOU RUN ANY COMMAND, BACKUP YOUR SD CARD ⚠️
 
-#### Make
+#### `Make`
 
 `make` command generates `hskXX.asd` and `hsk00.asd` files with custom games in it
 ⚠️ This won't change game menu, you still see old list. ⚠️
@@ -18,7 +18,7 @@ If you can't lanuch games or change menu page, restore files with your backup
 **Example:**
 
 ```shell
-go run main.go make --in in/Famicom_Wars.nes --in in/Heavy_Barrel.nes --in in/Fantasy_Zone.nes --in in/Final_Fantasy_II.nes --in in/Gauntlet_II.nes   --out hsk06.asd  --hsk00 hsk00.asd --debug
+hsk00 make --in in/Famicom_Wars.nes --in in/Heavy_Barrel.nes --in in/Fantasy_Zone.nes --in in/Final_Fantasy_II.nes --in in/Gauntlet_II.nes   --out hsk06.asd  --hsk00 hsk00.asd --debug
 ```
 
 This will generate new `hsk06.asd` and update `hsk00.asd`. Copy these two to `GameXX` directory. Your new games are available from number #25 to #30 (from `(06-1)*5` to `06 * 5`)

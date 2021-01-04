@@ -1,0 +1,28 @@
+env:
+  - GO111MODULE=on
+before:
+  hooks:
+    - go mod download
+builds:
+  - env:
+      - CGO_ENABLED=0
+    goos:
+      - darwin
+      - windows
+      - linux
+    goarch:
+      - amd64
+
+archives:
+  - format: binary
+    name_template: "hsk00-{{ .Os }}-{{ .Arch }}"
+
+release:
+  extra_files:
+    - glob: dist/atom.xml
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^[🔨⏪✅📝🔀].*"
