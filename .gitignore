@@ -1,0 +1,7 @@
+in/*
+*.debug.zip
+*.zip
+sample
+*.asd
+*.bin
+.DS_Store

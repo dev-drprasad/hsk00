@@ -1,0 +1,82 @@
+signature   : 50 4B 03 04
+version     : 14 00
+flags       : 00 00
+compression : 08 00
+mod time    : D8 61
+mod date    : 9D 50
+CRC32       : 42 05 AA 70
+compr size  : 68 01 00 00 (360)
+uncom size  : F0 04 00 00 (1264)
+file size   : 09 00 ()
+ex field len: 00 00
+filename    : AD 96 8E D5 D5 CB 89 96 91
+extra fields:
+
+data description:
+
+data        : 27 to 18E
+
+arch dec hdr:
+signature   : 57 51 57 03
+version     : 
+
+
+
+39+360 = 399 (18F)
+
+
+57 51 57 03 -> 50 4B 03 04 file header
+57 51 57 02 -> 50 4B 01 02 central directory file header
+57 51 57 01 -> 50 4B 05 06 End of central directory record
+
+                    B6 80 80 91 8D 8C 8B 82 CB AB 80 96
+
+
+
+
+                    B6 90 95 80 97 BA B6 95 97 8C 8B 91 CB AB 80 96
+
+Super_Sprint.Nes:   53 75 70 65 72 5F 53 70 72 69 6E 74 2E 4E 65 73
+
+                    63 1B 25 1B 25 5B 63 25 25 23 1D 1D 9D 5D 1B 23 (XOR)
+
+                    B3 8C 8B 81 8C 86 84 91 8A 97 96 CB AB 80 96
+
+
+A7 8A 88 87 80 97 BA A8 84 8B CB AB 80 96
+42 6F 6D 62
+Bomb
+
+            
+
+B6: 10110110
+53: 01010011  
+    11100101
+
+90: 10010000
+75: 01110101
+    11100101
+
+80: 10000000
+65: 01100101
+    11100101
+
+22 79 9D
+C7 9c 78
+
+3b fd db 7e 93 (with e0)
+DB 1D
+
+4e 45 53
+AB A0 B6
+
+
+
+G01-01: FFD9 at 216C (8556)
+G02-02: FFD9 at 229D (8861)
+G02-02: FFD9 at 2279 (8825) xor at (1425)
+
+
+G04-01: FFD9 at 22B8 (8888)
+G04-02: FFD9 at 22A6 (8870)
+G04-03: FFD9 at 21FA (8698)
