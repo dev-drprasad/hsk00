@@ -10,6 +10,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"path"
 	"path/filepath"
 	"regexp"
 	"strconv"
@@ -99,6 +100,36 @@ var xorCommand = &cobra.Command{
 	},
 }
 
+var addCommand = &cobra.Command{
+	Use:   "add",
+	Short: "add games to category",
+	RunE: func(cmd *cobra.Command, args []string) error {
+		games, err := cmd.Flags().GetStringArray("nes")
+		if err != nil {
+			return err
+		}
+
+		categoryID, err := cmd.Flags().GetInt("category")
+		if err != nil {
+			return err
+		}
+
+		if categoryID < 1 {
+			return errors.New("category number must be greater than 0")
+		}
+
+		rootDir, err := cmd.Flags().GetString("root")
+		if err != nil {
+			return err
+		}
+		if _, err := os.Stat(rootDir); os.IsNotExist(err) {
+			return fmt.Errorf("root directory %s not exists", rootDir)
+		}
+
+		return add(rootDir, categoryID, games)
+	},
+}
+
 func init() {
 	rootCmd.PersistentFlags().BoolVar(&debug, "debug", false, "debug")
 	makeCommand.Flags().StringArray("in", nil, "nes files")
@@ -112,6 +143,14 @@ func init() {
 	descrambleCommand.Flags().String("in", "", "scrambled file")
 	descrambleCommand.Flags().String("out", "", "proper zip file")
 	rootCmd.AddCommand(descrambleCommand)
+
+	addCommand.Flags().Int("category", 0, "number of category starting from 1, left -> right")
+	addCommand.MarkFlagRequired("category")
+	addCommand.Flags().StringArray("nes", nil, "location of nes game file")
+	addCommand.MarkFlagRequired("nes")
+	addCommand.Flags().String("root", "", "root path of sd card")
+	addCommand.MarkFlagRequired("root")
+	rootCmd.AddCommand(addCommand)
 }
 
 func encodeFileName(in string) string {
@@ -319,7 +358,7 @@ func encodeFile(in []string, hsk00 string, out string) error {
 
 	gamelistfiles, err := decodeFile(hsk00)
 	if err != nil {
-		return nil
+		return err
 	}
 
 	bb := bytes.NewBuffer(nil)
@@ -339,12 +378,7 @@ func encodeFile(in []string, hsk00 string, out string) error {
 			for scanner.Scan() {
 				t := scanner.Text()
 				if !strings.HasPrefix(t, strings.Title(out)[:len(out)-4]) {
-					if strings.HasPrefix(t, "Hsk02.asd") {
-						tt := strings.Replace(t, ",0,2", ",0,1", 1)
-						list = append(list, tt)
-					} else {
-						list = append(list, t)
-					}
+					list = append(list, t)
 				} else if !updated {
 					for _, fn := range in {
 						t := makeGameListLine(gameID, out, fn)
@@ -401,6 +435,52 @@ func encodeFile(in []string, hsk00 string, out string) error {
 	}
 
 	return ioutil.WriteFile("hsk00.asd", PKToWQW(bout), 0644)
+}
+
+func getMenuList(hsk00Path string) ([]string, error) {
+	hsk00files, err := decodeFile(hsk00Path)
+	if err != nil {
+		return nil, err
+	}
+
+	menuList := []string{}
+
+	for _, fi := range hsk00files {
+		if encodeFileName(fi.Name) == "Hsk00.lst" {
+			f, err := fi.Open()
+			if err != nil {
+				return nil, err
+			}
+			defer f.Close()
+
+			scanner := bufio.NewScanner(f)
+			for scanner.Scan() {
+				menuList = append(menuList, scanner.Text())
+			}
+			break
+		}
+	}
+	return menuList, nil
+}
+
+func add(rootDir string, categoryID int, newGames []string) error {
+	gamesDirectoryName := fmt.Sprintf("Game%02d", categoryID-1)
+	gamesPath := path.Join(rootDir, gamesDirectoryName)
+	if _, err := os.Stat(gamesPath); os.IsNotExist(err) {
+		return fmt.Errorf("directory '%s' doesn't exist", gamesPath)
+	}
+	hsk00Path := path.Join(gamesPath, "hsk00.asd")
+	menuList, err := getMenuList(hsk00Path)
+	if err != nil {
+		return fmt.Errorf("failed to get list from hsk00.asd: %s", err)
+	}
+	if debug {
+		log.Println("current game list:")
+		for i, name := range menuList {
+			log.Printf("%03d. %s\n", i+1, name)
+		}
+	}
+	return nil
 }
 
 func main() {

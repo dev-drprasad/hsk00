@@ -5,3 +5,4 @@ sample
 *.asd
 *.bin
 .DS_Store
+bin/*
