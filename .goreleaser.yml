@@ -19,7 +19,6 @@ archives:
 
 release:
   extra_files:
-    - glob: dist/atom.xml
 
 changelog:
   sort: asc
