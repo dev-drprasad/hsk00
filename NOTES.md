@@ -1,0 +1,4 @@
+- Able to extract asd with 6.5 MB
+- seems like rom size should be less than 1 MB
+- seen problem with multi-cart roms
+- random names for asd and bin files works as long as hsk00 is updated

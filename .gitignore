@@ -1,8 +1,9 @@
 in/*
-*.debug.zip
+*.debug.*
 *.zip
 sample
 *.asd
 *.bin
 .DS_Store
 bin/*
+pkged.go

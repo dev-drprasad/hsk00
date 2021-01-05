@@ -16,6 +16,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/markbates/pkger"
 	"github.com/spf13/cobra"
 )
 
@@ -44,7 +45,7 @@ var makeCommand = &cobra.Command{
 	Use:   "make",
 	Short: "Creates hskXX.asd and hsk00.asd files",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		fmt.Println("Hugo Static Site Generator v0.9 -- HEAD")
+
 		infiles, err := cmd.Flags().GetStringArray("in")
 		if err != nil {
 			return err
@@ -65,7 +66,7 @@ var descrambleCommand = &cobra.Command{
 	Use:   "descramble",
 	Short: "converts hskXX.asd files to usable zip files",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		fmt.Println("Hugo Static Site Generator v0.9 -- HEAD")
+
 		in, err := cmd.Flags().GetString("in")
 		if err != nil {
 			return err
@@ -104,9 +105,14 @@ var addCommand = &cobra.Command{
 	Use:   "add",
 	Short: "add games to category",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		games, err := cmd.Flags().GetStringArray("nes")
-		if err != nil {
-			return err
+		log.Println(args)
+		// games, err := cmd.Flags().GetStringArray("nes")
+		// if err != nil {
+		// 	return err
+		// }
+
+		if len(args) == 0 {
+			return errors.New("pass games path as argument")
 		}
 
 		categoryID, err := cmd.Flags().GetInt("category")
@@ -114,8 +120,8 @@ var addCommand = &cobra.Command{
 			return err
 		}
 
-		if categoryID < 1 {
-			return errors.New("category number must be greater than 0")
+		if categoryID < 0 {
+			return errors.New("category number must be 0 or greater")
 		}
 
 		rootDir, err := cmd.Flags().GetString("root")
@@ -126,7 +132,7 @@ var addCommand = &cobra.Command{
 			return fmt.Errorf("root directory %s not exists", rootDir)
 		}
 
-		return add(rootDir, categoryID, games)
+		return add(rootDir, categoryID, args)
 	},
 }
 
@@ -144,10 +150,10 @@ func init() {
 	descrambleCommand.Flags().String("out", "", "proper zip file")
 	rootCmd.AddCommand(descrambleCommand)
 
-	addCommand.Flags().Int("category", 0, "number of category starting from 1, left -> right")
+	addCommand.Flags().Int("category", 0, "number of category starting from 0, left -> right")
 	addCommand.MarkFlagRequired("category")
-	addCommand.Flags().StringArray("nes", nil, "location of nes game file")
-	addCommand.MarkFlagRequired("nes")
+	// addCommand.Flags().StringArray("nes", nil, "location of nes game file")
+	// addCommand.MarkFlagRequired("nes")
 	addCommand.Flags().String("root", "", "root path of sd card")
 	addCommand.MarkFlagRequired("root")
 	rootCmd.AddCommand(addCommand)
@@ -176,29 +182,14 @@ func PKToWQW(in []byte) []byte {
 	return eReplaced
 }
 
-func decodeFile(in string) ([]*zip.File, error) {
-	b, err := ioutil.ReadFile(in)
+func decompress(in string) ([]*zip.File, error) {
+	scrambledBytes, err := ioutil.ReadFile(in)
 	if err != nil {
 		return nil, fmt.Errorf("failed to read file: %s", err)
 	}
+	zipBytes := WQWToPK(scrambledBytes)
 
-	endReplaced := WQWToPK(b)
-
-	// if err := ioutil.WriteFile("sample.zip", endReplaced, 0644); err != nil {
-	// 	log.Printf("failed to write to zip file: %s\n", err)
-	// }
-
-	// zf, err := zip.OpenReader("sample.zip")
-	// if err != nil {
-	// 	log.Printf("faled to read zip file: %s\n", err)
-	// }
-
-	// for _, file := range zf.File {
-	// 	log.Printf("=%s\n", decodeFileName(file.Name))
-	// 	log.Printf("=%X\n", file.Name)
-	// }
-
-	r := bytes.NewReader(endReplaced)
+	r := bytes.NewReader(zipBytes)
 	zr, err := zip.NewReader(r, r.Size())
 	if err != nil {
 		return nil, fmt.Errorf("failed to create reader: %s", err)
@@ -208,7 +199,7 @@ func decodeFile(in string) ([]*zip.File, error) {
 }
 
 func decodeFileAndSave(in, out string) error {
-	zipfiles, err := decodeFile(in)
+	zipfiles, err := decompress(in)
 	if err != nil {
 		return fmt.Errorf("failed to read file: %s", err)
 	}
@@ -317,7 +308,6 @@ func encodeFile(in []string, hsk00 string, out string) error {
 	}
 
 	gameID := (id + 1) / 2
-	log.Println("gameID", gameID)
 	// fns := []string{"Super_Sprint.Nes",
 	// 	"Ufo_Race.Nes",
 	// 	"Vindicators.Nes",
@@ -356,7 +346,7 @@ func encodeFile(in []string, hsk00 string, out string) error {
 		return fmt.Errorf("failed to write to %s: %s", out, err)
 	}
 
-	gamelistfiles, err := decodeFile(hsk00)
+	gamelistfiles, err := decompress(hsk00)
 	if err != nil {
 		return err
 	}
@@ -414,17 +404,7 @@ func encodeFile(in []string, hsk00 string, out string) error {
 				return err
 			}
 
-			// r, err := fi.Open()
-			// if err != nil {
-			// 	return err
-			// }
-			log.Println("games in this ", len(list))
-			// w.Write([]byte(fmt.Sprintf("%X000000", len(list))))
 			w.Write([]byte{byte(len(list)), 0x00, 0x00, 0x00})
-			// w.Write([]byte{0x1b, 0x00, 0x00, 0x00})
-			// if _, err := io.Copy(w, r); err != nil {
-			// 	return err
-			// }
 		}
 	}
 
@@ -438,7 +418,7 @@ func encodeFile(in []string, hsk00 string, out string) error {
 }
 
 func getMenuList(hsk00Path string) ([]string, error) {
-	hsk00files, err := decodeFile(hsk00Path)
+	hsk00files, err := decompress(hsk00Path)
 	if err != nil {
 		return nil, err
 	}
@@ -463,8 +443,138 @@ func getMenuList(hsk00Path string) ([]string, error) {
 	return menuList, nil
 }
 
+func fileNameWithoutExtension(fileName string) string {
+	return fileName[:len(fileName)-len(filepath.Ext(fileName))]
+}
+
+func makeHsk00(menuList []string) ([]byte, error) {
+	bb := bytes.NewBuffer(nil)
+	outz := bufio.NewWriter(bb)
+	zw := zip.NewWriter(outz)
+
+	w1, err := zw.Create(encodeFileName("Hsk00.lst"))
+	if err != nil {
+		return nil, err
+	}
+	w1.Write([]byte(strings.Join(menuList, "\n")))
+
+	w2, err := zw.Create(encodeFileName("GameNumber.bin"))
+	if err != nil {
+		return nil, err
+	}
+
+	w2.Write([]byte{byte(len(menuList)), 0x00, 0x00, 0x00})
+	zw.Close()
+	return bb.Bytes(), nil
+}
+
+func compressReaderAndWrite(zw *zip.Writer, r io.ReadCloser, fname string) error {
+	w, err := zw.Create(encodeFileName(fname))
+	if err != nil {
+		return err
+	}
+
+	if _, err = io.Copy(w, r); err != nil {
+		return fmt.Errorf("failed to copy to writer: %s", err)
+	}
+	return nil
+}
+
+func compressFilesAndWrite(zw *zip.Writer, filePaths []string) error {
+	for _, fname := range filePaths {
+		f, err := os.Open(fname)
+		if err != nil {
+			return err
+		}
+		defer f.Close()
+
+		fi, err := f.Stat()
+		if err != nil {
+			return err
+		}
+		if fi.IsDir() {
+			return fmt.Errorf("%s is directory", fname)
+		}
+
+		if err := compressReaderAndWrite(zw, f, fi.Name()); err != nil {
+			return err
+		}
+
+		// header, err := zip.FileInfoHeader(fi)
+		// if err != nil {
+		// 	return fmt.Errorf("failed to read header: %s", err)
+		// }
+		// header.Name = encodeFileName(fi.Name())
+
+		// fw, err := zw.CreateHeader(header)
+		// if _, err = io.Copy(fw, f); err != nil {
+		// 	return fmt.Errorf("failed to copy to writer: %s", err)
+		// }
+	}
+
+	return nil
+}
+
+func update(filePath string, gamePaths []string) error {
+	zipFileInfos, err := decompress(filePath)
+	if err != nil {
+		return fmt.Errorf("failed to decompress file %s: %s", filePath, err)
+	}
+
+	bb := bytes.NewBuffer(nil)
+	outz := bufio.NewWriter(bb)
+	zw := zip.NewWriter(outz)
+	defer zw.Close()
+
+	for _, zipfi := range zipFileInfos {
+		header, err := zip.FileInfoHeader(zipfi.FileInfo())
+		if err != nil {
+			return fmt.Errorf("failed to read header: %s", err)
+		}
+
+		fr, _ := zipfi.Open()
+		defer fr.Close()
+
+		fw, err := zw.CreateHeader(header)
+		if _, err = io.Copy(fw, fr); err != nil {
+			return fmt.Errorf("failed to copy to writer: %s", err)
+		}
+	}
+
+	if err := compressFilesAndWrite(zw, gamePaths); err != nil {
+		return fmt.Errorf("failed to write to zip writer: %s", err)
+	}
+
+	if err := zw.Close(); err != nil {
+		return err
+	}
+
+	zipBytes := bb.Bytes()
+	scambledBytes := PKToWQW(zipBytes)
+	return ioutil.WriteFile(filePath, scambledBytes, 0644)
+}
+
+func create(outFilePath string, gamePaths []string) error {
+	bb := bytes.NewBuffer(nil)
+	outz := bufio.NewWriter(bb)
+	zw := zip.NewWriter(outz)
+	defer zw.Close()
+
+	if err := compressFilesAndWrite(zw, gamePaths); err != nil {
+		return fmt.Errorf("failed to write to zip writer: %s", err)
+	}
+
+	if err := zw.Close(); err != nil {
+		return err
+	}
+
+	zipBytes := bb.Bytes()
+	scambledBytes := PKToWQW(zipBytes)
+	return ioutil.WriteFile(outFilePath, scambledBytes, 0644)
+}
+
 func add(rootDir string, categoryID int, newGames []string) error {
-	gamesDirectoryName := fmt.Sprintf("Game%02d", categoryID-1)
+	gamesDirectoryName := fmt.Sprintf("Game%02d", categoryID)
 	gamesPath := path.Join(rootDir, gamesDirectoryName)
 	if _, err := os.Stat(gamesPath); os.IsNotExist(err) {
 		return fmt.Errorf("directory '%s' doesn't exist", gamesPath)
@@ -480,6 +590,99 @@ func add(rootDir string, categoryID int, newGames []string) error {
 			log.Printf("%03d. %s\n", i+1, name)
 		}
 	}
+
+	initialEndIndex := 5 - (len(menuList) % 5)
+	for endIndex := initialEndIndex; endIndex <= len(newGames)+5; endIndex += 5 {
+		y := endIndex
+		// dont mutate endIndex, will cause ∞ loop
+		if endIndex > len(newGames) {
+			y = len(newGames)
+		}
+		startIndex := endIndex - 5
+		if startIndex < 0 {
+			startIndex = 0
+		}
+		batch := newGames[startIndex:y]
+
+		hskID := (len(menuList) / 5) + 1
+		hskFileName := fmt.Sprintf("Hsk%02d.asd", hskID)
+		hskFilePath := path.Join(gamesPath, hskFileName)
+		// update only last partial hsk files. create all other files from scratch
+		if _, err := os.Stat(hskFilePath); err == nil && endIndex < 5 {
+			if err := update(hskFilePath, batch); err != nil {
+				return fmt.Errorf("failed to update games to file: %s: %s", hskFilePath, err)
+			}
+		} else {
+			if err := create(hskFilePath, batch); err != nil {
+				return fmt.Errorf("failed to create file: %s: %s", hskFilePath, err)
+			}
+		}
+
+		newMenuImageFileNames := make(map[string]int) // simple set
+		for _, gamePath := range batch {
+			pageNo := len(menuList)/10 + 1
+			menuImageFileName := fmt.Sprintf("Game%02d.bin", pageNo)
+			menuListItem := fmt.Sprintf("%s,%s,0,2,%s", hskFileName, filepath.Base(gamePath), menuImageFileName)
+			menuList = append(menuList, menuListItem)
+			newMenuImageFileNames[menuImageFileName] = pageNo
+		}
+
+		binPrefixF, err := pkger.Open("/assets/binprefix")
+		if err != nil {
+			return fmt.Errorf("failed to open binprefix file: %s", err)
+		}
+		binPrefix, err := ioutil.ReadAll(binPrefixF)
+		if err != nil {
+			return fmt.Errorf("failed to read binprefix: %s", err)
+		}
+		for fname, pageNo := range newMenuImageFileNames {
+			start := (pageNo - 1) * 10
+			end := pageNo * 10
+			if end > len(menuList) {
+				end = len(menuList)
+			}
+			menuListInPage := menuList[start:end]
+			gameNames := []string{}
+			for i, menuItem := range menuListInPage {
+				gameFilename := strings.SplitN(menuItem, ",", 3)[1]
+				gameFileName := fileNameWithoutExtension(gameFilename)
+				gameName := strings.ReplaceAll(gameFileName, "_", " ")
+				gameNames = append(gameNames, fmt.Sprintf("%02d.%s", start+i+1, gameName))
+			}
+
+			imageBytes, err := generateMenuImage(gameNames)
+			if err != nil {
+				return fmt.Errorf("menu image generation failed: %s", err)
+			}
+
+			filePath := path.Join(gamesPath, fname)
+			if debug {
+				ioutil.WriteFile(filePath+".debug.jpg", imageBytes, 0644)
+			}
+
+			scrambledBytes := append(binPrefix, imageBytes[2:]...)
+			if err := ioutil.WriteFile(filePath, scrambledBytes, 0644); err != nil {
+				return nil
+			}
+		}
+		hskID++
+	}
+
+	if debug {
+		log.Println("new game list:")
+		log.Printf("%s\n", strings.Join(menuList, "\n"))
+	}
+
+	listZipBytes, err := makeHsk00(menuList)
+	if err != nil {
+		return err
+	}
+
+	hsk00FilePath := path.Join(gamesPath, "hsk00.asd")
+	if err := ioutil.WriteFile(hsk00FilePath, PKToWQW(listZipBytes), 0644); err != nil {
+		return err
+	}
+
 	return nil
 }
 

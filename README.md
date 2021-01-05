@@ -1,6 +1,6 @@
 # hsk00
 
-Add/Replace games to your "Data Frog Y2 (568 in 1)" console. This is CLI tool. Download tool from [releases](releases)
+Add/Replace games to your "Data Frog Y2 (568 in 1)" console. This is CLI tool. Download tool from [releases](/releases)
 
 🚧 **This is work in progress** 🚧
 
@@ -8,27 +8,20 @@ Add/Replace games to your "Data Frog Y2 (568 in 1)" console. This is CLI tool. D
 
 ⚠️ BEFORE YOU RUN ANY COMMAND, BACKUP YOUR SD CARD ⚠️
 
-### `make`
-
-`make` command generates `hskXX.asd` and `hsk00.asd` files with custom games in it.
-
-⚠️ This won't change game menu, you still see old list. ⚠️
-
-If you can't lanuch games or change menu page, restore files with your backup
-
-**Example:**
-
-```shell
-hsk00-darwin-amd64 make --in in/Famicom_Wars.nes --in in/Heavy_Barrel.nes --in in/Fantasy_Zone.nes --in in/Final_Fantasy_II.nes --in in/Gauntlet_II.nes   --out hsk06.asd  --hsk00 hsk00.asd
-```
-
-This will generate new `hsk06.asd` and update `hsk00.asd`. Copy these two to `GameXX` directory. Your new games are available from number #25 to #30 (from `(06-1)*5` to `06 * 5`)
-
 ### `add`
 
-Not implemented yet
+`--category` number starts from 0, left to right in menu. Example: "Sports Games" category number is `4`.
+`--root` is root directory of game folder where `Menu.ocv` exists (can be sd card path or custom directory where files present)
+
+```shell
+hsk00-darwin-amd64 add  in/Famicom_Wars.nes  in/Heavy_Barrel.nes  in/Fantasy_Zone.nes  in/Final_Fantasy_II.nes --category 4 --root ~/Datafrog
+```
+
+⚠️ This will change menu text slightly ⚠️. If you can't lanuch games or change menu page, restore files with your backup.
 
 ### `replace`
+
+Replace will replace existing game with custom game.
 
 Not implemented yet
 
@@ -42,7 +35,7 @@ Not implemented yet
 - Extreme Mini HD Game Box
 - Probably works with SD card that looks like below
 
-<img src="./sd-layout.png"  alt="data-frog-sd-card-files" width="300"  />
+<img src="./sd-layout.png"  alt="data-frog-sd-card-files" width="500"  />
 
 Let me know if it works with other consoles. It helps other people
 
