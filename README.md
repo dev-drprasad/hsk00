@@ -1,17 +1,27 @@
 # hsk00
 
-Add/Replace games to your "Data Frog Y2 (568 in 1)" console. This is CLI tool. Download tool from [releases](/releases)
+Add/Replace games to your "Data Frog Y2 (568 in 1)" console. This is CLI tool. Download tool from [releases](https://github.com/dev-drprasad/hsk00/releases)
 
 🚧 **This is work in progress** 🚧
+
+---
+
+<br />
 
 ## API
 
 ⚠️ BEFORE YOU RUN ANY COMMAND, BACKUP YOUR SD CARD ⚠️
+<br /><br />
 
 ### `add`
 
+Adds game(s) to given category (Sports, Adventure etc..)
+
 `--category` number starts from 0, left to right in menu. Example: "Sports Games" category number is `4`.
+
 `--root` is root directory of game folder where `Menu.ocv` exists (can be sd card path or custom directory where files present)
+
+**Example:**
 
 ```shell
 hsk00-darwin-amd64 add  in/Famicom_Wars.nes  in/Heavy_Barrel.nes  in/Fantasy_Zone.nes  in/Final_Fantasy_II.nes --category 4 --root ~/Datafrog
@@ -19,15 +29,21 @@ hsk00-darwin-amd64 add  in/Famicom_Wars.nes  in/Heavy_Barrel.nes  in/Fantasy_Zon
 
 ⚠️ This will change menu text slightly ⚠️. If you can't lanuch games or change menu page, restore files with your backup.
 
+---
+
 ### `replace`
 
 Replace will replace existing game with custom game.
 
 Not implemented yet
 
+---
+
 ### `descramble`
 
 Not implemented yet
+
+---
 
 ## Supported Consoles
 
@@ -38,6 +54,12 @@ Not implemented yet
 <img src="./sd-layout.png"  alt="data-frog-sd-card-files" width="500"  />
 
 Let me know if it works with other consoles. It helps other people
+
+## TODO
+
+- [] May be GUI ?
+- [] replace game
+- [] delete game
 
 ## Need Help
 
