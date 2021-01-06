@@ -31,7 +31,7 @@ hsk00-darwin-amd64 add  in/Famicom_Wars.nes  in/Heavy_Barrel.nes  in/Fantasy_Zon
 
 ---
 
-<br /><br />
+<br />
 
 ### `replace`
 
@@ -41,7 +41,7 @@ Not implemented yet
 
 ---
 
-<br /><br />
+<br />
 
 ### `descramble`
 
@@ -53,9 +53,7 @@ Example:
 hsk00-darwin-amd64 descramble  ~/Datafrog2/Game04/hsk06.asd
 ```
 
----
-
-<br /><br />
+<br />
 
 ## Supported Consoles
 
