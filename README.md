@@ -19,7 +19,7 @@ There is no install step. You just download and run. GUI app will take some time
 - Linux GUI (Not ready yet)
 - [Mac OS X CLI](https://github.com/dev-drprasad/hsk00/releases/download/latest/hsk00-darwin-amd64)
 - [Linux CLI](https://github.com/dev-drprasad/hsk00/releases/download/latest/hsk00-linux-amd64) (Should work with all popular distros)
-- [Windows X CLI](https://github.com/dev-drprasad/hsk00/releases/download/latest/hsk00-windows-amd64.exe)
+- [Windows CLI](https://github.com/dev-drprasad/hsk00/releases/download/latest/hsk00-windows-amd64.exe)
 
 For CLI app, you need to give executable permission by running `chmod +x hsk00-darwin-amd64`
 

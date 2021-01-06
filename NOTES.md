@@ -1,4 +1,7 @@
-- Able to extract asd with 6.5 MB
-- seems like rom size should be less than 1 MB
+- Console is able to extract `.asd` files with 6.5 MB
+- seems like rom size should be less than 1 MB for to play
 - seen problem with multi-cart roms
-- random names for asd and bin files works as long as hsk00 is updated
+- random names for `.asd` and `.bin` files works as long as `hsk00.asd` file is updated
+- ncs files "Y2 HD Plus" are just like asd files. `descramble` command can extract game from `.ncs` file
+- Menu.logXX are also images. `Menu.log07` to `Menu.log25` contains mushroom selector in menu
+- `.logXX`, `.binXX` are interchangeble
