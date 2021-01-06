@@ -15,7 +15,8 @@ builds:
       - amd64
     hooks:
       pre: pkger -include /assets
-    main: ./cmd/*
+    dir: cmd
+    main: .
 
 archives:
   - format: binary
