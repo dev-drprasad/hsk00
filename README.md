@@ -41,7 +41,13 @@ Not implemented yet
 
 ### `descramble`
 
-Not implemented yet
+Converts `*.asd` files to usable `.zip` files. Output filename will be `<inputfilename>.zip` and will generated be in same directory where input file present.
+
+Example:
+
+```
+hsk00-darwin-amd64 descramble  ~/Datafrog2/Game04/hsk06.asd
+```
 
 ---
 
@@ -57,9 +63,9 @@ Let me know if it works with other consoles. It helps other people
 
 ## TODO
 
-- [] May be GUI ?
-- [] replace game
-- [] delete game
+- [ ] May be GUI ?
+- [ ] replace game
+- [ ] delete game
 
 ## Need Help
 

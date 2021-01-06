@@ -67,9 +67,8 @@ var descrambleCommand = &cobra.Command{
 	Short: "converts hskXX.asd files to usable zip files",
 	RunE: func(cmd *cobra.Command, args []string) error {
 
-		in, err := cmd.Flags().GetString("in")
-		if err != nil {
-			return err
+		if len(args) == 0 {
+			return errors.New("pass .asd or .ncs file paths as argument")
 		}
 
 		out, err := cmd.Flags().GetString("out")
@@ -77,7 +76,21 @@ var descrambleCommand = &cobra.Command{
 			return err
 		}
 
-		return decodeFileAndSave(in, out)
+		if len(args) > 1 && out != "" {
+			return errors.New("--out can be specified only with one input file")
+		}
+
+		for _, ifn := range args {
+			ofn := ifn + ".zip"
+			if out != "" && len(args) == 1 {
+				ofn = out
+			}
+
+			if err := decodeFileAndSave(ifn, ofn); err != nil {
+				return fmt.Errorf("descramble of %s failed : %s", ifn, err)
+			}
+		}
+		return nil
 	},
 }
 
@@ -103,14 +116,8 @@ var xorCommand = &cobra.Command{
 
 var addCommand = &cobra.Command{
 	Use:   "add",
-	Short: "add games to category",
+	Short: "add game(s) to category",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		log.Println(args)
-		// games, err := cmd.Flags().GetStringArray("nes")
-		// if err != nil {
-		// 	return err
-		// }
-
 		if len(args) == 0 {
 			return errors.New("pass games path as argument")
 		}
@@ -132,7 +139,12 @@ var addCommand = &cobra.Command{
 			return fmt.Errorf("root directory %s not exists", rootDir)
 		}
 
-		return add(rootDir, categoryID, args)
+		fontName, err := cmd.Flags().GetString("font")
+		if err != nil {
+			return err
+		}
+
+		return add(rootDir, categoryID, args, fontName)
 	},
 }
 
@@ -146,16 +158,14 @@ func init() {
 	xorCommand.Flags().String("file", "", "file to xor")
 	rootCmd.AddCommand(xorCommand)
 
-	descrambleCommand.Flags().String("in", "", "scrambled file")
-	descrambleCommand.Flags().String("out", "", "proper zip file")
+	descrambleCommand.Flags().String("out", "", "output zip file name (optional)")
 	rootCmd.AddCommand(descrambleCommand)
 
 	addCommand.Flags().Int("category", 0, "number of category starting from 0, left -> right")
 	addCommand.MarkFlagRequired("category")
-	// addCommand.Flags().StringArray("nes", nil, "location of nes game file")
-	// addCommand.MarkFlagRequired("nes")
 	addCommand.Flags().String("root", "", "root path of sd card")
 	addCommand.MarkFlagRequired("root")
+	addCommand.Flags().String("font", "Gotham-Medium", "font name (Gotham-Medium | Video-Phreak) of menu text, default is Gotham-Medium")
 	rootCmd.AddCommand(addCommand)
 }
 
@@ -198,45 +208,8 @@ func decompress(in string) ([]*zip.File, error) {
 	return zr.File, nil
 }
 
-func decodeFileAndSave(in, out string) error {
-	zipfiles, err := decompress(in)
-	if err != nil {
-		return fmt.Errorf("failed to read file: %s", err)
-	}
-
-	conglomerateZip, err := os.Create(out)
-	if err != nil {
-		log.Printf("failed to create zip writer: %s\n", err)
-	}
-	defer conglomerateZip.Close()
-	zw := zip.NewWriter(conglomerateZip)
-	defer zw.Close()
-
-	for _, file := range zipfiles {
-
-		header, err := zip.FileInfoHeader(file.FileInfo())
-		if err != nil {
-			log.Printf("failed to read reader: %s\n", err)
-		}
-
-		header.Name = encodeFileName(file.Name)
-		header.Method = zip.Deflate
-
-		fr, _ := file.Open()
-		defer fr.Close()
-
-		fw, err := zw.CreateHeader(header)
-		// fw, _ := zw.Create(decodeFileName(file.Name))
-		if _, err = io.Copy(fw, fr); err != nil {
-			log.Printf("failed to copy to writer: %s\n", err)
-		}
-	}
-
-	return nil
-}
-
 func makeGameListLine(gameID int, out, fn string) string {
-	return fmt.Sprintf("%s,%s,0,2,Game%s.bin", strings.ToUpper(out[:1])+out[1:], filepath.Base(fn), fmt.Sprintf("%02d", gameID))
+	return fmt.Sprintf("%s,%s,0,1,Game%s.bin", strings.ToUpper(out[:1])+out[1:], filepath.Base(fn), fmt.Sprintf("%02d", gameID))
 }
 
 func createZip(in []string) ([]byte, error) {
@@ -573,7 +546,7 @@ func create(outFilePath string, gamePaths []string) error {
 	return ioutil.WriteFile(outFilePath, scambledBytes, 0644)
 }
 
-func add(rootDir string, categoryID int, newGames []string) error {
+func add(rootDir string, categoryID int, newGames []string, fontName string) error {
 	gamesDirectoryName := fmt.Sprintf("Game%02d", categoryID)
 	gamesPath := path.Join(rootDir, gamesDirectoryName)
 	if _, err := os.Stat(gamesPath); os.IsNotExist(err) {
@@ -622,7 +595,7 @@ func add(rootDir string, categoryID int, newGames []string) error {
 		for _, gamePath := range batch {
 			pageNo := len(menuList)/10 + 1
 			menuImageFileName := fmt.Sprintf("Game%02d.bin", pageNo)
-			menuListItem := fmt.Sprintf("%s,%s,0,2,%s", hskFileName, filepath.Base(gamePath), menuImageFileName)
+			menuListItem := fmt.Sprintf("%s,%s,0,1,%s", hskFileName, filepath.Base(gamePath), menuImageFileName)
 			menuList = append(menuList, menuListItem)
 			newMenuImageFileNames[menuImageFileName] = pageNo
 		}
@@ -650,7 +623,7 @@ func add(rootDir string, categoryID int, newGames []string) error {
 				gameNames = append(gameNames, fmt.Sprintf("%02d.%s", start+i+1, gameName))
 			}
 
-			imageBytes, err := generateMenuImage(gameNames)
+			imageBytes, err := generateMenuImage(gameNames, fontName)
 			if err != nil {
 				return fmt.Errorf("menu image generation failed: %s", err)
 			}

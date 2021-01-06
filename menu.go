@@ -23,6 +23,11 @@ const listGap = 8
 const fontSize = 24
 const imageQuality = 100
 
+var fonts = map[string]string{
+	"Gotham-Medium": "Gotham-SemiBold.ttf",
+	"Video-Phreak":  "Video-Phreak.ttf",
+}
+
 func loadFontFacePkger(dc *gg.Context, fpath string, points float64) error {
 	f, err := pkger.Open(fpath)
 	if err != nil {
@@ -46,7 +51,12 @@ func loadFontFacePkger(dc *gg.Context, fpath string, points float64) error {
 	return nil
 }
 
-func generateMenuImage(gameNames []string) ([]byte, error) {
+func generateMenuImage(gameNames []string, fontName string) ([]byte, error) {
+	fontFilename := fonts["Gotham-Medium"]
+	if fn, ok := fonts[fontName]; ok {
+		fontFilename = fn
+	}
+
 	bgf, err := pkger.Open("/assets/bg.jpg")
 	im, _, err := image.Decode(bgf)
 	if err != nil {
@@ -58,7 +68,7 @@ func generateMenuImage(gameNames []string) ([]byte, error) {
 	// if err := dc.LoadFontFace("./OpenSans-Bold.ttf", fontSize); err != nil {
 	// 	panic(err)
 	// }
-	if err := loadFontFacePkger(dc, "/assets/OpenSans-Bold.ttf", fontSize); err != nil {
+	if err := loadFontFacePkger(dc, fmt.Sprintf("/assets/%s", fontFilename), fontSize); err != nil {
 		return nil, err
 	}
 
@@ -67,7 +77,7 @@ func generateMenuImage(gameNames []string) ([]byte, error) {
 	for i, name := range gameNames {
 		listItemStartY := float64(listStartY + (i * (listGap + fontSize)))
 		// dc.SetRGB(float64(255)/255, float64(174)/255, float64(182)/255)
-		dc.SetRGB(float64(217)/255, float64(226)/255, float64(233)/255)
+		dc.SetRGB(float64(210)/255, float64(220)/255, float64(225)/255)
 		for dy := -n; dy <= n; dy++ {
 			for dx := -n; dx <= n; dx++ {
 				if dx*dx+dy*dy >= n*n {
