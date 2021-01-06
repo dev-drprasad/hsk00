@@ -31,6 +31,8 @@ hsk00-darwin-amd64 add  in/Famicom_Wars.nes  in/Heavy_Barrel.nes  in/Fantasy_Zon
 
 ---
 
+<br /><br />
+
 ### `replace`
 
 Replace will replace existing game with custom game.
@@ -39,9 +41,11 @@ Not implemented yet
 
 ---
 
+<br /><br />
+
 ### `descramble`
 
-Converts `*.asd` files to usable `.zip` files. Output filename will be `<inputfilename>.zip` and will generated be in same directory where input file present.
+Converts `*.asd` files to usable `.zip` files. Output filename will be `<inputfilename>.zip` and will be generated in same directory where input file present.
 
 Example:
 
@@ -50,6 +54,8 @@ hsk00-darwin-amd64 descramble  ~/Datafrog2/Game04/hsk06.asd
 ```
 
 ---
+
+<br /><br />
 
 ## Supported Consoles
 
