@@ -1,6 +1,7 @@
-package main
+package pkg
 
 import (
+	"archive/zip"
 	"bufio"
 	"bytes"
 	"fmt"
@@ -8,6 +9,7 @@ import (
 	"image/jpeg"
 	_ "image/jpeg"
 	"io/ioutil"
+	"strings"
 
 	"github.com/fogleman/gg"
 	"github.com/golang/freetype/truetype"
@@ -104,5 +106,52 @@ func generateMenuImage(gameNames []string, fontName string) ([]byte, error) {
 	if err := jpeg.Encode(w, dc.Image(), &opt); err != nil {
 		return nil, err
 	}
+	return bb.Bytes(), nil
+}
+
+func getMenuList(hsk00Path string) ([]string, error) {
+	hsk00files, err := Descramble(hsk00Path)
+	if err != nil {
+		return nil, err
+	}
+
+	menuList := []string{}
+
+	for _, fi := range hsk00files {
+		if EncodeFileName(fi.Name) == "Hsk00.lst" {
+			f, err := fi.Open()
+			if err != nil {
+				return nil, err
+			}
+			defer f.Close()
+
+			scanner := bufio.NewScanner(f)
+			for scanner.Scan() {
+				menuList = append(menuList, scanner.Text())
+			}
+			break
+		}
+	}
+	return menuList, nil
+}
+
+func makeHsk00(menuList []string) ([]byte, error) {
+	bb := bytes.NewBuffer(nil)
+	outz := bufio.NewWriter(bb)
+	zw := zip.NewWriter(outz)
+
+	w1, err := zw.Create(EncodeFileName("Hsk00.lst"))
+	if err != nil {
+		return nil, err
+	}
+	w1.Write([]byte(strings.Join(menuList, "\n")))
+
+	w2, err := zw.Create(EncodeFileName("GameNumber.bin"))
+	if err != nil {
+		return nil, err
+	}
+
+	w2.Write([]byte{byte(len(menuList)), 0x00, 0x00, 0x00})
+	zw.Close()
 	return bb.Bytes(), nil
 }

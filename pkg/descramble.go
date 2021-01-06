@@ -1,4 +1,4 @@
-package main
+package pkg
 
 import (
 	"archive/zip"
@@ -7,8 +7,8 @@ import (
 	"os"
 )
 
-func decodeFileAndSave(in, out string) error {
-	zipfiles, err := decompress(in)
+func DecodeFileAndSave(in, out string) error {
+	zipfiles, err := Descramble(in)
 	if err != nil {
 		return fmt.Errorf("failed to read file: %s", err)
 	}
@@ -28,7 +28,7 @@ func decodeFileAndSave(in, out string) error {
 			return fmt.Errorf("failed to read reader: %s", err)
 		}
 
-		header.Name = encodeFileName(file.Name)
+		header.Name = EncodeFileName(file.Name)
 		header.Method = zip.Deflate
 
 		fr, _ := file.Open()
