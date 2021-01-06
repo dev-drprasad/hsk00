@@ -14,7 +14,7 @@ Add/Replace games to your "Data Frog Y2 (568 in 1)" console.
 
 There is no install step. You just download and run. GUI app will take some time to load (only on first launch)
 
-- [Mac OS X GUI](https://github.com/dev-drprasad/hsk00/releases/download/latest/hsk-osx-gui.app.zip)
+- [Mac OS X GUI](https://github.com/dev-drprasad/hsk00/releases/download/latest/hsk00-osx-gui.zip)
 - Windows GUI (Not ready yet)
 - Linux GUI (Not ready yet)
 - [Mac OS X CLI](https://github.com/dev-drprasad/hsk00/releases/download/latest/hsk00-darwin-amd64)
