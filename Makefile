@@ -1,7 +1,8 @@
 .PHONY: generate
 
 generate:
-	pkger -include /assets
+	pkger -include /assets -o cmd/
+	pkger -include /assets -o gui/
 
 
 build: generate

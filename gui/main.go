@@ -82,10 +82,15 @@ func main() {
 		fileDialog := widgets.NewQFileDialog(nil, 0)
 		fileDialog.SetFileMode(widgets.QFileDialog__DirectoryOnly)
 		if fileDialog.Exec() == int(widgets.QDialog__Accepted) {
-			rootPathInput.SetText(fileDialog.Directory().Path())
-			rootDir = fileDialog.Directory().Path()
+			if len(fileDialog.SelectedFiles()) == 0 {
+				return
+			}
+			selectedDir := fileDialog.SelectedFiles()[0]
+			rootPathInput.SetText(selectedDir)
+			rootDir = selectedDir
 		}
 	})
+
 	selectRootButton.SizePolicy().SetVerticalPolicy(widgets.QSizePolicy__Preferred)
 	container.SizePolicy().SetVerticalPolicy(widgets.QSizePolicy__Preferred)
 

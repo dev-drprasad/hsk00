@@ -6,7 +6,7 @@ sample
 *.bin
 .DS_Store
 bin/*
-pkged.go
+**/pkged.go
 vendor/
 qtbox
 gui/deploy

@@ -26,7 +26,7 @@ func init() {
 
 	scrambleCommand.Flags().String("out", "", "output asd file name")
 	scrambleCommand.MarkFlagRequired("out")
-	rootCmd.AddCommand(descrambleCommand)
+	rootCmd.AddCommand(scrambleCommand)
 
 	addCommand.Flags().Int("category", 0, "number of category starting from 0, left -> right")
 	addCommand.MarkFlagRequired("category")

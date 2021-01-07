@@ -5,7 +5,8 @@ before:
     - go mod download
     - go get github.com/markbates/pkger/cmd/pkger
 builds:
-  - env:
+  - id: cli
+    env:
       - CGO_ENABLED=0
     goos:
       - darwin
@@ -14,13 +15,30 @@ builds:
     goarch:
       - amd64
     hooks:
-      pre: pkger -include /assets
+      pre: pkger -include /assets -o ./cmd/
     dir: cmd
+    main: .
+  - id : gui
+    goos:
+      - darwin
+      - windows
+      - linux
+    goarch:
+      - amd64
+    hooks:
+      pre: pkger -include /assets -o ./gui/
+    dir: gui
     main: .
 
 archives:
   - format: binary
-    name_template: "hsk00-{{ .Os }}-{{ .Arch }}"
+    name_template: "hsk00-{{ .Os }}-{{ .Arch }}-cli"
+    builds:
+      - cli
+  - format: binary
+    name_template: "hsk00-{{ .Os }}-{{ .Arch }}-gui"
+    builds:
+      - gui
 
 release:
   extra_files:
