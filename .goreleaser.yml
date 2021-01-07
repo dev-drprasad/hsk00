@@ -33,10 +33,12 @@ builds:
 archives:
   - format: binary
     name_template: "hsk00-{{ .Os }}-{{ .Arch }}-cli"
+    id: cli
     builds:
       - cli
   - format: binary
     name_template: "hsk00-{{ .Os }}-{{ .Arch }}-gui"
+    id: gui
     builds:
       - gui
 
