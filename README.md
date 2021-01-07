@@ -14,14 +14,14 @@ Add/Replace games to your "Data Frog Y2 (568 in 1)" console.
 
 There is no install step. You just download and run. GUI app will take some time to load (only on first launch)
 
-- [Mac OS X GUI](https://github.com/dev-drprasad/hsk00/releases/download/latest/hsk00-osx-gui.zip)
-- Windows GUI (Not ready yet)
-- Linux GUI (Not ready yet)
+- [Mac OS X GUI](https://github.com/dev-drprasad/hsk00/releases/download/latest/hsk00-darwin-amd64-gui)
+- [Windows GUI](https://github.com/dev-drprasad/hsk00/releases/download/latest/hsk00-windows-amd64-gui.exe)
+- [Linux GUI](https://github.com/dev-drprasad/hsk00/releases/download/latest/hsk00-linux-amd64-gui) NOT TESTED
 - [Mac OS X CLI](https://github.com/dev-drprasad/hsk00/releases/download/latest/hsk00-darwin-amd64)
 - [Linux CLI](https://github.com/dev-drprasad/hsk00/releases/download/latest/hsk00-linux-amd64) (Should work with all popular distros)
 - [Windows CLI](https://github.com/dev-drprasad/hsk00/releases/download/latest/hsk00-windows-amd64.exe)
 
-For CLI app, you need to give executable permission by running `chmod +x hsk00-darwin-amd64`
+For both CLI & GUI apps, you need to give executable permission by running command `chmod +x <filename>`.
 
 <br />
 
