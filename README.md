@@ -85,6 +85,8 @@ hsk00-darwin-amd64 scramble file1.nes file2.nes --out hskXX.asd
 
 - DATA FROG Y2 HD (568 in 1)
 - Extreme Mini HD Game Box
+- U-BOX EMX-041
+- DEXP RetroGAME Flash + 300 игр
 - Probably works with console whose SD card looks like below
 
 <p align="center">
