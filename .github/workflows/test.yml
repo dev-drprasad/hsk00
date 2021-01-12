@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         go-version: [1.15.x]
-        os: [windows-latest]
+        os: [ubuntu-20.04]
     runs-on: ${{ matrix.os }}
     steps:
     - name: Install Go
@@ -35,7 +35,7 @@ jobs:
       env:
         GO111MODULE: on
     - name: Build CLI
-      run: go build -o hsk00 cmd/*
+      run: go build -o hsk00 ./cmd/*
     - name: Install Wails
       run: go get -u github.com/wailsapp/wails/cmd/wails
     - name: Setup Account
