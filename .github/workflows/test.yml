@@ -10,8 +10,6 @@ jobs:
       matrix:
         go-version: [1.15.x]
         os: [ubuntu-20.04, macos-latest, windows-latest]
-        name: [linux, osx, windows]
-        guibuild: [hsk00, hsk00.app, hsk00.exe]
     runs-on: ${{ matrix.os }}
     steps:
     - name: Install Go
@@ -54,24 +52,63 @@ jobs:
         release_name: Release ${{ github.ref }}
         draft: false
         prerelease: false
-    - name: Upload ${{ matrix.name }} CLI
-      id: upload-cli 
+    - name: Upload OSX CLI
+      id: upload-osx-cli 
+      uses: actions/upload-release-asset@v1
+      if: ${{ matrix.os == 'macos-latest' }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        asset_path: ./build/hsk00
+        asset_name: hsk00-osx-cli
+    - name: Upload Linux CLI
+      id: upload-linux-cli 
+      uses: actions/upload-release-asset@v1
+      if: ${{ matrix.os == 'ubuntu-20.04' }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        asset_path: ./build/hsk00
+        asset_name: hsk00-linux-cli
+    - name: Upload Windows CLI
+      id: upload-windows-cli 
+      if: ${{ matrix.os == 'windows-latest' }}
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
         asset_path: ./build/hsk00
-        asset_name: hsk00-${{matrix.name}}-cli
-    - name: Upload GUI
-      id: upload-gli 
+        asset_name: hsk00-windows-cli
+    - name: Upload OSX GUI
+      id: upload-osx-gui
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        asset_path: ./gui/build/hsk00 0.1.0.dmg
+        asset_name: hsk00-osx.dmg
+    - name: Upload Linux GUI
+      id: upload-linux-gui 
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
         asset_path: ./gui/build/${{ matrix.guibuild }}
-        asset_name: hsk00-osx-gui
+        asset_name: hsk00-linux-gui
+    - name: Upload Windows GUI
+      id: upload-windows-gui
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        asset_path: ./gui/build/hsk00.exe
+        asset_name: hsk00-windows.exe
     - uses: actions/upload-artifact@v2
       with:
         name: ${{ matrix.os }}
