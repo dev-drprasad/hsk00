@@ -66,6 +66,7 @@ jobs:
         upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
         asset_path: ./build/hsk00
         asset_name: hsk00-osx-cli
+        asset_content_type: application/octet-stream
     - name: Upload Linux CLI
       id: upload-linux-cli 
       uses: actions/upload-release-asset@v1
@@ -76,6 +77,7 @@ jobs:
         upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
         asset_path: ./build/hsk00
         asset_name: hsk00-linux-cli
+        asset_content_type: application/octet-stream
     - name: Upload Windows CLI
       id: upload-windows-cli 
       if: ${{ matrix.os == 'windows-latest' }}
@@ -86,6 +88,7 @@ jobs:
         upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
         asset_path: ./build/hsk00
         asset_name: hsk00-windows-cli
+        asset_content_type: application/octet-stream
     - name: Upload OSX GUI
       id: upload-osx-gui
       if: ${{ matrix.os == 'macos-latest' }}
@@ -96,6 +99,7 @@ jobs:
         upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
         asset_path: ./gui/build/hsk00 0.1.0.dmg
         asset_name: hsk00-osx.dmg
+        asset_content_type: application/octet-stream
     - name: Upload Linux GUI
       id: upload-linux-gui 
       if: ${{ matrix.os == 'ubuntu-20.04' }}
@@ -104,8 +108,9 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: ./gui/build/${{ matrix.guibuild }}
+        asset_path: ./gui/build/hsk00
         asset_name: hsk00-linux-gui
+        asset_content_type: application/octet-stream
     - name: Upload Windows GUI
       id: upload-windows-gui
       if: ${{ matrix.os == 'windows-latest' }}
@@ -116,6 +121,7 @@ jobs:
         upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
         asset_path: ./gui/build/hsk00.exe
         asset_name: hsk00-windows.exe
+        asset_content_type: application/octet-stream
     - uses: actions/upload-artifact@v2
       with:
         name: ${{ matrix.os }}
