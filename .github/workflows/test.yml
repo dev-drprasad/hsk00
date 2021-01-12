@@ -29,9 +29,7 @@ jobs:
         go mod download
         go get github.com/markbates/pkger/cmd/pkger
     - name: Pkger
-      run: | 
-        pkger -include /assets -o ./cmd/
-        pkger -include /assets -o ./gui/
+      run: pkger -include /assets -o ./gui/
     - name: Build CLI
       run: go build -o hsk00 cmd/*
     - name: Install Wails
