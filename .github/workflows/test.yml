@@ -25,7 +25,9 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
     - name: Install Project Dep
-      run: go get github.com/markbates/pkger/cmd/pkger
+      run: |
+        go mod download
+        go get github.com/markbates/pkger/cmd/pkger
     - name: Pkger
       run: | 
         pkger -include /assets -o ./cmd/
