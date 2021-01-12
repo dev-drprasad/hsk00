@@ -1,5 +1,7 @@
 on: 
-  push:
+  push: 
+    branches:
+      - main
   pull_request:
 
 name: Test
@@ -29,7 +31,7 @@ jobs:
         go mod download
         go get github.com/markbates/pkger/cmd/pkger
     - name: Pkger
-      run: pkger -include /assets -o ./gui/
+      run: pkger -include /assets -o ./cmd
     - name: Build CLI
       run: go build -o hsk00 cmd/*
     - name: Install Wails
