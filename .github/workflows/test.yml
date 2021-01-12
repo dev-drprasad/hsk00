@@ -84,6 +84,7 @@ jobs:
         asset_name: hsk00-windows-cli
     - name: Upload OSX GUI
       id: upload-osx-gui
+      if: ${{ matrix.os == 'macos-latest' }}
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -93,6 +94,7 @@ jobs:
         asset_name: hsk00-osx.dmg
     - name: Upload Linux GUI
       id: upload-linux-gui 
+      if: ${{ matrix.os == 'ubuntu-20.04' }}
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -102,6 +104,7 @@ jobs:
         asset_name: hsk00-linux-gui
     - name: Upload Windows GUI
       id: upload-windows-gui
+      if: ${{ matrix.os == 'windows-latest' }}
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

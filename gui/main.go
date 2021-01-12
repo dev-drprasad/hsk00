@@ -3,17 +3,14 @@ package main
 import (
 	"log"
 
-	hsk00 "github.com/dev-drprasad/hsk00/pkg"
+	"github.com/dev-drprasad/hsk00/pkg"
 	"github.com/leaanthony/mewn"
 	"github.com/ncruces/zenity"
 	"github.com/wailsapp/wails"
 )
 
 type Runtime struct {
-	runtime    *wails.Runtime
-	newGames   []string
-	rootDir    string
-	categoryID int
+	runtime *wails.Runtime
 }
 
 // WailsInit initialize wails
@@ -33,7 +30,7 @@ func (r *Runtime) SelectRootDir() string {
 	return file
 }
 func (r *Runtime) AddGames(rootDir string, categoryID int, newGames []string) error {
-	hsk00.Add()
+	return pkg.Add(rootDir, categoryID, newGames, "")
 }
 
 func main() {

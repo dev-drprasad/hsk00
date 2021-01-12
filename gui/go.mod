@@ -3,6 +3,7 @@ module hsk00
 go 1.15
 
 require (
+	github.com/dev-drprasad/hsk00 v0.0.5
 	github.com/gorilla/websocket v1.4.2 // indirect
 	github.com/leaanthony/mewn v0.10.7
 	github.com/ncruces/zenity v0.5.2
