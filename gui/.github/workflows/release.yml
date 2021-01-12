@@ -1,0 +1,45 @@
+on:
+  push:
+    tags:
+      - "v*"
+      - latest
+
+name: Release
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        go-version: [1.15.x]
+        os: [ubuntu-20.04, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+    - name: Install Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: ${{ matrix.go-version }}
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+    - name: Install Ubuntu Dependencies
+      run: sudo apt clean && sudo apt update && sudo apt install build-essential libgtk-3-dev libwebkit2gtk-4.0-dev
+      if: ${{ matrix.os == 'ubuntu-20.04' }}
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Install Wails
+      run: go get -u github.com/wailsapp/wails/cmd/wails
+    - name: Setup Account
+      run: mkdir -p ~/.wails && echo '{"email":"dev.drprasad@aim.com","name":"REDDY PRASAD"}' > ~/.wails/wails.json
+    - name: Build
+      run: wails build -p
+    - name: Make DMG
+      run: npx create-dmg ./build/hsk00.app ./build
+      continue-on-error: true
+      if: ${{ matrix.os == 'macos-latest' }}
+    - uses: actions/upload-artifact@v2
+      with:
+        name: ${{ matrix.os }}
+        path: |
+          ./build/hsk00
+          ./build/hsk00.exe
+          ./build/hsk00*.dmg

@@ -9,4 +9,5 @@ bin/*
 **/pkged.go
 vendor/
 qtbox
-gui/deploy
+oldgui/deploy
+gui/build
