@@ -35,7 +35,7 @@ jobs:
       env:
         GO111MODULE: on
     - name: Build CLI
-      run: go build -o hsk00 ./cmd/*
+      run: mkdir -p build && go build -o hsk00 ./cmd/*
     - name: Install Wails
       run: go get -u github.com/wailsapp/wails/cmd/wails
     - name: Setup Account
