@@ -64,7 +64,7 @@ jobs:
         asset_path: ./build/hsk00
         asset_name: hsk00-${{matrix.name}}-cli
     - name: Upload GUI
-      id: upload-${{ matrix.name }}-cli 
+      id: upload-gli 
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
