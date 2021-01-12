@@ -7,6 +7,27 @@ on:
 name: Test
 
 jobs:
+  release:
+    name: Create Github Release
+    runs-on: ubuntu-latest
+    steps:
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1.0.0
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: false
+        prerelease: false
+    - name: Output Release URL File
+      run: echo "${{ steps.create_release.outputs.upload_url }}" > release_url.txt
+    - name: Save Release URL File for publish
+      uses: actions/upload-artifact@v1
+      with:
+        name: release_url
+        path: release_url.txt
   test:
     strategy:
       matrix:
@@ -35,7 +56,7 @@ jobs:
       env:
         GO111MODULE: on
     - name: Build CLI
-      run: mkdir -p build && go build -o ./build/hsk00 ./cmd/*
+      run: go build -o ./hsk00 ./cmd/*
     - name: Install Wails
       run: go get -u github.com/wailsapp/wails/cmd/wails
     - name: Setup Account
@@ -46,16 +67,15 @@ jobs:
       run: npx create-dmg ./build/hsk00.app ./build
       continue-on-error: true
       if: ${{ matrix.os == 'macos-latest' }}
-    - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
+    - name: Get Release File Name & Upload URL
+      id: get_release_info
+      run: |
+        echo ::set-output name=file_name::${REPOSITORY_NAME##*/}-${TAG_REF_NAME##*/v} # RepositoryName-v1.0.0
+        value=`cat release_url/release_url.txt`
+        echo ::set-output name=upload_url::$value
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
-        draft: false
-        prerelease: false
+        TAG_REF_NAME: ${{ github.ref }}
+        REPOSITORY_NAME: ${{ github.repository }}
     - name: Upload OSX CLI
       id: upload-osx-cli 
       uses: actions/upload-release-asset@v1
@@ -63,8 +83,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: ./build/hsk00
+        upload_url: ${{ steps.get_release_info.outputs.upload_url }}
+        asset_path: ./hsk00
         asset_name: hsk00-osx-cli
         asset_content_type: application/octet-stream
     - name: Upload Linux CLI
@@ -74,8 +94,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: ./build/hsk00
+        upload_url: ${{ steps.get_release_info.outputs.upload_url }}
+        asset_path: ./hsk00
         asset_name: hsk00-linux-cli
         asset_content_type: application/octet-stream
     - name: Upload Windows CLI
@@ -85,8 +105,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: ./build/hsk00
+        upload_url: ${{ steps.get_release_info.outputs.upload_url }}
+        asset_path: ./hsk00
         asset_name: hsk00-windows-cli
         asset_content_type: application/octet-stream
     - name: Upload OSX GUI
@@ -96,7 +116,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        upload_url: ${{ steps.get_release_info.outputs.upload_url }}
         asset_path: ./gui/build/hsk00 0.1.0.dmg
         asset_name: hsk00-osx.dmg
         asset_content_type: application/octet-stream
@@ -107,7 +127,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        upload_url: ${{ steps.get_release_info.outputs.upload_url }}
         asset_path: ./gui/build/hsk00
         asset_name: hsk00-linux-gui
         asset_content_type: application/octet-stream
@@ -118,7 +138,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        upload_url: ${{ steps.get_release_info.outputs.upload_url }}
         asset_path: ./gui/build/hsk00.exe
         asset_name: hsk00-windows.exe
         asset_content_type: application/octet-stream
@@ -126,7 +146,7 @@ jobs:
       with:
         name: ${{ matrix.os }}
         path: |
-          ./build/hsk00
-          ./build/hsk00.exe
-          ./build/hsk00*.dmg
+          ./hsk00
+          ./hsk00.exe
+          ./hsk00*.dmg
           ./gui/build/*
