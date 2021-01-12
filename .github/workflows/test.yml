@@ -32,6 +32,8 @@ jobs:
         go get github.com/markbates/pkger/cmd/pkger
     - name: Pkger
       run: pkger -include /assets -o ./cmd
+      env:
+        GO111MODULE: on
     - name: Build CLI
       run: go build -o hsk00 cmd/*
     - name: Install Wails
