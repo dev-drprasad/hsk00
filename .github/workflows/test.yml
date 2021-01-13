@@ -79,9 +79,8 @@ jobs:
       with:
         command: c
         cwd: ./build
-        files: |
-          ./hsk00
-        outPath: hsk00.tar.gz
+        files: hsk00
+        outPath: ./build/hsk00.tar.gz
     - name: Upload OSX CLI
       id: upload-osx-cli 
       uses: actions/upload-release-asset@v1
@@ -135,7 +134,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ needs.create_release.outputs.upload_url }}
-        asset_path: ./hsk00.tar.gz
+        asset_path: ./build/hsk00.tar.gz
         asset_name: hsk00-linux-gui.tar.gz
         asset_content_type: application/octet-stream
     - name: Upload Windows GUI
