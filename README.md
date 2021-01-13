@@ -3,7 +3,7 @@
 Add/Replace games to your "Data Frog Y2 (568 in 1)" console.
 
 <p align="center">
-<img src="app-screenshot.png" alt="hsk00-osx-screenshot" />
+<img src="app-screenshot.png" alt="hsk00-osx-screenshot" width="400" />
 </p>
 
 ⚠️ Before you use this, backup your SD card. Just copy/paste all files to your computer.
