@@ -7,25 +7,8 @@ on:
 name: Test
 
 jobs:
-  create_release:
-    name: Create Github Release
-    runs-on: ubuntu-latest
-    outputs:
-      upload_url: ${{ steps.create_release.outputs.upload_url }}
-    steps:
-    - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1.0.0
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
-        draft: false
-        prerelease: false
 
   test:
-    needs: create_release
     strategy:
       matrix:
         go-version: [1.15.x]
@@ -81,75 +64,3 @@ jobs:
         cwd: ./build
         files: hsk00
         outPath: ./build/hsk00.tar.gz
-    - name: Upload OSX CLI
-      id: upload-osx-cli 
-      uses: actions/upload-release-asset@v1
-      if: ${{ matrix.os == 'macos-latest' }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ needs.create_release.outputs.upload_url }}
-        asset_path: ./hsk00-cli
-        asset_name: hsk00-osx-cli
-        asset_content_type: application/octet-stream
-    - name: Upload Linux CLI
-      id: upload-linux-cli 
-      uses: actions/upload-release-asset@v1
-      if: ${{ matrix.os == 'ubuntu-20.04' }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ needs.create_release.outputs.upload_url }}
-        asset_path: ./hsk00-cli
-        asset_name: hsk00-linux-cli
-        asset_content_type: application/octet-stream
-    - name: Upload Windows CLI
-      id: upload-windows-cli
-      continue-on-error: true
-      if: ${{ matrix.os == 'windows-latest' }}
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ needs.create_release.outputs.upload_url }}
-        asset_path: ./hsk00-cli.exe
-        asset_name: hsk00-windows-cli.exe
-        asset_content_type: application/octet-stream
-    - name: Upload OSX GUI
-      id: upload-osx-gui
-      if: ${{ matrix.os == 'macos-latest' }}
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ needs.create_release.outputs.upload_url }}
-        asset_path: ./build/hsk00 0.1.0.dmg
-        asset_name: hsk00-osx.dmg
-        asset_content_type: application/octet-stream
-    - name: Upload Linux GUI
-      id: upload-linux-gui
-      if: ${{ matrix.os == 'ubuntu-20.04' }}
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ needs.create_release.outputs.upload_url }}
-        asset_path: ./build/hsk00.tar.gz
-        asset_name: hsk00-linux-gui.tar.gz
-        asset_content_type: application/octet-stream
-    - name: Upload Windows GUI
-      id: upload-windows-gui
-      if: ${{ matrix.os == 'windows-latest' }}
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ needs.create_release.outputs.upload_url }}
-        asset_path: ./build/hsk00.exe
-        asset_name: hsk00-windows.exe
-        asset_content_type: application/octet-stream
-
-
-
-# https://github.com/actions/create-release/issues/14#issuecomment-555379810
-# https://github.com/actions/create-release/issues/14#issuecomment-653974075
