@@ -56,7 +56,7 @@ jobs:
       env:
         GO111MODULE: on
     - name: Build CLI
-      run: go build -o ./hsk00 ./cmd/*
+      run: cd cmd && go build -o ..\hsk00.exe 
       if: ${{ matrix.os != 'windows-latest' }}
     - name: Build Windows CLI
       run: go build -o .\hsk00 .\cmd\*
@@ -116,8 +116,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.get_release_info.outputs.upload_url }}
-        asset_path: ./hsk00
-        asset_name: hsk00-windows-cli
+        asset_path: ./hsk00.exe
+        asset_name: hsk00-windows-cli.exe
         asset_content_type: application/octet-stream
     - name: Upload OSX GUI
       id: upload-osx-gui
