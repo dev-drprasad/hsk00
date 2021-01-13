@@ -80,3 +80,4 @@ jobs:
           ./build/hsk00.exe
           ./build/hsk00*.dmg
           ./gui/build/*
+

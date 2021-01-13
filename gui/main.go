@@ -20,7 +20,10 @@ func (r *Runtime) WailsInit(wr *wails.Runtime) error {
 }
 
 func (r *Runtime) SelectGames() []string {
-	files, _ := zenity.SelectFileMutiple(zenity.Filename(""), zenity.FileFilters{{"NES ROMs", []string{"*.nes"}}})
+	files, err := zenity.SelectFileMutiple(zenity.Filename(""), zenity.FileFilters{{"NES ROMs", []string{"*.nes"}}})
+	if err != nil {
+		log.Println("err ", err)
+	}
 	log.Println("files", files)
 	return files
 }

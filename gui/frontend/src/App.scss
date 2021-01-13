@@ -4,7 +4,7 @@
   position: absolute;
   bottom: 12px;
   right: 12px;
-  font-size: 24px;
+  font-size: 1.6em;
   color: white;
 }
 
@@ -34,7 +34,7 @@
   font-weight: 600;
 }
 .FormControl {
-  height: 2em;
+  height: 2.6em;
 }
 .FormControl:focus {
   border-color: var(--color-state-focus-border);
@@ -54,7 +54,7 @@
   margin: 0;
   padding: 12px;
   overflow: auto;
-  height: 170px;
+  height: 14em;
 }
 .ListBox > ul > li {
   list-style: none;
@@ -72,9 +72,9 @@
   width: 200px;
 }
 .ErrorMessage {
-  height: 40px;
+  height: 2.6em;
   text-align: center;
-  line-height: 40px;
+  line-height: 2.6em;
 }
 .btn {
   color: var(--color-btn-text);
@@ -93,8 +93,8 @@
   transition-duration: 0.1s;
 }
 .btn-lg {
-  height: 40px;
-  font-size: 1.8em;
+  height: 3rem;
+  font-size: 1.2em;
 }
 .btn-primary {
   color: var(--color-btn-primary-text);

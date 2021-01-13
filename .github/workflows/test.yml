@@ -7,9 +7,11 @@ on:
 name: Test
 
 jobs:
-  release:
+  create_release:
     name: Create Github Release
     runs-on: ubuntu-latest
+    outputs:
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
     steps:
     - name: Create Release
       id: create_release
@@ -21,14 +23,9 @@ jobs:
         release_name: Release ${{ github.ref }}
         draft: false
         prerelease: false
-    - name: Output Release URL File
-      run: echo "${{ steps.create_release.outputs.upload_url }}" > release_url.txt
-    - name: Save Release URL File for publish
-      uses: actions/upload-artifact@v1
-      with:
-        name: release_url
-        path: release_url.txt
+
   test:
+    needs: create_release
     strategy:
       matrix:
         go-version: [1.15.x]
@@ -72,19 +69,6 @@ jobs:
       run: npx create-dmg ./gui/build/hsk00.app ./gui/build
       continue-on-error: true
       if: ${{ matrix.os == 'macos-latest' }}
-    - name: Load Release URL File from release job
-      uses: actions/download-artifact@v1
-      with:
-        name: release_url
-    - name: Get Release File Name & Upload URL
-      id: get_release_info
-      run: |
-        echo ::set-output name=file_name::${REPOSITORY_NAME##*/}-${TAG_REF_NAME##*/v} # RepositoryName-v1.0.0
-        value=`cat release_url/release_url.txt`
-        echo ::set-output name=upload_url::$value
-      env:
-        TAG_REF_NAME: ${{ github.ref }}
-        REPOSITORY_NAME: ${{ github.repository }}
     - name: Upload OSX CLI
       id: upload-osx-cli 
       uses: actions/upload-release-asset@v1
@@ -92,7 +76,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ steps.get_release_info.outputs.upload_url }}
+        upload_url: ${{ needs.create_release.outputs.upload_url }}
         asset_path: ./hsk00
         asset_name: hsk00-osx-cli
         asset_content_type: application/octet-stream
@@ -103,7 +87,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ steps.get_release_info.outputs.upload_url }}
+        upload_url: ${{ needs.create_release.outputs.upload_url }}
         asset_path: ./hsk00
         asset_name: hsk00-linux-cli
         asset_content_type: application/octet-stream
@@ -115,7 +99,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ steps.get_release_info.outputs.upload_url }}
+        upload_url: ${{ needs.create_release.outputs.upload_url }}
         asset_path: ./hsk00.exe
         asset_name: hsk00-windows-cli.exe
         asset_content_type: application/octet-stream
@@ -126,7 +110,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ steps.get_release_info.outputs.upload_url }}
+        upload_url: ${{ needs.create_release.outputs.upload_url }}
         asset_path: ./gui/build/hsk00 0.1.0.dmg
         asset_name: hsk00-osx.dmg
         asset_content_type: application/octet-stream
@@ -137,7 +121,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ steps.get_release_info.outputs.upload_url }}
+        upload_url: ${{ needs.create_release.outputs.upload_url }}
         asset_path: ./gui/build/hsk00
         asset_name: hsk00-linux-gui
         asset_content_type: application/octet-stream
@@ -148,7 +132,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ steps.get_release_info.outputs.upload_url }}
+        upload_url: ${{ needs.create_release.outputs.upload_url }}
         asset_path: ./gui/build/hsk00.exe
         asset_name: hsk00-windows.exe
         asset_content_type: application/octet-stream
@@ -160,3 +144,6 @@ jobs:
           ./hsk00.exe
           ./hsk00*.dmg
           ./gui/build/*
+
+
+# https://github.com/actions/create-release/issues/14#issuecomment-555379810
