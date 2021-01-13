@@ -39,16 +39,21 @@ func (r *Runtime) SelectRootDir() string {
 	file, _ := zenity.SelectFile(zenity.Filename(""), zenity.Directory())
 	return file
 }
-func (r *Runtime) AddGames(rootDir string, categoryID int, newGamesIn []interface{}) error {
-	var newGames []string
-	for _, g := range newGamesIn {
-		newGames = append(newGames, g.(string))
+func (r *Runtime) AddGames(rootDir string, categoryID int, newGamesIn []interface{}) ([]*pkg.GameItem, error) {
+	var newGames []*pkg.GameItem
+	for _, gIn := range newGamesIn {
+		gMap := gIn.(map[string]interface{})
+		g := pkg.GameItem{
+			SourcePath: gMap["srcPath"].(string),
+			Name:       gMap["name"].(string),
+		}
+		newGames = append(newGames, &g)
 	}
-
+	pkg.Debug = true
 	return pkg.Add(rootDir, categoryID, newGames, "")
 }
 
-func (r *Runtime) GetGameList(rootDir string, categoryID int) ([]pkg.GameItem, error) {
+func (r *Runtime) GetGameList(rootDir string, categoryID int) ([]*pkg.GameItem, error) {
 	listMap, err := pkg.GetGameList(rootDir, categoryID)
 	if err != nil {
 		return nil, err

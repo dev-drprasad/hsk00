@@ -28,10 +28,13 @@
 }
 .FormItem {
   margin-bottom: 16px;
-}
-.FormItem .Label {
-  margin-bottom: 6px;
-  font-weight: 600;
+  position: relative;
+
+  .label {
+    margin-bottom: 6px;
+    font-weight: 600;
+    display: inline-block;
+  }
 }
 .FormControl {
   height: 2rem;
@@ -43,6 +46,22 @@
 }
 .CategorySelect {
   width: 50%;
+}
+
+.games-list {
+  .label {
+    margin-bottom: 6px;
+    margin-top: 6px;
+  }
+}
+
+.list-actions {
+  position: absolute;
+  right: 0;
+  top: 0;
+  > * {
+    margin-left: 4px;
+  }
 }
 
 .ListBox {
@@ -67,6 +86,7 @@
           content: "* ";
           position: absolute;
           left: 0;
+          padding-top: 0.2rem;
         }
       }
     }
@@ -100,6 +120,12 @@
   border-radius: 6px;
   font-weight: 600;
   padding: 6px 12px;
+
+  &:disabled {
+    color: var(--color-text-disabled);
+    cursor: not-allowed;
+    border-color: transparent;
+  }
 }
 .btn:hover {
   background-color: var(--color-btn-hover-bg);
@@ -108,16 +134,21 @@
 }
 .btn-lg {
   height: 2.6rem;
-  font-size: 1.2em;
+  font-size: 1rem;
+}
+
+.btn-sm {
+  height: 1.5rem;
+  font-size: 0.7rem;
+  line-height: 0.7rem;
+  border-radius: 4px;
 }
 .btn-primary {
   color: var(--color-btn-primary-text);
   background-color: #238636;
   border-color: #2ea043;
   border: 1px solid #2ea043;
-  border-radius: 6px;
-  box-shadow: var(--color-btn-primary-shadow),
-    var(--color-btn-primary-inset-shadow);
+  box-shadow: var(--color-btn-primary-shadow), var(--color-btn-primary-inset-shadow);
 }
 .btn-primary:hover {
   background-color: var(--color-btn-primary-hover-bg);

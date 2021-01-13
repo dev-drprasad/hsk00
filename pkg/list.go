@@ -12,7 +12,7 @@ import (
 
 var gamedirrx = regexp.MustCompile(`Game\d{2,}`)
 
-func GetGameList(rootDir string, categoryID int) (map[string][]GameItem, error) {
+func GetGameList(rootDir string, categoryID int) (map[string][]*GameItem, error) {
 	if rootDir == "" {
 		return nil, errors.New("root path value is empty")
 	}
@@ -52,7 +52,7 @@ func GetGameList(rootDir string, categoryID int) (map[string][]GameItem, error) 
 		return nil, errors.New("weird, no hsk00 paths are given")
 	}
 
-	listMap := map[string][]GameItem{}
+	listMap := map[string][]*GameItem{}
 
 	for categoryDirName, hsk00Path := range hsk00Paths {
 		b, err := getHsk00lstContent(hsk00Path)

@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "./App.scss";
 import Alert from "./Alert";
 import GitHubIcon from "./GitHubIcon";
 
 const initialState = {
   rootDir: "",
+  modified: false,
+  games: [],
   newGames: [],
   categoryID: -1,
   errors: { rootDir: "" },
@@ -15,6 +17,7 @@ const gameSorter = (a, b) => a.name.localeCompare(b.name);
 
 function App() {
   const [state, setState] = useState(initialState);
+  const { rootDir, newGames, games, categoryID, errors, message, modified } = state;
 
   const handleSelectRootClick = () => {
     window.backend.Runtime.SelectRootDir().then((selectedDir) => {
@@ -26,8 +29,7 @@ function App() {
     window.backend.Runtime.SelectGames()
       .then((newGames) => {
         console.log("newGames :>> ", newGames);
-        const newGameList = [...state.newGames, ...newGames].sort(gameSorter);
-        setState((s) => ({ ...s, newGames: newGameList }));
+        setState((s) => ({ ...s, modified: true, newGames: newGames }));
       })
       .catch(setError);
   };
@@ -52,6 +54,21 @@ function App() {
     }));
   };
 
+  const refreshGameList = useCallback(() => {
+    window.backend.Runtime.GetGameList(rootDir, categoryID)
+      .then((games) => {
+        console.log("gameList :>> ", games);
+        setState((s) => ({
+          ...s,
+          modified: false,
+          newGames: [],
+          games: games,
+          message: undefined,
+        }));
+      })
+      .catch(setError);
+  }, [rootDir, categoryID]);
+
   const handleSubmit = () => {
     const errors = {};
     if (!rootDir) {
@@ -69,17 +86,15 @@ function App() {
     } else {
       setState((s) => ({ ...s, errors: {} }));
     }
-    console.log(
-      "rootDir, categoryID, newGames :>> ",
-      rootDir,
-      categoryID,
-      newGames
-    );
+    console.log("rootDir, categoryID, newGames :>> ", rootDir, categoryID, newGames);
     window.backend.Runtime.AddGames(rootDir, categoryID, newGames)
       .then((res) => {
         console.log("res", res);
         setState((s) => ({
           ...s,
+          games: res,
+          newGames: [],
+          modified: false,
           message: {
             type: "success",
             content: `🎉 ${newGames.length} games are added!`,
@@ -89,24 +104,19 @@ function App() {
       .catch(setError);
   };
 
-  const { rootDir, newGames, categoryID, errors, message } = state;
-
+  const allgames = [...games, ...newGames].sort(gameSorter);
+  console.log("allgames :>> ", allgames);
   useEffect(() => {
     if (rootDir && categoryID > -1) {
-      window.backend.Runtime.GetGameList(rootDir, categoryID)
-        .then((gameList) => {
-          console.log("gameList :>> ", gameList);
-          setState((s) => ({ ...s, newGames: gameList }));
-        })
-        .catch(setError);
+      refreshGameList();
     }
-  }, [rootDir, categoryID]);
+  }, [rootDir, categoryID, refreshGameList]);
 
   return (
     <React.Fragment>
       <div className="App">
         <div className="FormItem">
-          <div className="Label" htmlFor="rootDir">
+          <div className="label" htmlFor="rootDir">
             Choose root path :
           </div>
           <div className="group RootDirGroup">
@@ -124,15 +134,11 @@ function App() {
           <span className="FormError">{errors.rootDir}</span>
         </div>
         <div className="FormItem">
-          <div className="Label" htmlFor="rootDir">
+          <div className="label" htmlFor="rootDir">
             Select game category :
           </div>
           <div>
-            <select
-              className="FormControl Select CategorySelect"
-              name="categoryID"
-              onChange={handleCategoryChange}
-            >
+            <select className="FormControl Select CategorySelect" name="categoryID" onChange={handleCategoryChange}>
               <option value={-1}>----------</option>
               <option value={0}>0. Action Games</option>
               <option value={1}>1. Shoot Games</option>
@@ -144,44 +150,41 @@ function App() {
           </div>
           <span className="FormError">{errors.rootDir}</span>
         </div>
-        <div className="FormItem">
-          <div className="Label" htmlFor="rootDir">
-            Games :
+        <div className="FormItem games-list">
+          <label className="label" htmlFor="rootDir">
+            Games {games.length ? `(${games.length}` + (newGames.length ? ` + ${newGames.length} unsaved)` : ")") : ""}:
+          </label>
+          <div className="list-actions">
+            <button className="FormControl btn btn-sm" onClick={refreshGameList} disabled={!rootDir || categoryID === -1}>
+              Reset
+            </button>
+            <button
+              className="FormControl btn btn-sm btn-primary"
+              onClick={handleSelectGamesClick}
+              disabled={!rootDir || categoryID === -1}
+            >
+              + Add
+            </button>
           </div>
           <div className="ListBox">
             <ul role="listbox">
-              {newGames.map((g) => (
-                <li key={g.name} className={!g.hsk ? "unsaved" : ""}>
+              {allgames.map((g) => (
+                <li key={`${g.filename}${g.srcPath}${g.id}`} className={!g.hsk ? "unsaved" : ""}>
                   {g.name}
                 </li>
               ))}
             </ul>
-            <button
-              className="FormControl btn"
-              onClick={handleSelectGamesClick}
-            >
-              + Add
-            </button>
           </div>
           <span className="FormError">{errors.rootDir}</span>
         </div>
         <Alert type={message?.type} message={message?.content} />
         <div className="FormItem SubmitButtonWrapper">
-          <button
-            className="FormControl SubmitButton btn btn-lg btn-primary"
-            disabled={newGames.length === 0}
-            onClick={handleSubmit}
-          >
+          <button className="FormControl SubmitButton btn btn-primary" disabled={!modified} onClick={handleSubmit}>
             Save Changes
           </button>
         </div>
       </div>
-      <a
-        className="github-link"
-        target="_blank"
-        href="https://github.com/dev-drprasad/hsk00"
-        rel="noopener noreferrer"
-      >
+      <a className="github-link" target="_blank" href="https://github.com/dev-drprasad/hsk00" rel="noopener noreferrer">
         <GitHubIcon />
       </a>
     </React.Fragment>

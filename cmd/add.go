@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"path/filepath"
 
 	"github.com/dev-drprasad/hsk00/pkg"
 	"github.com/spf13/cobra"
@@ -40,6 +41,12 @@ var addCommand = &cobra.Command{
 			return err
 		}
 
-		return pkg.Add(rootDir, categoryID, args, fontName)
+		var gameList pkg.GameItemList
+		for _, gamePath := range args {
+			gameList = append(gameList, &pkg.GameItem{SourcePath: gamePath, Name: pkg.GameNameFromFilename(filepath.Base(gamePath))})
+		}
+
+		_, err = pkg.Add(rootDir, categoryID, gameList, fontName)
+		return err
 	},
 }

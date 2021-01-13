@@ -9,7 +9,6 @@ import (
 	"image/jpeg"
 	_ "image/jpeg"
 	"io/ioutil"
-	"strings"
 
 	"github.com/fogleman/gg"
 	"github.com/golang/freetype/truetype"
@@ -124,16 +123,23 @@ func getMenuList(hsk00Path string) ([]string, error) {
 	return menuList, nil
 }
 
-func makeHsk00(menuList []string) ([]byte, error) {
+func makeHsk00(menuList GameItemList) ([]byte, error) {
 	bb := bytes.NewBuffer(nil)
 	outz := bufio.NewWriter(bb)
 	zw := zip.NewWriter(outz)
+	defer zw.Close()
 
 	w1, err := zw.Create(EncodeFileName("Hsk00.lst"))
 	if err != nil {
 		return nil, err
 	}
-	w1.Write([]byte(strings.Join(menuList, "\n")))
+
+	for _, g := range menuList {
+		if g.Hsk == "" || g.Filename == "" || g.BGFilename == "" {
+			return nil, fmt.Errorf("one of them is empty -> hsk: '%s', fn: '%s', bg fn: '%s'", g.Hsk, g.Filename, g.BGFilename)
+		}
+		w1.Write([]byte(fmt.Sprintf("%s,%s,0,1,%s\n", g.Hsk, g.Filename, g.BGFilename)))
+	}
 
 	w2, err := zw.Create(EncodeFileName("GameNumber.bin"))
 	if err != nil {
