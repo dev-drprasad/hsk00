@@ -71,6 +71,17 @@ jobs:
       run: npx create-dmg ./build/hsk00.app ./build
       continue-on-error: true
       if: ${{ matrix.os == 'macos-latest' }}
+    - name: Linux tarball
+      uses: master-atul/tar-action@v1.0.2
+      id: linux-tarball
+      if: ${{ matrix.os == 'ubuntu-20.04' }}
+      continue-on-error: true
+      with:
+        command: c
+        cwd: ./build
+        files: |
+          ./hsk00
+        outPath: hsk00.tar.gz
     - name: Upload OSX CLI
       id: upload-osx-cli 
       uses: actions/upload-release-asset@v1
@@ -124,8 +135,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ needs.create_release.outputs.upload_url }}
-        asset_path: ./build/hsk00
-        asset_name: hsk00-linux-gui
+        asset_path: ./build/hsk00.tar.gz
+        asset_name: hsk00-linux-gui.tar.gz
         asset_content_type: application/octet-stream
     - name: Upload Windows GUI
       id: upload-windows-gui
