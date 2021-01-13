@@ -69,7 +69,7 @@ jobs:
     - name: Build GUI
       run: cd gui && wails build -p
     - name: Make DMG
-      run: npx create-dmg ./build/hsk00.app ./build
+      run: npx create-dmg ./gui/build/hsk00.app ./gui/build
       continue-on-error: true
       if: ${{ matrix.os == 'macos-latest' }}
     - name: Load Release URL File from release job

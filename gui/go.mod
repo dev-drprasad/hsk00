@@ -6,6 +6,7 @@ require (
 	github.com/dev-drprasad/hsk00 v0.0.5
 	github.com/gorilla/websocket v1.4.2 // indirect
 	github.com/leaanthony/mewn v0.10.7
+	github.com/markbates/pkger v0.17.1
 	github.com/ncruces/zenity v0.5.2
 	github.com/wailsapp/wails v1.11.0
 	golang.org/x/text v0.3.2 // indirect
