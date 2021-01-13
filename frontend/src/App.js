@@ -155,7 +155,12 @@ function App() {
           </button>
         </div>
       </div>
-      <a className="github-link" href="https://github.com/dev-drprasad/hsk00">
+      <a
+        className="github-link"
+        target="_blank"
+        href="https://github.com/dev-drprasad/hsk00"
+        rel="noopener noreferrer"
+      >
         <GitHubIcon />
       </a>
     </React.Fragment>
