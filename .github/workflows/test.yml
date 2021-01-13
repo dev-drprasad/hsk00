@@ -1,10 +1,13 @@
 on: 
-  push:
+  push: 
+    branches:
+      - main
   pull_request:
 
 name: Test
 
 jobs:
+
   test:
     strategy:
       matrix:
@@ -29,96 +32,35 @@ jobs:
         go mod download
         go get github.com/markbates/pkger/cmd/pkger
     - name: Pkger
-      run: | 
-        pkger -include /assets -o ./cmd/
-        pkger -include /assets -o ./gui/
+      run: |
+        pkger -include /assets -o ./cmd
+        pkger -include /assets
+      env:
+        GO111MODULE: on
     - name: Build CLI
-      run: go build -o hsk00 cmd/*
+      run: go build -o hsk00-cli ./cmd/*
+      if: ${{ matrix.os != 'windows-latest' }}
+    - name: Build Windows CLI
+      run: cd cmd && go build -o ..\hsk00-cli.exe
+      if: ${{ matrix.os == 'windows-latest' }}
+      continue-on-error: true
     - name: Install Wails
       run: go get -u github.com/wailsapp/wails/cmd/wails
     - name: Setup Account
       run: mkdir -p ~/.wails && echo '{"email":"dev.drprasad@aim.com","name":"REDDY PRASAD"}' > ~/.wails/wails.json
     - name: Build GUI
-      run: cd gui && wails build -p
+      run: wails build -p
     - name: Make DMG
       run: npx create-dmg ./build/hsk00.app ./build
       continue-on-error: true
       if: ${{ matrix.os == 'macos-latest' }}
-    - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
-        draft: false
-        prerelease: false
-    - name: Upload OSX CLI
-      id: upload-osx-cli 
-      uses: actions/upload-release-asset@v1
-      if: ${{ matrix.os == 'macos-latest' }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: ./build/hsk00
-        asset_name: hsk00-osx-cli
-    - name: Upload Linux CLI
-      id: upload-linux-cli 
-      uses: actions/upload-release-asset@v1
+    - name: Linux tarball
+      uses: master-atul/tar-action@v1.0.2
+      id: linux-tarball
       if: ${{ matrix.os == 'ubuntu-20.04' }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      continue-on-error: true
       with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: ./build/hsk00
-        asset_name: hsk00-linux-cli
-    - name: Upload Windows CLI
-      id: upload-windows-cli 
-      if: ${{ matrix.os == 'windows-latest' }}
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: ./build/hsk00
-        asset_name: hsk00-windows-cli
-    - name: Upload OSX GUI
-      id: upload-osx-gui
-      if: ${{ matrix.os == 'macos-latest' }}
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: ./gui/build/hsk00 0.1.0.dmg
-        asset_name: hsk00-osx.dmg
-    - name: Upload Linux GUI
-      id: upload-linux-gui 
-      if: ${{ matrix.os == 'ubuntu-20.04' }}
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: ./gui/build/${{ matrix.guibuild }}
-        asset_name: hsk00-linux-gui
-    - name: Upload Windows GUI
-      id: upload-windows-gui
-      if: ${{ matrix.os == 'windows-latest' }}
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: ./gui/build/hsk00.exe
-        asset_name: hsk00-windows.exe
-    - uses: actions/upload-artifact@v2
-      with:
-        name: ${{ matrix.os }}
-        path: |
-          ./build/hsk00
-          ./build/hsk00.exe
-          ./build/hsk00*.dmg
-          ./gui/build/*
+        command: c
+        cwd: ./build
+        files: hsk00
+        outPath: ./build/hsk00.tar.gz

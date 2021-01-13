@@ -1,4 +1,73 @@
+package main
 
+import (
+	"log"
+	"runtime"
+
+	"github.com/dev-drprasad/hsk00/pkg"
+	"github.com/leaanthony/mewn"
+	"github.com/ncruces/zenity"
+	"github.com/wailsapp/wails"
+)
+
+type Runtime struct {
+	runtime *wails.Runtime
+}
+
+// WailsInit initialize wails
+func (r *Runtime) WailsInit(wr *wails.Runtime) error {
+	r.runtime = wr
+	return nil
+}
+
+func (r *Runtime) SelectGames() []string {
+	files, err := zenity.SelectFileMutiple(zenity.Filename(""), zenity.FileFilters{{"NES ROMs", []string{"*.nes"}}})
+	if err != nil {
+		log.Println("err ", err)
+	}
+	log.Println("files", files)
+	return files
+}
+
+func (r *Runtime) SelectRootDir() string {
+	file, _ := zenity.SelectFile(zenity.Filename(""), zenity.Directory())
+	return file
+}
+func (r *Runtime) AddGames(rootDir string, categoryID int, newGamesIn []interface{}) error {
+	var newGames []string
+	for _, g := range newGamesIn {
+		newGames = append(newGames, g.(string))
+	}
+
+	return pkg.Add(rootDir, categoryID, newGames, "")
+}
+
+func main() {
+
+	js := mewn.String("./frontend/build/static/js/main.js")
+	css := mewn.String("./frontend/build/static/css/main.css")
+
+	windowWidth := 420
+	windowHeight := 520
+	if runtime.GOOS == "linux" {
+		windowWidth = 620
+		windowHeight = 720
+	}
+
+	app := wails.CreateApp(&wails.AppConfig{
+		Width:  windowWidth,
+		Height: windowHeight,
+		Title:  "hsk00",
+		JS:     js,
+		CSS:    css,
+		Colour: "#0d1117",
+	})
+
+	r := &Runtime{}
+
+	app.Bind(r)
+	app.Run()
+}
 
 // import (
 // 	"archive/zip"

@@ -8,6 +8,7 @@ const initialState = {
   newGames: [],
   categoryID: -1,
   errors: { rootDir: "" },
+  message: undefined,
 };
 
 function App() {
@@ -21,29 +22,67 @@ function App() {
 
   const handleSelectGamesClick = (e) => {
     window.backend.Runtime.SelectGames().then((selectedGames) => {
-      console.log("selectedGames :>> ", selectedGames);
-      setState((s) => ({ ...s, newGames: selectedGames }));
+      setState((s) => ({ ...s, newGames: selectedGames || [] }));
     });
   };
 
   const handleRootDirChange = (e) => {
+    e.persist();
     setState((s) => ({ ...s, rootDir: e.target.value }));
   };
 
   const handleCategoryChange = (e) => {
-    setState((s) => ({ ...s, categoryID: e.target.value }));
+    e.persist();
+    setState((s) => ({ ...s, categoryID: parseInt(e.target.value) }));
   };
 
   const handleSubmit = () => {
+    const errors = {};
+    if (!rootDir) {
+      errors["rootDir"] = "root path is empty";
+    }
+    if (categoryID < 0) {
+      errors["categoryID"] = "select category";
+    }
+    if (newGames.length === 0) {
+      errors["newGames"] = "select game(s) to add";
+    }
+    if (errors.length > 0) {
+      setState((s) => ({ ...s, errors: errors }));
+      return;
+    } else {
+      setState((s) => ({ ...s, errors: {} }));
+    }
     console.log(
       "rootDir, categoryID, newGames :>> ",
       rootDir,
       categoryID,
       newGames
     );
+    window.backend.Runtime.AddGames(rootDir, categoryID, newGames)
+      .then((res) => {
+        console.log("res", res);
+        setState((s) => ({
+          ...s,
+          message: {
+            type: "success",
+            content: `🎉 ${newGames.length} games are added!`,
+          },
+        }));
+      })
+      .catch((err) => {
+        console.log("err", err);
+        setState((s) => ({
+          ...s,
+          message: {
+            type: "danger",
+            content: err,
+          },
+        }));
+      });
   };
 
-  const { rootDir, newGames, categoryID, errors } = state;
+  const { rootDir, newGames, categoryID, errors, message } = state;
   return (
     <React.Fragment>
       <div className="App">
@@ -105,7 +144,7 @@ function App() {
           </div>
           <span className="FormError">{errors.rootDir}</span>
         </div>
-        <Alert type="danger" message="Hooray! 14 games added!" />
+        <Alert type={message?.type} message={message?.content} />
         <div className="FormItem SubmitButtonWrapper">
           <button
             className="FormControl SubmitButton btn btn-lg btn-primary"
@@ -116,7 +155,12 @@ function App() {
           </button>
         </div>
       </div>
-      <a className="github-link" href="https://github.com/dev-drprasad/hsk00">
+      <a
+        className="github-link"
+        target="_blank"
+        href="https://github.com/dev-drprasad/hsk00"
+        rel="noopener noreferrer"
+      >
         <GitHubIcon />
       </a>
     </React.Fragment>

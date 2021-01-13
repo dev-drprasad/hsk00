@@ -3,6 +3,8 @@
    License: none (public domain)
 */
 
+@import "variables.scss";
+
 html,
 body,
 div,
@@ -116,7 +118,7 @@ body {
   background-color: var(--background-color);
   color: var(--color-text-primary);
   overflow: hidden;
-  font-size: 14px;
+  font-size: 3vw;
 }
 
 code {
@@ -131,7 +133,6 @@ main {
 }
 
 select {
-  height: 32px;
   -moz-appearance: none;
   -webkit-appearance: none;
   appearance: none; /**https://stackoverflow.com/a/38764639*/
