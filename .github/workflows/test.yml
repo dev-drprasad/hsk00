@@ -49,14 +49,16 @@ jobs:
         go mod download
         go get github.com/markbates/pkger/cmd/pkger
     - name: Pkger
-      run: pkger -include /assets -o ./cmd
+      run: |
+        pkger -include /assets -o ./cmd
+        pkger -include /assets
       env:
         GO111MODULE: on
     - name: Build CLI
-      run: go build -o hsk00 ./cmd/*
+      run: go build -o hsk00-cli ./cmd/*
       if: ${{ matrix.os != 'windows-latest' }}
     - name: Build Windows CLI
-      run: cd cmd && go build -o ..\hsk00.exe
+      run: cd cmd && go build -o ..\hsk00-cli.exe
       if: ${{ matrix.os == 'windows-latest' }}
       continue-on-error: true
     - name: Install Wails
@@ -64,9 +66,9 @@ jobs:
     - name: Setup Account
       run: mkdir -p ~/.wails && echo '{"email":"dev.drprasad@aim.com","name":"REDDY PRASAD"}' > ~/.wails/wails.json
     - name: Build GUI
-      run: cd gui && wails build -p
+      run: wails build -p
     - name: Make DMG
-      run: npx create-dmg ./gui/build/hsk00.app ./gui/build
+      run: npx create-dmg ./build/hsk00.app ./build
       continue-on-error: true
       if: ${{ matrix.os == 'macos-latest' }}
     - name: Upload OSX CLI
@@ -77,7 +79,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ needs.create_release.outputs.upload_url }}
-        asset_path: ./hsk00
+        asset_path: ./hsk00-cli
         asset_name: hsk00-osx-cli
         asset_content_type: application/octet-stream
     - name: Upload Linux CLI
@@ -88,7 +90,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ needs.create_release.outputs.upload_url }}
-        asset_path: ./hsk00
+        asset_path: ./hsk00-cli
         asset_name: hsk00-linux-cli
         asset_content_type: application/octet-stream
     - name: Upload Windows CLI
@@ -100,7 +102,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ needs.create_release.outputs.upload_url }}
-        asset_path: ./hsk00.exe
+        asset_path: ./hsk00-cli.exe
         asset_name: hsk00-windows-cli.exe
         asset_content_type: application/octet-stream
     - name: Upload OSX GUI
@@ -111,18 +113,18 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ needs.create_release.outputs.upload_url }}
-        asset_path: ./gui/build/hsk00 0.1.0.dmg
+        asset_path: ./build/hsk00 0.1.0.dmg
         asset_name: hsk00-osx.dmg
         asset_content_type: application/octet-stream
     - name: Upload Linux GUI
-      id: upload-linux-gui 
+      id: upload-linux-gui
       if: ${{ matrix.os == 'ubuntu-20.04' }}
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ needs.create_release.outputs.upload_url }}
-        asset_path: ./gui/build/hsk00
+        asset_path: ./build/hsk00
         asset_name: hsk00-linux-gui
         asset_content_type: application/octet-stream
     - name: Upload Windows GUI
@@ -133,17 +135,10 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ needs.create_release.outputs.upload_url }}
-        asset_path: ./gui/build/hsk00.exe
+        asset_path: ./build/hsk00.exe
         asset_name: hsk00-windows.exe
         asset_content_type: application/octet-stream
-    - uses: actions/upload-artifact@v2
-      with:
-        name: ${{ matrix.os }}
-        path: |
-          ./hsk00
-          ./hsk00.exe
-          ./hsk00*.dmg
-          ./gui/build/*
+
 
 
 # https://github.com/actions/create-release/issues/14#issuecomment-555379810

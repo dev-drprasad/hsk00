@@ -4,6 +4,7 @@ import (
 	"archive/zip"
 	"bufio"
 	"bytes"
+	"errors"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -57,10 +58,16 @@ func update(filePath string, gamePaths []string) error {
 }
 
 func Add(rootDir string, categoryID int, newGames []string, fontName string) error {
+	if rootDir == "" {
+		return errors.New("root path value is empty")
+	}
+	if _, err := os.Stat(rootDir); os.IsNotExist(err) {
+		return fmt.Errorf("root path '%s' not exists", rootDir)
+	}
 	gamesDirectoryName := fmt.Sprintf("Game%02d", categoryID)
 	gamesPath := path.Join(rootDir, gamesDirectoryName)
 	if _, err := os.Stat(gamesPath); os.IsNotExist(err) {
-		return fmt.Errorf("directory '%s' doesn't exist", gamesPath)
+		return fmt.Errorf("path '%s' doesn't exist", gamesPath)
 	}
 	hsk00Path := path.Join(gamesPath, "hsk00.asd")
 	menuList, err := getMenuList(hsk00Path)
