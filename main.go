@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"runtime"
 
 	"github.com/dev-drprasad/hsk00/pkg"
 	"github.com/leaanthony/mewn"
@@ -46,9 +47,16 @@ func main() {
 	js := mewn.String("./frontend/build/static/js/main.js")
 	css := mewn.String("./frontend/build/static/css/main.css")
 
+	windowWidth := 420
+	windowHeight := 520
+	if runtime.GOOS == "linux" {
+		windowWidth = 620
+		windowHeight = 720
+	}
+
 	app := wails.CreateApp(&wails.AppConfig{
-		Width:  420,
-		Height: 520,
+		Width:  windowWidth,
+		Height: windowHeight,
 		Title:  "hsk00",
 		JS:     js,
 		CSS:    css,

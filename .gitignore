@@ -10,7 +10,7 @@ bin/*
 vendor/
 qtbox
 oldgui/deploy
-gui/build
-build/
+build
 hsk00*
 info.plist
+build/*
