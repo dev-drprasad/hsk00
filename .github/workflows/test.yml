@@ -72,11 +72,15 @@ jobs:
       run: npx create-dmg ./build/hsk00.app ./build
       continue-on-error: true
       if: ${{ matrix.os == 'macos-latest' }}
+    - name: Load Release URL File from release job
+      uses: actions/download-artifact@v1
+      with:
+        name: release_url
     - name: Get Release File Name & Upload URL
       id: get_release_info
       run: |
         echo ::set-output name=file_name::${REPOSITORY_NAME##*/}-${TAG_REF_NAME##*/v} # RepositoryName-v1.0.0
-        value=`cat release_url.txt`
+        value=`cat release_url/release_url.txt`
         echo ::set-output name=upload_url::$value
       env:
         TAG_REF_NAME: ${{ github.ref }}
