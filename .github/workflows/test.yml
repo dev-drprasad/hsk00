@@ -56,10 +56,10 @@ jobs:
       env:
         GO111MODULE: on
     - name: Build CLI
-      run: cd cmd && go build -o ..\hsk00.exe 
+      run: go build -o hsk00 ./cmd/*
       if: ${{ matrix.os != 'windows-latest' }}
     - name: Build Windows CLI
-      run: go build -o .\hsk00 .\cmd\*
+      run: cd cmd && go build -o ..\hsk00.exe
       if: ${{ matrix.os == 'windows-latest' }}
       continue-on-error: true
     - name: Install Wails
