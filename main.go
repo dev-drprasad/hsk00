@@ -1,7 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"log"
+	"path/filepath"
 	"runtime"
 
 	"github.com/dev-drprasad/hsk00/pkg"
@@ -20,13 +22,17 @@ func (r *Runtime) WailsInit(wr *wails.Runtime) error {
 	return nil
 }
 
-func (r *Runtime) SelectGames() []string {
+func (r *Runtime) SelectGames() []pkg.GameItem {
 	files, err := zenity.SelectFileMutiple(zenity.Filename(""), zenity.FileFilters{{"NES ROMs", []string{"*.nes"}}})
 	if err != nil {
 		log.Println("err ", err)
 	}
-	log.Println("files", files)
-	return files
+	newGameList := []pkg.GameItem{}
+	for _, path := range files {
+		newGameList = append(newGameList, pkg.GameItem{SourcePath: path, Name: pkg.GameNameFromFilename(filepath.Base(path))})
+	}
+	log.Println("newGameList", newGameList)
+	return newGameList
 }
 
 func (r *Runtime) SelectRootDir() string {
@@ -40,6 +46,14 @@ func (r *Runtime) AddGames(rootDir string, categoryID int, newGamesIn []interfac
 	}
 
 	return pkg.Add(rootDir, categoryID, newGames, "")
+}
+
+func (r *Runtime) GetGameList(rootDir string, categoryID int) ([]pkg.GameItem, error) {
+	listMap, err := pkg.GetGameList(rootDir, categoryID)
+	if err != nil {
+		return nil, err
+	}
+	return listMap[fmt.Sprintf("Category %02d", categoryID)], nil
 }
 
 func main() {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.scss";
 import Alert from "./Alert";
 import GitHubIcon from "./GitHubIcon";
@@ -11,6 +11,8 @@ const initialState = {
   message: undefined,
 };
 
+const gameSorter = (a, b) => a.name.localeCompare(b.name);
+
 function App() {
   const [state, setState] = useState(initialState);
 
@@ -21,9 +23,13 @@ function App() {
   };
 
   const handleSelectGamesClick = (e) => {
-    window.backend.Runtime.SelectGames().then((selectedGames) => {
-      setState((s) => ({ ...s, newGames: selectedGames || [] }));
-    });
+    window.backend.Runtime.SelectGames()
+      .then((newGames) => {
+        console.log("newGames :>> ", newGames);
+        const newGameList = [...state.newGames, ...newGames].sort(gameSorter);
+        setState((s) => ({ ...s, newGames: newGameList }));
+      })
+      .catch(setError);
   };
 
   const handleRootDirChange = (e) => {
@@ -34,6 +40,16 @@ function App() {
   const handleCategoryChange = (e) => {
     e.persist();
     setState((s) => ({ ...s, categoryID: parseInt(e.target.value) }));
+  };
+
+  const setError = (msg) => {
+    setState((s) => ({
+      ...s,
+      message: {
+        type: "danger",
+        content: msg,
+      },
+    }));
   };
 
   const handleSubmit = () => {
@@ -70,19 +86,22 @@ function App() {
           },
         }));
       })
-      .catch((err) => {
-        console.log("err", err);
-        setState((s) => ({
-          ...s,
-          message: {
-            type: "danger",
-            content: err,
-          },
-        }));
-      });
+      .catch(setError);
   };
 
   const { rootDir, newGames, categoryID, errors, message } = state;
+
+  useEffect(() => {
+    if (rootDir && categoryID > -1) {
+      window.backend.Runtime.GetGameList(rootDir, categoryID)
+        .then((gameList) => {
+          console.log("gameList :>> ", gameList);
+          setState((s) => ({ ...s, newGames: gameList }));
+        })
+        .catch(setError);
+    }
+  }, [rootDir, categoryID]);
+
   return (
     <React.Fragment>
       <div className="App">
@@ -127,19 +146,21 @@ function App() {
         </div>
         <div className="FormItem">
           <div className="Label" htmlFor="rootDir">
-            Games to add :
+            Games :
           </div>
           <div className="ListBox">
             <ul role="listbox">
               {newGames.map((g) => (
-                <li key={g}>{g}</li>
+                <li key={g.name} className={!g.hsk ? "unsaved" : ""}>
+                  {g.name}
+                </li>
               ))}
             </ul>
             <button
               className="FormControl btn"
               onClick={handleSelectGamesClick}
             >
-              Select games
+              + Add
             </button>
           </div>
           <span className="FormError">{errors.rootDir}</span>
@@ -151,7 +172,7 @@ function App() {
             disabled={newGames.length === 0}
             onClick={handleSubmit}
           >
-            Add {newGames.length} games
+            Save Changes
           </button>
         </div>
       </div>

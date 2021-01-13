@@ -110,28 +110,17 @@ func generateMenuImage(gameNames []string, fontName string) ([]byte, error) {
 }
 
 func getMenuList(hsk00Path string) ([]string, error) {
-	hsk00files, err := Descramble(hsk00Path)
+	b, err := getHsk00lstContent(hsk00Path)
 	if err != nil {
 		return nil, err
 	}
 
 	menuList := []string{}
-
-	for _, fi := range hsk00files {
-		if EncodeFileName(fi.Name) == "Hsk00.lst" {
-			f, err := fi.Open()
-			if err != nil {
-				return nil, err
-			}
-			defer f.Close()
-
-			scanner := bufio.NewScanner(f)
-			for scanner.Scan() {
-				menuList = append(menuList, scanner.Text())
-			}
-			break
-		}
+	scanner := bufio.NewScanner(bytes.NewReader(b))
+	for scanner.Scan() {
+		menuList = append(menuList, scanner.Text())
 	}
+
 	return menuList, nil
 }
 

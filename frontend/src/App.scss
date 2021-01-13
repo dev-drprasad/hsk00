@@ -44,32 +44,46 @@
 .CategorySelect {
   width: 50%;
 }
+
 .ListBox {
   position: relative;
   border: 1px solid var(--color-border-secondary);
   border-radius: 6px;
+  > ul {
+    margin: 0;
+    overflow: auto;
+    height: 12rem;
+    > li {
+      list-style: none;
+      padding: 0 12px;
+      height: 2rem;
+      line-height: 2rem;
+
+      &.unsaved {
+        font-weight: 700;
+        color: var(--color-gh-blue);
+        position: relative;
+        &::before {
+          content: "* ";
+          position: absolute;
+          left: 0;
+        }
+      }
+    }
+  }
+
+  button {
+    position: absolute;
+    bottom: 6px;
+    right: 6px;
+  }
 }
 
-.ListBox > ul {
-  margin: 0;
-  padding: 12px;
-  overflow: auto;
-  height: 12rem;
-}
-.ListBox > ul > li {
-  list-style: none;
-  padding: 4px 0;
-}
-.ListBox button {
-  position: absolute;
-  bottom: 6px;
-  right: 6px;
-}
 .SubmitButtonWrapper {
   text-align: center;
 }
 .SubmitButton {
-  width: 200px;
+  width: 50vw;
 }
 .ErrorMessage {
   height: 2rem;
