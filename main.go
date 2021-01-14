@@ -73,8 +73,9 @@ func main() {
 	windowWidth := 420
 	windowHeight := 520
 	if runtime.GOOS == "linux" {
-		windowWidth = 620
-		windowHeight = 720
+		clientDecorShadow := 200
+		windowWidth += clientDecorShadow
+		windowHeight += clientDecorShadow
 	}
 
 	app := wails.CreateApp(&wails.AppConfig{
