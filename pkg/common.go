@@ -179,7 +179,7 @@ func ParseHsk00lstContent(content []byte) (GameItemList, error) {
 		lineSlice := strings.Split(line, ",")
 
 		if len(lineSlice) != 5 {
-			return nil, fmt.Errorf("expected items per line are 5, but got %d", len(line))
+			return nil, fmt.Errorf("expected items per line are 5, but got %d", len(lineSlice))
 		}
 
 		i := GameItem{

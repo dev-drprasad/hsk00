@@ -110,7 +110,7 @@ ul {
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Segoe UI emoji", "Roboto", "Oxygen", "Ubuntu", "Fira Sans",
     "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -128,6 +128,14 @@ main {
   -webkit-overflow-scrolling: touch;
   height: 100vh;
   overflow: auto;
+}
+
+select::-ms-expand {
+  visibility: hidden;
+}
+
+select::-ms-value {
+  background-color: inherit;
 }
 
 select {
