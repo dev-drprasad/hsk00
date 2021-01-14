@@ -3,6 +3,7 @@ import "./App.scss";
 import Alert from "./Alert";
 import GitHubIcon from "./GitHubIcon";
 import { ReactComponent as Spinner } from "./spinner.svg";
+import { useTranslation } from "react-i18next";
 const initialState = {
   rootDir: "",
   modified: false,
@@ -12,11 +13,13 @@ const initialState = {
   errors: { rootDir: "" },
   message: undefined,
   saving: false,
+  language: "en",
 };
 
 const gameSorter = (a, b) => a.name.localeCompare(b.name);
 
 function App() {
+  const { t, i18n } = useTranslation("translation");
   const [state, setState] = useState(initialState);
   const { rootDir, newGames, games, categoryID, errors, message, modified, saving } = state;
 
@@ -55,6 +58,7 @@ function App() {
   const setError = (msg) => {
     setState((s) => ({
       ...s,
+      saving: false,
       message: {
         type: "danger",
         content: msg,
@@ -101,7 +105,6 @@ function App() {
     console.log("rootDir, categoryID, newGames :>> ", rootDir, categoryID, newGames);
     window.backend.Runtime.AddGames(rootDir, categoryID, newGames)
       .then((res) => {
-        console.log("res", res);
         setState((s) => ({
           ...s,
           games: res,
@@ -110,7 +113,7 @@ function App() {
           saving: false,
           message: {
             type: "success",
-            content: `🎉  ${newGames.length} game(s) are added!  🎉`,
+            content: `🎉  ${newGames.length} ` + t("game(s) added successfully!") + `  🎉`,
           },
         }));
       })
@@ -118,65 +121,72 @@ function App() {
   };
 
   const allgames = [...games, ...newGames].sort(gameSorter);
-  console.log("allgames :>> ", allgames);
+
   useEffect(() => {
     if (rootDir && categoryID > -1) {
       refreshGameList();
     }
   }, [rootDir, categoryID, refreshGameList]);
 
+  const categoryOptions = [
+    t("Action Games"),
+    t("Shoot Games"),
+    t("Sport Games"),
+    t("Fight Games"),
+    t("Racing Games"),
+    t("Puzzle Games"),
+  ].map((c, i) => ({ label: `${i}. ${c}`, value: i }));
+
   return (
     <React.Fragment>
       <div className="App">
         <div className="FormItem">
           <div className="label" htmlFor="rootDir">
-            Choose root path :
+            {t("Choose root directory")} :
           </div>
           <div className="group RootDirGroup">
             <input
               className="FormControl Input"
               name="rootDir"
-              placeholder="Choose root path (SD Card)"
+              placeholder={`${t("Choose root directory")} (SD Card)`}
               onChange={handleRootDirChange}
               value={rootDir}
             />
             <button className="FormControl btn" onClick={handleSelectRootClick}>
-              Choose
+              {t("Choose")}
             </button>
           </div>
           <span className="FormError">{errors.rootDir}</span>
         </div>
         <div className="FormItem">
           <div className="label" htmlFor="rootDir">
-            Select game category :
+            {t("Select game category")} :
           </div>
           <div>
             <select className="FormControl Select CategorySelect" name="categoryID" onChange={handleCategoryChange}>
               <option value={-1}>----------</option>
-              <option value={0}>0. Action Games</option>
-              <option value={1}>1. Shoot Games</option>
-              <option value={2}>2. Sport Games</option>
-              <option value={3}>3. Fight Games</option>
-              <option value={4}>4. Racing Games</option>
-              <option value={5}>5. Puzzle Games</option>
+              {categoryOptions.map(({ label, value }) => (
+                <option value={value}>{label}</option>
+              ))}
             </select>
           </div>
           <span className="FormError">{errors.rootDir}</span>
         </div>
         <div className="FormItem games-list">
           <label className="label" htmlFor="rootDir">
-            Games {games.length ? `(${games.length}` + (newGames.length ? ` + ${newGames.length} unsaved)` : ")") : ""}:
+            {t("Games")}{" "}
+            {games.length ? `(${games.length}` + (newGames.length ? ` + ${newGames.length} ${t("unsaved")})` : ")") : ""}:
           </label>
           <div className="list-actions">
             <button className="FormControl btn btn-sm" onClick={refreshGameList} disabled={!rootDir || categoryID === -1}>
-              Reset
+              {t("Reset")}
             </button>
             <button
               className="FormControl btn btn-sm btn-primary"
               onClick={handleSelectGamesClick}
               disabled={!rootDir || categoryID === -1}
             >
-              + Add
+              + {t("Add")}
             </button>
           </div>
           <div className="ListBox">
@@ -192,8 +202,8 @@ function App() {
         </div>
         <Alert type={message?.type} message={message?.content} />
         <div className="FormItem SubmitButtonWrapper">
-          <button className="FormControl SubmitButton btn btn-primary" disabled={!modified} onClick={handleSubmit}>
-            Save Changes
+          <button className="FormControl SubmitButton btn btn-primary" disabled={!modified || saving} onClick={handleSubmit}>
+            {t("Save Changes")}
             {saving && <Spinner className="spinner" />}
           </button>
         </div>
@@ -201,6 +211,10 @@ function App() {
       <span onClick={handleGHClick} className="github-link">
         <GitHubIcon />
       </span>
+      <select className="language-select FormControl form-control-sm" onChange={(e) => i18n.changeLanguage(e.target.value)}>
+        <option value="en">English</option>
+        <option value="ru">русский</option>
+      </select>
     </React.Fragment>
   );
 }

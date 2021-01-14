@@ -3,13 +3,13 @@
 .github-link {
   position: absolute;
   bottom: 0.5rem;
-  right: 0.5rem;
+  right: 1rem;
   font-size: 1.2rem;
   color: #cccccc;
 }
 
 .App {
-  padding: 1rem;
+  padding: 0.5rem 1rem;
   height: 100%;
   position: relative;
 }
@@ -43,12 +43,29 @@
   line-height: 1em;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
-}
-.FormControl:focus {
-  border-color: var(--color-state-focus-border);
+  color: var(--color-text-primary);
+  vertical-align: middle;
+  background-color: var(--color-input-bg);
+  border: 0.1rem solid var(--color-input-border);
+  border-radius: 0.5em;
   outline: none;
-  box-shadow: var(--color-state-focus-shadow);
+  box-shadow: var(--color-shadow-inset);
+
+  &:focus {
+    border-color: var(--color-state-focus-border);
+    outline: none;
+    box-shadow: var(--color-state-focus-shadow);
+  }
+
+  &.form-control-sm {
+    height: 1.5rem;
+    font-size: 0.7rem;
+    line-height: 0.7rem;
+    border-radius: 0.4em;
+    padding: 0 0.5em;
+  }
 }
+
 .CategorySelect {
   width: 50%;
 }
@@ -76,7 +93,7 @@
   > ul {
     margin: 0;
     overflow: auto;
-    height: 12rem;
+    height: 10rem;
     > li {
       list-style: none;
       padding: 0 1rem;
@@ -153,7 +170,7 @@
   height: 1.5rem;
   font-size: 0.7rem;
   line-height: 0.7rem;
-  border-radius: 0.5em;
+  border-radius: 0.4em;
 }
 .btn-primary {
   color: var(--color-btn-primary-text);
@@ -188,4 +205,13 @@
   border: 0.1rem solid var(--color-input-border);
   border-radius: 0.5em;
   outline: none;
+}
+
+.language-select {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 1rem;
+
+  width: 20%;
+  color: #cccccc;
 }
