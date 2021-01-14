@@ -34,6 +34,12 @@ func init() {
 	addCommand.MarkFlagRequired("root")
 	addCommand.Flags().String("font", "Gotham-Medium", "font name (Gotham-Medium | Video-Phreak) of menu text, default is Gotham-Medium")
 	rootCmd.AddCommand(addCommand)
+
+	gameCommand.PersistentFlags().String("root", "", "root path of sd card")
+	gameCommand.MarkPersistentFlagRequired("root")
+	gameListCommand.Flags().Int("category", 0, "number of category starting from 0, left -> right")
+	gameCommand.AddCommand(gameListCommand)
+	rootCmd.AddCommand(gameCommand)
 }
 
 func main() {

@@ -1,12 +1,15 @@
 package main
 
 import (
+	"fmt"
 	"log"
+	"path/filepath"
 	"runtime"
 
 	"github.com/dev-drprasad/hsk00/pkg"
 	"github.com/leaanthony/mewn"
 	"github.com/ncruces/zenity"
+	browser "github.com/pkg/browser"
 	"github.com/wailsapp/wails"
 )
 
@@ -20,26 +23,45 @@ func (r *Runtime) WailsInit(wr *wails.Runtime) error {
 	return nil
 }
 
-func (r *Runtime) SelectGames() []string {
+func (r *Runtime) SelectGames() []pkg.GameItem {
 	files, err := zenity.SelectFileMutiple(zenity.Filename(""), zenity.FileFilters{{"NES ROMs", []string{"*.nes"}}})
 	if err != nil {
 		log.Println("err ", err)
 	}
-	log.Println("files", files)
-	return files
+	newGameList := []pkg.GameItem{}
+	for _, path := range files {
+		newGameList = append(newGameList, pkg.GameItem{SourcePath: path, Name: pkg.GameNameFromFilename(filepath.Base(path))})
+	}
+	return newGameList
 }
 
 func (r *Runtime) SelectRootDir() string {
 	file, _ := zenity.SelectFile(zenity.Filename(""), zenity.Directory())
 	return file
 }
-func (r *Runtime) AddGames(rootDir string, categoryID int, newGamesIn []interface{}) error {
-	var newGames []string
-	for _, g := range newGamesIn {
-		newGames = append(newGames, g.(string))
+func (r *Runtime) AddGames(rootDir string, categoryID int, newGamesIn []interface{}) ([]*pkg.GameItem, error) {
+	var newGames []*pkg.GameItem
+	for _, gIn := range newGamesIn {
+		gMap := gIn.(map[string]interface{})
+		g := pkg.GameItem{
+			SourcePath: gMap["srcPath"].(string),
+			Name:       gMap["name"].(string),
+		}
+		newGames = append(newGames, &g)
 	}
-
 	return pkg.Add(rootDir, categoryID, newGames, "")
+}
+
+func (r *Runtime) GetGameList(rootDir string, categoryID int) ([]*pkg.GameItem, error) {
+	listMap, err := pkg.GetGameList(rootDir, categoryID)
+	if err != nil {
+		return nil, err
+	}
+	return listMap[fmt.Sprintf("Category %02d", categoryID)], nil
+}
+
+func (r *Runtime) OpenURL(URL string) error {
+	return browser.OpenURL(URL)
 }
 
 func main() {
@@ -50,8 +72,9 @@ func main() {
 	windowWidth := 420
 	windowHeight := 520
 	if runtime.GOOS == "linux" {
-		windowWidth = 620
-		windowHeight = 720
+		clientDecorShadow := 200
+		windowWidth += clientDecorShadow
+		windowHeight += clientDecorShadow
 	}
 
 	app := wails.CreateApp(&wails.AppConfig{

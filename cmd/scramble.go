@@ -15,6 +15,6 @@ var scrambleCommand = &cobra.Command{
 			return err
 		}
 
-		return pkg.GenerateScrambledZip(args, out)
+		return pkg.GenerateScrambledZip(pkg.ZipFilePathsFromPaths(args), out)
 	},
 }

@@ -64,3 +64,10 @@ jobs:
         cwd: ./build
         files: hsk00
         outPath: ./build/hsk00.tar.gz
+    - uses: actions/upload-artifact@v2
+      with:
+        name: ${{ matrix.os }}
+        path: |
+          ./build/hsk00.tar.gz
+          ./build/hsk00.exe
+          ./build/hsk00 0.1.0.dmg

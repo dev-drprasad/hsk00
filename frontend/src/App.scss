@@ -2,14 +2,16 @@
 
 .github-link {
   position: absolute;
-  bottom: 12px;
-  right: 12px;
+  bottom: 0.5rem;
+  right: 1rem;
   font-size: 1.2rem;
-  color: white;
+  color: #cccccc;
 }
 
 .App {
-  padding: 12px;
+  padding: 0.5rem 1rem;
+  height: 100%;
+  position: relative;
 }
 .group > :first-child {
   border-top-right-radius: 0;
@@ -27,49 +29,103 @@
   flex-grow: 1;
 }
 .FormItem {
-  margin-bottom: 16px;
-}
-.FormItem .Label {
-  margin-bottom: 6px;
-  font-weight: 600;
+  margin-bottom: 1rem;
+  position: relative;
+
+  .label {
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    display: inline-block;
+  }
 }
 .FormControl {
   height: 2rem;
-}
-.FormControl:focus {
-  border-color: var(--color-state-focus-border);
+  line-height: 1em;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  color: var(--color-text-primary);
+  vertical-align: middle;
+  background-color: var(--color-input-bg);
+  border: 0.1rem solid var(--color-input-border);
+  border-radius: 0.5em;
   outline: none;
-  box-shadow: var(--color-state-focus-shadow);
+  box-shadow: var(--color-shadow-inset);
+
+  &:focus {
+    border-color: var(--color-state-focus-border);
+    outline: none;
+    box-shadow: var(--color-state-focus-shadow);
+  }
+
+  &.form-control-sm {
+    height: 1.5rem;
+    font-size: 0.7rem;
+    line-height: 0.7rem;
+    border-radius: 0.4em;
+    padding: 0 0.5em;
+  }
 }
+
 .CategorySelect {
   width: 50%;
 }
-.ListBox {
-  position: relative;
-  border: 1px solid var(--color-border-secondary);
-  border-radius: 6px;
+
+.games-list {
+  .label {
+    margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
+  }
 }
 
-.ListBox > ul {
-  margin: 0;
-  padding: 12px;
-  overflow: auto;
-  height: 12rem;
-}
-.ListBox > ul > li {
-  list-style: none;
-  padding: 4px 0;
-}
-.ListBox button {
+.list-actions {
   position: absolute;
-  bottom: 6px;
-  right: 6px;
+  right: 0;
+  top: 0;
+  > * {
+    margin-left: 0.5rem;
+  }
 }
+
+.ListBox {
+  position: relative;
+  border: 0.1rem solid var(--color-border-secondary);
+  border-radius: 0.5em;
+  > ul {
+    margin: 0;
+    overflow: auto;
+    height: 10rem;
+    > li {
+      list-style: none;
+      padding: 0 1rem;
+      height: 2rem;
+      line-height: 2rem;
+
+      &.unsaved {
+        font-weight: 700;
+        color: var(--color-gh-blue);
+        position: relative;
+        &::before {
+          content: "* ";
+          position: absolute;
+          left: 0;
+          padding: 0.2rem;
+        }
+      }
+    }
+  }
+
+  button {
+    position: absolute;
+    bottom: 0.5rem;
+    right: 0.5rem;
+  }
+}
+
 .SubmitButtonWrapper {
   text-align: center;
 }
 .SubmitButton {
-  width: 200px;
+  width: 50vw;
 }
 .ErrorMessage {
   height: 2rem;
@@ -79,13 +135,26 @@
 .btn {
   color: var(--color-btn-text);
   background-color: var(--color-btn-bg);
-  border: 1px solid var(--color-btn-border);
+  border: 0.1rem solid var(--color-btn-border);
   box-shadow: var(--color-btn-shadow), var(--color-btn-inset-shadow);
   transition: 0.2s cubic-bezier(0.3, 0, 0.5, 1);
   transition-property: color, background-color, border-color;
-  border-radius: 6px;
+  border-radius: 0.5em;
   font-weight: 600;
-  padding: 6px 12px;
+  position: relative;
+
+  &:disabled {
+    color: var(--color-text-disabled);
+    cursor: not-allowed;
+    border-color: transparent;
+  }
+
+  > .spinner {
+    font-size: 1.3em;
+    position: absolute;
+    right: 0.5rem;
+    top: 0.4rem;
+  }
 }
 .btn:hover {
   background-color: var(--color-btn-hover-bg);
@@ -94,16 +163,21 @@
 }
 .btn-lg {
   height: 2.6rem;
-  font-size: 1.2em;
+  font-size: 1rem;
+}
+
+.btn-sm {
+  height: 1.5rem;
+  font-size: 0.7rem;
+  line-height: 0.7rem;
+  border-radius: 0.4em;
 }
 .btn-primary {
   color: var(--color-btn-primary-text);
   background-color: #238636;
   border-color: #2ea043;
-  border: 1px solid #2ea043;
-  border-radius: 6px;
-  box-shadow: var(--color-btn-primary-shadow),
-    var(--color-btn-primary-inset-shadow);
+  border: 0.1rem solid #2ea043;
+  box-shadow: var(--color-btn-primary-shadow), var(--color-btn-primary-inset-shadow);
 }
 .btn-primary:hover {
   background-color: var(--color-btn-primary-hover-bg);
@@ -116,21 +190,28 @@
   border-color: var(--color-btn-primary-disabled-border);
 }
 .Input {
-  padding: 6px 12px;
   color: var(--color-text-primary);
   vertical-align: middle;
   background-color: var(--color-input-bg);
-  border: 1px solid var(--color-input-border);
-  border-radius: 6px;
+  border: 0.1rem solid var(--color-input-border);
+  border-radius: 0.5em;
   outline: none;
   box-shadow: var(--color-shadow-inset);
 }
 .Select {
-  padding: 6px 12px;
   color: var(--color-text-primary);
   vertical-align: middle;
   background-color: var(--color-input-bg);
-  border: 1px solid var(--color-input-border);
-  border-radius: 6px;
+  border: 0.1rem solid var(--color-input-border);
+  border-radius: 0.5em;
   outline: none;
+}
+
+.language-select {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 1rem;
+
+  width: 20%;
+  color: #cccccc;
 }

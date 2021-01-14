@@ -6,10 +6,12 @@
   "dependencies": {
     "@wailsapp/runtime": "^1.0.10",
     "core-js": "^3.6.4",
+    "i18next": "^19.8.4",
     "node-sass": "^4.14.1",
     "react": "^16.13.1",
     "react-app-polyfill": "^2.0.0",
     "react-dom": "^16.13.1",
+    "react-i18next": "^11.8.5",
     "react-modal": "3.11.2",
     "wails-react-scripts": "3.0.1-2"
   },
@@ -21,6 +23,9 @@
   },
   "eslintConfig": {
     "extends": "react-app"
+  },
+  "prettier": {
+    "printWidth": 128
   },
   "browserslist": {
     "production": [

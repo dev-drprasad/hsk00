@@ -9,6 +9,7 @@ require (
 	github.com/leaanthony/mewn v0.10.7
 	github.com/markbates/pkger v0.17.1
 	github.com/ncruces/zenity v0.5.2
+	github.com/pkg/browser v0.0.0-20180916011732-0a3d74bf9ce4
 	github.com/spf13/cobra v1.1.1
 	github.com/wailsapp/wails v1.11.0
 )

@@ -4,12 +4,12 @@ import (
 	"archive/zip"
 	"bufio"
 	"bytes"
+	"encoding/hex"
 	"fmt"
 	"image"
 	"image/jpeg"
 	_ "image/jpeg"
 	"io/ioutil"
-	"strings"
 
 	"github.com/fogleman/gg"
 	"github.com/golang/freetype/truetype"
@@ -110,48 +110,50 @@ func generateMenuImage(gameNames []string, fontName string) ([]byte, error) {
 }
 
 func getMenuList(hsk00Path string) ([]string, error) {
-	hsk00files, err := Descramble(hsk00Path)
+	b, err := getHsk00lstContent(hsk00Path)
 	if err != nil {
 		return nil, err
 	}
 
 	menuList := []string{}
-
-	for _, fi := range hsk00files {
-		if EncodeFileName(fi.Name) == "Hsk00.lst" {
-			f, err := fi.Open()
-			if err != nil {
-				return nil, err
-			}
-			defer f.Close()
-
-			scanner := bufio.NewScanner(f)
-			for scanner.Scan() {
-				menuList = append(menuList, scanner.Text())
-			}
-			break
-		}
+	scanner := bufio.NewScanner(bytes.NewReader(b))
+	for scanner.Scan() {
+		menuList = append(menuList, scanner.Text())
 	}
+
 	return menuList, nil
 }
 
-func makeHsk00(menuList []string) ([]byte, error) {
+func makeHsk00(menuList GameItemList) ([]byte, error) {
 	bb := bytes.NewBuffer(nil)
 	outz := bufio.NewWriter(bb)
 	zw := zip.NewWriter(outz)
+	defer zw.Close()
 
 	w1, err := zw.Create(EncodeFileName("Hsk00.lst"))
 	if err != nil {
 		return nil, err
 	}
-	w1.Write([]byte(strings.Join(menuList, "\n")))
+
+	for _, g := range menuList {
+		if g.Hsk == "" || g.Filename == "" || g.BGFilename == "" {
+			return nil, fmt.Errorf("one of them is empty -> hsk: '%s', fn: '%s', bg fn: '%s'", g.Hsk, g.Filename, g.BGFilename)
+		}
+		w1.Write([]byte(fmt.Sprintf("%s,%s,0,1,%s\n", g.Hsk, g.Filename, g.BGFilename)))
+	}
 
 	w2, err := zw.Create(EncodeFileName("GameNumber.bin"))
 	if err != nil {
 		return nil, err
 	}
 
-	w2.Write([]byte{byte(len(menuList)), 0x00, 0x00, 0x00})
+	h := fmt.Sprintf("%08x", len(menuList))
+	var hexFlipped string
+	for i := len(h); i >= 2; i -= 2 {
+		hexFlipped += h[i-2 : i]
+	}
+	b, _ := hex.DecodeString(hexFlipped)
+	w2.Write(b)
 	zw.Close()
 	return bb.Bytes(), nil
 }

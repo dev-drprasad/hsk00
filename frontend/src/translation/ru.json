@@ -1,0 +1,20 @@
+{
+  "Choose": "выберите",
+  "Choose root directory": "Выберите корневой каталог",
+  "Select game category": "Выберите категорию игры",
+  "Games": "Игры",
+  "Add": "Добавить",
+  "Reset": "Сброс",
+  "Save Changes": "Сохранить изменения",
+  "directory": "каталог",
+  "not exists": "не существует",
+  "game(s) added successfully!": "игры успешно добавлены!",
+  "failed": "не удалось",
+  "Action Games": "Экшн игры",
+  "Shoot Games": "Стрелять игры",
+  "Sport Games": "Спортивные игры",
+  "Fight Games": "Драки",
+  "Racing Games": "Гоночные игры",
+  "Puzzle Games": "Головоломки",
+  "unsaved": "неспасенный"
+}
