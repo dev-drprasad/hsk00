@@ -4,6 +4,7 @@ import (
 	"archive/zip"
 	"bufio"
 	"bytes"
+	"encoding/hex"
 	"fmt"
 	"image"
 	"image/jpeg"
@@ -146,7 +147,13 @@ func makeHsk00(menuList GameItemList) ([]byte, error) {
 		return nil, err
 	}
 
-	w2.Write([]byte{byte(len(menuList)), 0x00, 0x00, 0x00})
+	h := fmt.Sprintf("%08x", len(menuList))
+	var hexFlipped string
+	for i := len(h); i >= 2; i -= 2 {
+		hexFlipped += h[i-2 : i]
+	}
+	b, _ := hex.DecodeString(hexFlipped)
+	w2.Write(b)
 	zw.Close()
 	return bb.Bytes(), nil
 }
