@@ -141,7 +141,7 @@ func (l GameItemList) Len() int {
 	return len(l)
 }
 func (l GameItemList) Less(i, j int) bool {
-	return l[i].Name < l[j].Name
+	return strings.ToLower(l[i].Name) < strings.ToLower(l[j].Name)
 }
 func (l GameItemList) Swap(i, j int) {
 	l[i], l[j] = l[j], l[i]
