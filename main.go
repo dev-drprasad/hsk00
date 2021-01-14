@@ -9,6 +9,7 @@ import (
 	"github.com/dev-drprasad/hsk00/pkg"
 	"github.com/leaanthony/mewn"
 	"github.com/ncruces/zenity"
+	browser "github.com/pkg/browser"
 	"github.com/wailsapp/wails"
 )
 
@@ -31,7 +32,6 @@ func (r *Runtime) SelectGames() []pkg.GameItem {
 	for _, path := range files {
 		newGameList = append(newGameList, pkg.GameItem{SourcePath: path, Name: pkg.GameNameFromFilename(filepath.Base(path))})
 	}
-	log.Println("newGameList", newGameList)
 	return newGameList
 }
 
@@ -59,6 +59,10 @@ func (r *Runtime) GetGameList(rootDir string, categoryID int) ([]*pkg.GameItem, 
 		return nil, err
 	}
 	return listMap[fmt.Sprintf("Category %02d", categoryID)], nil
+}
+
+func (r *Runtime) OpenURL(URL string) error {
+	return browser.OpenURL(URL)
 }
 
 func main() {

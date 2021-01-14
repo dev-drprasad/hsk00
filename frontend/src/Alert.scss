@@ -1,23 +1,24 @@
 @import "variables.scss";
 .alert {
   height: 2rem;
-  line-height: 2rem;
-  padding: 0 12px;
-  font-weight: 500;
+  line-height: 1.8rem; // line-height mis behaving
+  padding: 0 0.5rem;
+  font-weight: bold;
   text-align: center;
-  border-radius: 6px;
-  margin-bottom: 16px;
+  border-radius: 0.5em;
+  margin-bottom: 1rem;
   white-space: nowrap;
   overflow-x: auto;
+  overflow: hidden;
 }
 .alert-success {
   color: var(--color-pr-state-merged-text);
   background-color: var(--color-pr-state-merged-bg);
-  border: 1px solid var(--color-pr-state-merged-border);
+  border: 0.1rem solid var(--color-pr-state-merged-border);
 }
 
 .alert-danger {
   color: var(--color-danger-text);
   background-color: var(--color-danger-bg);
-  border: 1px solid var(--color-danger-border);
+  border: 0.1rem solid var(--color-danger-border);
 }

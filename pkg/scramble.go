@@ -8,7 +8,7 @@ import (
 	"io/ioutil"
 )
 
-func GenerateScrambledZip(infiles []string, outFilePath string) error {
+func GenerateScrambledZip(infiles []zipFilePath, outFilePath string) error {
 	bb := bytes.NewBuffer(nil)
 	outz := bufio.NewWriter(bb)
 	zw := zip.NewWriter(outz)

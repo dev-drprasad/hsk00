@@ -11,13 +11,12 @@ import (
 	"log"
 	"os"
 	"path"
-	"path/filepath"
 	"sort"
 
 	"github.com/markbates/pkger"
 )
 
-func update(filePath string, gamePaths []string) error {
+func update(filePath string, gamePaths []zipFilePath) error {
 	zipFileInfos, err := Descramble(filePath)
 	if err != nil {
 		return fmt.Errorf("failed to decompress file %s: %s", filePath, err)
@@ -97,9 +96,11 @@ func Add(rootDir string, categoryID int, newGames []*GameItem, fontName string) 
 			startIndex = 0
 		}
 		batch := newGames[startIndex:y]
-		var batchFilePaths []string
-		for _, g := range batch {
-			batchFilePaths = append(batchFilePaths, g.SourcePath)
+		var batchFilePaths []zipFilePath
+		for _, g := range newGames[startIndex:y] {
+			filename := sanitizeFilename(g.SourcePath)
+			g.Filename = filename
+			batchFilePaths = append(batchFilePaths, zipFilePath{filename: filename, srcPath: g.SourcePath})
 		}
 
 		hskID, err := gameList.NextHskID()
@@ -151,11 +152,8 @@ func Add(rootDir string, categoryID int, newGames []*GameItem, fontName string) 
 		for i, gameItem := range gameListInPage {
 			gameItem.BGFilename = BGFilename
 			gameItem.ID = start + i + 1
-			if gameItem.Filename == "" && gameItem.SourcePath == "" {
-				return nil, fmt.Errorf("neither filename nor src path present")
-			}
 			if gameItem.Filename == "" {
-				gameItem.Filename = filepath.Base(gameItem.SourcePath)
+				return nil, fmt.Errorf("filename not present")
 			}
 			menuItemTexts = append(menuItemTexts, fmt.Sprintf("%02d. %s", gameItem.ID, gameItem.Name))
 		}

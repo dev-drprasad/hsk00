@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import "./App.scss";
 import Alert from "./Alert";
 import GitHubIcon from "./GitHubIcon";
-
+import { ReactComponent as Spinner } from "./spinner.svg";
 const initialState = {
   rootDir: "",
   modified: false,
@@ -11,13 +11,14 @@ const initialState = {
   categoryID: -1,
   errors: { rootDir: "" },
   message: undefined,
+  saving: false,
 };
 
 const gameSorter = (a, b) => a.name.localeCompare(b.name);
 
 function App() {
   const [state, setState] = useState(initialState);
-  const { rootDir, newGames, games, categoryID, errors, message, modified } = state;
+  const { rootDir, newGames, games, categoryID, errors, message, modified, saving } = state;
 
   const handleSelectRootClick = () => {
     window.backend.Runtime.SelectRootDir().then((selectedDir) => {
@@ -27,9 +28,16 @@ function App() {
 
   const handleSelectGamesClick = (e) => {
     window.backend.Runtime.SelectGames()
-      .then((newGames) => {
-        console.log("newGames :>> ", newGames);
-        setState((s) => ({ ...s, modified: true, newGames: newGames }));
+      .then((selected) => {
+        console.log("selected :>> ", selected);
+        const temp = [...newGames, ...selected];
+        let seen = {};
+        const newGamesSet = [];
+        temp.forEach((g) => {
+          if (!seen[g.srcPath]) newGamesSet.push((seen[g.srcPath] = g));
+        });
+        seen = undefined;
+        setState((s) => ({ ...s, modified: true, newGames: newGamesSet }));
       })
       .catch(setError);
   };
@@ -69,6 +77,10 @@ function App() {
       .catch(setError);
   }, [rootDir, categoryID]);
 
+  const handleGHClick = () => {
+    window.backend.Runtime.OpenURL("https://github.com/dev-drprasad/hsk00/");
+  };
+
   const handleSubmit = () => {
     const errors = {};
     if (!rootDir) {
@@ -84,7 +96,7 @@ function App() {
       setState((s) => ({ ...s, errors: errors }));
       return;
     } else {
-      setState((s) => ({ ...s, errors: {} }));
+      setState((s) => ({ ...s, saving: true, errors: {} }));
     }
     console.log("rootDir, categoryID, newGames :>> ", rootDir, categoryID, newGames);
     window.backend.Runtime.AddGames(rootDir, categoryID, newGames)
@@ -95,9 +107,10 @@ function App() {
           games: res,
           newGames: [],
           modified: false,
+          saving: false,
           message: {
             type: "success",
-            content: `🎉 ${newGames.length} games are added!`,
+            content: `🎉  ${newGames.length} game(s) are added!  🎉`,
           },
         }));
       })
@@ -181,12 +194,13 @@ function App() {
         <div className="FormItem SubmitButtonWrapper">
           <button className="FormControl SubmitButton btn btn-primary" disabled={!modified} onClick={handleSubmit}>
             Save Changes
+            {saving && <Spinner className="spinner" />}
           </button>
         </div>
       </div>
-      <a className="github-link" target="_blank" href="https://github.com/dev-drprasad/hsk00" rel="noopener noreferrer">
+      <span onClick={handleGHClick} className="github-link">
         <GitHubIcon />
-      </a>
+      </span>
     </React.Fragment>
   );
 }

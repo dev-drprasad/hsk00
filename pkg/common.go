@@ -9,6 +9,7 @@ import (
 	"io"
 	"io/ioutil"
 	"os"
+	"path/filepath"
 	"regexp"
 	"strconv"
 	"strings"
@@ -68,9 +69,26 @@ func CompressReaderAndWrite(zw *zip.Writer, r io.ReadCloser, fname string) error
 	return nil
 }
 
-func CompressFilesAndWrite(zw *zip.Writer, filePaths []string) error {
-	for _, fname := range filePaths {
-		f, err := os.Open(fname)
+type zipFilePath struct {
+	filename string
+	srcPath  string
+}
+
+func sanitizeFilename(path string) string {
+	return strings.ReplaceAll(filepath.Base(path), ",", "_")
+}
+
+func ZipFilePathsFromPaths(paths []string) []zipFilePath {
+	var zipfilepaths []zipFilePath
+	for _, path := range paths {
+		zipfilepaths = append(zipfilepaths, zipFilePath{filename: sanitizeFilename(path), srcPath: path})
+	}
+	return zipfilepaths
+}
+
+func CompressFilesAndWrite(zw *zip.Writer, filePaths []zipFilePath) error {
+	for _, fp := range filePaths {
+		f, err := os.Open(fp.srcPath)
 		if err != nil {
 			return err
 		}
@@ -81,10 +99,10 @@ func CompressFilesAndWrite(zw *zip.Writer, filePaths []string) error {
 			return err
 		}
 		if fi.IsDir() {
-			return fmt.Errorf("%s is directory", fname)
+			return fmt.Errorf("%s is directory", fp.srcPath)
 		}
 
-		if err := CompressReaderAndWrite(zw, f, fi.Name()); err != nil {
+		if err := CompressReaderAndWrite(zw, f, fp.filename); err != nil {
 			return err
 		}
 	}
