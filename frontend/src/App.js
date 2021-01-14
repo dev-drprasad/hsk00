@@ -166,7 +166,9 @@ function App() {
             <select className="FormControl Select CategorySelect" name="categoryID" onChange={handleCategoryChange}>
               <option value={-1}>----------</option>
               {categoryOptions.map(({ label, value }) => (
-                <option value={value}>{label}</option>
+                <option key={label} value={value}>
+                  {label}
+                </option>
               ))}
             </select>
           </div>
