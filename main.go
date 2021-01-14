@@ -49,7 +49,6 @@ func (r *Runtime) AddGames(rootDir string, categoryID int, newGamesIn []interfac
 		}
 		newGames = append(newGames, &g)
 	}
-	pkg.Debug = true
 	return pkg.Add(rootDir, categoryID, newGames, "")
 }
 
