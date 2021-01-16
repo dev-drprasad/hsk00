@@ -17,15 +17,30 @@ There is no install step. You just download and run.
 - [Mac OS X GUI](https://github.com/dev-drprasad/hsk00/releases/download/latest/hsk00-osx.dmg)
 - [Windows GUI](https://github.com/dev-drprasad/hsk00/releases/download/latest/hsk00-windows.exe)
 - [Linux GUI](https://github.com/dev-drprasad/hsk00/releases/download/latest/hsk00-linux-gui.tar.gz) (Should work with all popular distros)
+
+### Can't launch ?
+
+**Windows :**
+
+If you're seeing "Microsoft Defender SmartScreen prevented an unrecognized app from starting", then click on "More Info" and then "Run anyway"
+
+**OS X :**
+
+if you're seeing "“hsk00” cannot be opened because the developer cannot be verified." message, then go to "System Preferences" -> "Security & Privacy", you see "hsk00 was blocked .....", click on "Open Anyway"
+
+Feel free to create an [issue](https://github.com/dev-drprasad/hsk00/issues/new) if facing any issue other than the one specified above
+
+<br />
+
+## CLI
+
+**Download Links**
+
 - [Mac OS X CLI](https://github.com/dev-drprasad/hsk00/releases/download/latest/hsk00-osx-cli)
 - [Linux CLI](https://github.com/dev-drprasad/hsk00/releases/download/latest/hsk00-linux-cli)
 - [Windows CLI](https://github.com/dev-drprasad/hsk00/releases/download/latest/hsk00-windows-cli.exe)
 
-For both CLI binaries, you need to give executable permission by running command `chmod +x <binary-filename>`.
-
-<br />
-
-## CLI API
+For Linux and OS X binaries, you need to give executable permission by running command `chmod +x <filename>`.
 
 <br />
 
