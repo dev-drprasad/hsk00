@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 
+	"github.com/dev-drprasad/hsk00/pkg"
 	"github.com/spf13/cobra"
 )
 
@@ -13,7 +14,7 @@ var imageGetCommand = &cobra.Command{
 		pkg.Debug = debug
 
 		for _, containerFilePath := range args {
-			imageBytes, err := pkg.GetImage(containerFilePath)
+			_, err := pkg.GetImage(containerFilePath)
 			if err != nil {
 				return fmt.Errorf("failed to get game list: %s", err)
 			}
