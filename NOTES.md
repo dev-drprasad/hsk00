@@ -5,3 +5,4 @@
 - ncs files "Y2 HD Plus" are just like asd files. `descramble` command can extract game from `.ncs` file
 - Menu.logXX are also images. `Menu.log07` to `Menu.log25` contains mushroom selector in menu
 - `.logXX`, `.binXX` are interchangeble
+- XOR of `c8` and value at offset: `04` (.bin, logXX) will give image starting first two bytes

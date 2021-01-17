@@ -80,3 +80,14 @@ G02-02: FFD9 at 2279 (8825) xor at (1425)
 G04-01: FFD9 at 22B8 (8888)
 G04-02: FFD9 at 22A6 (8870)
 G04-03: FFD9 at 21FA (8698)
+
+file        04 05   ab ac ad ae  imageAt  xor
+--------------------------------------------------
+Menu.log00  d1 e7   3d b0 9d c4    19 60   C8 87
+Menu.log01  d0 4e   3c b0 98 c6    18 F9   c8 B7
+Menu.log02  ed 1d   3c b0 9c c2    25 A6   c8 BB
+Menu.log03  d1 9a   3b b0 98 c6    19 25   C8 BF
+Menu.log04  d1 92   3b 90 9b c2    19 2D   C8 BF
+Menu.log05  d1 fd   3b 90 9d c3    19 46   C8 BB
+
+Menu.log06  C9 3F   07 8A A0 F0    
