@@ -15,12 +15,12 @@ Add/Replace games to your "Data Frog Y2 (568 in 1)" console.
 There is no install step. You just download and run.
 
 - [Mac OS X GUI](https://github.com/dev-drprasad/hsk00/releases/download/latest/hsk00-osx.dmg)
-- [Windows GUI](https://github.com/dev-drprasad/hsk00/releases/download/latest/hsk00-windows.exe)
+- [Windows GUI](https://github.com/dev-drprasad/hsk00/releases/download/latest/hsk00-windows.exe) (require IE11 to work in windows 7)
 - [Linux GUI](https://github.com/dev-drprasad/hsk00/releases/download/latest/hsk00-linux-gui.tar.gz) (Should work with all popular distros)
 
 ### Can't launch ?
 
-**Windows :**
+**Windows 10 :**
 
 If you're seeing "Microsoft Defender SmartScreen prevented an unrecognized app from starting", then click on "More Info" and then "Run anyway"
 
