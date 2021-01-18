@@ -2,7 +2,8 @@
 - seems like rom size should be less than 1 MB for to play
 - seen problem with multi-cart roms
 - random names for `.asd` and `.bin` files works as long as `hsk00.asd` file is updated
-- ncs files "Y2 HD Plus" are just like asd files. `descramble` command can extract game from `.ncs` file
+- ncs files are just like asd files. `descramble` command can extract game from `.ncs` file
 - Menu.logXX are also images. `Menu.log07` to `Menu.log25` contains mushroom selector in menu
 - `.logXX`, `.binXX` are interchangeble
 - XOR of `c8` and value at offset: `04` (.bin, logXX) will give image starting first two bytes
+- In "(1400 + 520 rus) model", hsk00.asd contains animated mushroom slices, but in "Y2 model", hsk00.asd contains game list
