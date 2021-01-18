@@ -16,7 +16,7 @@ var imageGetCommand = &cobra.Command{
 		for _, containerFilePath := range args {
 			_, err := pkg.GetImage(containerFilePath)
 			if err != nil {
-				return fmt.Errorf("failed to get game list: %s", err)
+				return fmt.Errorf("failed to get image: %s", err)
 			}
 		}
 

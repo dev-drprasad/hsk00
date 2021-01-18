@@ -27,8 +27,8 @@ var Debug = false
  * 57 51 57 01 -> 50 4B 05 06 End of central directory record
  */
 
-var fileHeaderEnc = []byte{0x57, 0x51, 0x57, 0x03}
-var fileHeaderDec = []byte{0x50, 0x4b, 0x03, 0x04}
+var scrambledZipHeader = []byte{0x57, 0x51, 0x57, 0x03}
+var correctZipHeader = []byte{0x50, 0x4b, 0x03, 0x04}
 var centralFileHeaderEnc = []byte{0x57, 0x51, 0x57, 0x02}
 var centralFileHeaderDec = []byte{0x50, 0x4b, 0x01, 0x02}
 var endEnc = []byte{0x57, 0x51, 0x57, 0x01}
@@ -44,14 +44,14 @@ func EncodeFileName(in string) string {
 }
 
 func WQWToPK(in []byte) []byte {
-	headerReplaced := bytes.ReplaceAll(in, fileHeaderEnc, fileHeaderDec)
+	headerReplaced := bytes.ReplaceAll(in, scrambledZipHeader, correctZipHeader)
 	centralHeaderReplaced := bytes.ReplaceAll(headerReplaced, centralFileHeaderEnc, centralFileHeaderDec)
 	endReplaced := bytes.ReplaceAll(centralHeaderReplaced, endEnc, endDec)
 	return endReplaced
 }
 
 func PKToWQW(in []byte) []byte {
-	hreplaced := bytes.ReplaceAll(in, fileHeaderDec, fileHeaderEnc)
+	hreplaced := bytes.ReplaceAll(in, correctZipHeader, scrambledZipHeader)
 	crReplaced := bytes.ReplaceAll(hreplaced, centralFileHeaderDec, centralFileHeaderEnc)
 	eReplaced := bytes.ReplaceAll(crReplaced, endDec, endEnc)
 	return eReplaced
@@ -115,6 +115,18 @@ func Descramble(in string) ([]*zip.File, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to read file: %s", err)
 	}
+	zipBytes := WQWToPK(scrambledBytes)
+
+	r := bytes.NewReader(zipBytes)
+	zr, err := zip.NewReader(r, r.Size())
+	if err != nil {
+		return nil, fmt.Errorf("failed to create reader: %s", err)
+	}
+
+	return zr.File, nil
+}
+
+func DescrambleZipBytes(scrambledBytes []byte) ([]*zip.File, error) {
 	zipBytes := WQWToPK(scrambledBytes)
 
 	r := bytes.NewReader(zipBytes)

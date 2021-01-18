@@ -24,8 +24,12 @@ func init() {
 	descrambleCommand.Flags().String("out", "", "output zip file name (optional)")
 	rootCmd.AddCommand(descrambleCommand)
 
-	scrambleCommand.Flags().String("out", "", "output asd file name")
-	scrambleCommand.MarkFlagRequired("out")
+	scrambledZipCommand.Flags().String("out", "", "output asd file name")
+	scrambledZipCommand.MarkFlagRequired("out")
+	rootCmd.AddCommand(scrambledZipCommand)
+
+	// just need to tell people that we removed 'scramble' command
+	scrambleCommand.Flags().String("out", "", "")
 	rootCmd.AddCommand(scrambleCommand)
 
 	addCommand.Flags().Int("category", 0, "number of category starting from 0, left -> right")

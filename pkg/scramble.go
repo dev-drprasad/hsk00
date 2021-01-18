@@ -24,5 +24,9 @@ func GenerateScrambledZip(infiles []zipFilePath, outFilePath string) error {
 
 	zipBytes := bb.Bytes()
 	scambledBytes := PKToWQW(zipBytes)
-	return ioutil.WriteFile(outFilePath, scambledBytes, 0644)
+	if err := ioutil.WriteFile(outFilePath, scambledBytes, 0644); err != nil {
+		return err
+	}
+	fmt.Printf("file saved as %s\n", outFilePath)
+	return nil
 }
