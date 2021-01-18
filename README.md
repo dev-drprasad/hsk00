@@ -15,7 +15,7 @@ Add/Replace games to your "Data Frog Y2 (568 in 1)" console.
 There is no install step. You just download and run.
 
 - [Mac OS X GUI](https://github.com/dev-drprasad/hsk00/releases/download/latest/hsk00-osx.dmg)
-- [Windows GUI](https://github.com/dev-drprasad/hsk00/releases/download/latest/hsk00-windows.exe) (require IE11 to work in windows 7)
+- [Windows GUI](https://github.com/dev-drprasad/hsk00/releases/download/latest/hsk00-windows.exe) (require windows7 SP1 or later)
 - [Linux GUI](https://github.com/dev-drprasad/hsk00/releases/download/latest/hsk00-linux-gui.tar.gz) (Should work with all popular distros)
 
 ### Can't launch ?
@@ -34,7 +34,7 @@ Feel free to create an [issue](https://github.com/dev-drprasad/hsk00/issues/new)
 
 ## CLI
 
-**Download Links**
+**Download CLI :**
 
 - [Mac OS X CLI](https://github.com/dev-drprasad/hsk00/releases/download/latest/hsk00-osx-cli)
 - [Linux CLI](https://github.com/dev-drprasad/hsk00/releases/download/latest/hsk00-linux-cli)
@@ -50,7 +50,7 @@ Adds game(s) to given category (Racing, Adventure etc..)
 
 `--category` number starts from `0`, left to right in menu. Example: "Racing Games" category number is `4`.
 
-`--root` is root directory of game folder where `Menu.ocv` exists (can be sd card path or custom directory where files present)
+`--root` is root directory of game folder where `Menu.ocv` exists (can be SD card path or custom directory where files present)
 
 **Example:**
 
@@ -58,7 +58,7 @@ Adds game(s) to given category (Racing, Adventure etc..)
 hsk00-darwin-amd64 add nesroms/Famicom_Wars.nes  nesroms/Heavy_Barrel --category 4 --root ~/Datafrog
 ```
 
-⚠️ This will change menu text slightly.
+⚠️ This will change menu text slightly and sorts games by alphabetical order
 
 If you can't lanuch games or change page, restore files with your backup.
 
@@ -66,7 +66,7 @@ If you can't lanuch games or change page, restore files with your backup.
 
 ### `replace`
 
-Replace will replace existing game with custom game.
+Replace will replace existing game with new game.
 
 Not implemented yet
 
@@ -74,25 +74,35 @@ Not implemented yet
 
 ### `descramble`
 
-Converts `*.asd` files to usable `.zip` files. Output filename will be `<inputfilename>.zip` and will be generated in same directory where input file present.
+Extracts hidden files from scrambled files. Output filename will be `<inputfilename>.<hidden-file-ext>` and will be generated in same directory where input file present. Can extract hidden zip files and image files
 
-Example:
+Example 1:
 
 ```
 hsk00-darwin-amd64 descramble  ~/Datafrog2/Game04/hsk06.asd
 ```
 
+Example 2:
+
+```
+hsk00-windows-cli.exe descramble  F:\Game04\Game01.bin --out F:\Game04\Page01-GameList.jpg
+```
+
 <br />
 
-### `scramble`
+### `scrambled-zip`
 
-Generates scrambled `asd` file given mutliple files. Input files can be anything. This is low level API. If you're uncertain what this command do, probably you don't need this command.
+Generates scrambled `asd` type files from given mutliple files. Input files can be anything. This is low level API. If you're uncertain what this command do, probably you don't need this command.
 
 Example:
 
 ```
 hsk00-darwin-amd64 scramble file1.nes file2.nes --out hskXX.asd
 ```
+
+### `scramble`
+
+This command is removed in favour of `scrambled-zip` from v0.2.0.
 
 <br />
 
