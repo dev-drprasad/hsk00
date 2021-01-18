@@ -97,7 +97,7 @@ Generates scrambled `asd` type files from given mutliple files. Input files can 
 Example:
 
 ```
-hsk00-darwin-amd64 scramble file1.nes file2.nes --out hskXX.asd
+hsk00-darwin-amd64 scrambled-zip file1.nes file2.nes --out hskXX.asd
 ```
 
 ### `scramble`
