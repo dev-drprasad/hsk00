@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/dev-drprasad/hsk00/pkg"
 	"github.com/spf13/cobra"
@@ -27,7 +28,7 @@ var descrambleCommand = &cobra.Command{
 
 		for _, ifn := range args {
 			if err := pkg.DecodeFileAndSave(ifn, out); err != nil {
-				return err
+				fmt.Println(err.Error())
 			}
 		}
 		return nil

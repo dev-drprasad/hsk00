@@ -21,7 +21,7 @@ func init() {
 	xorCommand.Flags().String("file", "", "file to xor")
 	rootCmd.AddCommand(xorCommand)
 
-	descrambleCommand.Flags().String("out", "", "output zip file name (optional)")
+	descrambleCommand.Flags().String("out", "", "output file name (optional)")
 	rootCmd.AddCommand(descrambleCommand)
 
 	scrambledZipCommand.Flags().String("out", "", "output asd file name")
