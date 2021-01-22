@@ -25,9 +25,20 @@ const listGap = 8
 const fontSize = 24
 const imageQuality = 100
 
+const defaultFont = "NotoSans"
+const defaultBg = "default"
+
 var fonts = map[string]string{
-	"Gotham-Medium": "Gotham-SemiBold.ttf",
-	"Video-Phreak":  "Video-Phreak.ttf",
+	defaultFont:      "NotoSans-SemiBold.ttf",
+	"04B_30":         "04B_30.ttf",
+	"VideoPhreak":    "Video-Phreak.ttf",
+	"PressStart2P":   "PressStart2P.ttf",
+	"SuperMarioBros": "Super Mario Bros 2.ttf",
+}
+
+var backgrounds = map[string]string{
+	defaultBg:        "default.jpg",
+	"SuperMarioBros": "SuperMarioBros.jpg",
 }
 
 func loadFontFacePkger(dc *gg.Context, fpath string, points float64) error {
@@ -53,13 +64,17 @@ func loadFontFacePkger(dc *gg.Context, fpath string, points float64) error {
 	return nil
 }
 
-func generateMenuImage(gameNames []string, fontName string) ([]byte, error) {
-	fontFilename := fonts["Gotham-Medium"]
+func generateMenuImage(gameNames []string, fontName string, bgName string) ([]byte, error) {
+	fontFilename := fonts[defaultFont]
 	if fn, ok := fonts[fontName]; ok {
 		fontFilename = fn
 	}
 
-	bgf, err := pkger.Open("/assets/bg.jpg")
+	bgFilename := backgrounds[defaultBg]
+	if fn, ok := backgrounds[bgName]; ok {
+		bgFilename = fn
+	}
+	bgf, err := pkger.Open(fmt.Sprintf("/assets/%s", bgFilename))
 	im, _, err := image.Decode(bgf)
 	if err != nil {
 		return nil, err
@@ -75,7 +90,7 @@ func generateMenuImage(gameNames []string, fontName string) ([]byte, error) {
 	}
 
 	dc.DrawImage(im, 0, 0)
-	n := 3
+	n := 2.5
 	for i, name := range gameNames {
 		listItemStartY := float64(listStartY + (i * (listGap + fontSize)))
 		// dc.SetRGB(float64(255)/255, float64(174)/255, float64(182)/255)

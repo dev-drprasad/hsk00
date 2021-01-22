@@ -36,7 +36,8 @@ func init() {
 	addCommand.MarkFlagRequired("category")
 	addCommand.Flags().String("root", "", "root path of sd card")
 	addCommand.MarkFlagRequired("root")
-	addCommand.Flags().String("font", "Gotham-Medium", "font name (Gotham-Medium | Video-Phreak) of menu text, default is Gotham-Medium")
+	addCommand.Flags().String("font", "", "font name (NotoSans|04B_30|VideoPhreak|PressStart2P|SuperMarioBros) of menu text, default is NotoSans")
+	addCommand.Flags().String("background", "", "background (default|SuperMarioBros) of menu")
 	rootCmd.AddCommand(addCommand)
 
 	gameCommand.PersistentFlags().String("root", "", "root path of sd card")

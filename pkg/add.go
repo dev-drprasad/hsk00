@@ -55,7 +55,7 @@ func update(filePath string, gamePaths []zipFilePath) error {
 	return ioutil.WriteFile(filePath, scambledBytes, 0644)
 }
 
-func Add(rootDir string, categoryID int, newGames []*GameItem, fontName string) ([]*GameItem, error) {
+func Add(rootDir string, categoryID int, newGames []*GameItem, fontName string, bgName string) ([]*GameItem, error) {
 	if rootDir == "" {
 		return nil, errors.New("root path value is empty")
 	}
@@ -155,10 +155,10 @@ func Add(rootDir string, categoryID int, newGames []*GameItem, fontName string) 
 			if gameItem.Filename == "" {
 				return nil, fmt.Errorf("filename not present")
 			}
-			menuItemTexts = append(menuItemTexts, fmt.Sprintf("%02d. %s", gameItem.ID, gameItem.Name))
+			menuItemTexts = append(menuItemTexts, fmt.Sprintf("%02d.%s", gameItem.ID, gameItem.Name))
 		}
 
-		imageBytes, err := generateMenuImage(menuItemTexts, fontName)
+		imageBytes, err := generateMenuImage(menuItemTexts, fontName, bgName)
 		if err != nil {
 			return nil, fmt.Errorf("menu image generation failed: %s", err)
 		}
