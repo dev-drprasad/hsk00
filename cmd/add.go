@@ -41,12 +41,17 @@ var addCommand = &cobra.Command{
 			return err
 		}
 
+		bgName, err := cmd.Flags().GetString("background")
+		if err != nil {
+			return err
+		}
+
 		var gameList pkg.GameItemList
 		for _, gamePath := range args {
 			gameList = append(gameList, &pkg.GameItem{SourcePath: gamePath, Name: pkg.GameNameFromFilename(filepath.Base(gamePath))})
 		}
 
-		_, err = pkg.Add(rootDir, categoryID, gameList, fontName)
+		_, err = pkg.Add(rootDir, categoryID, gameList, fontName, bgName)
 		return err
 	},
 }

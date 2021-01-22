@@ -49,7 +49,7 @@ func (r *Runtime) AddGames(rootDir string, categoryID int, newGamesIn []interfac
 		}
 		newGames = append(newGames, &g)
 	}
-	return pkg.Add(rootDir, categoryID, newGames, "")
+	return pkg.Add(rootDir, categoryID, newGames, "", "")
 }
 
 func (r *Runtime) GetGameList(rootDir string, categoryID int) ([]*pkg.GameItem, error) {
