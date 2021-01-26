@@ -155,7 +155,7 @@ func Add(rootDir string, categoryID int, newGames []*GameItem, fontName string, 
 			if gameItem.Filename == "" {
 				return nil, fmt.Errorf("filename not present")
 			}
-			menuItemTexts = append(menuItemTexts, fmt.Sprintf("%02d.%s", gameItem.ID, gameItem.Name))
+			menuItemTexts = append(menuItemTexts, fmt.Sprintf("%02d. %s", gameItem.ID, gameItem.Name))
 		}
 
 		imageBytes, err := generateMenuImage(menuItemTexts, fontName, bgName)

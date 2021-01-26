@@ -129,12 +129,12 @@ function App() {
   }, [rootDir, categoryID, refreshGameList]);
 
   const categoryOptions = [
-    t("Action Games"),
-    t("Shoot Games"),
-    t("Sport Games"),
-    t("Fight Games"),
-    t("Racing Games"),
-    t("Puzzle Games"),
+    t("Action Game"),
+    t("Shoot Game"),
+    t("Sport Game"),
+    t("Fight Game"),
+    t("Racing Game"),
+    t("Puzzle Game"),
   ].map((c, i) => ({ label: `${i}. ${c}`, value: i }));
 
   return (

@@ -34,6 +34,7 @@ var fonts = map[string]string{
 	"VideoPhreak":    "Video-Phreak.ttf",
 	"PressStart2P":   "PressStart2P.ttf",
 	"SuperMarioBros": "Super Mario Bros 2.ttf",
+	"VisbyRound":     "VisbyRound-Bold.ttf",
 }
 
 var backgrounds = map[string]string{

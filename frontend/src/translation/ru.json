@@ -10,11 +10,11 @@
   "not exists": "не существует",
   "game(s) added successfully!": "игры успешно добавлены!",
   "failed": "не удалось",
-  "Action Games": "Экшн игры",
-  "Shoot Games": "Стрелять игры",
-  "Sport Games": "Спортивные игры",
-  "Fight Games": "Драки",
-  "Racing Games": "Гоночные игры",
-  "Puzzle Games": "Головоломки",
+  "Action Game": "Action Game",
+  "Shoot Game": "Shoot Game",
+  "Sport Game": "Sport Game",
+  "Fight Game": "Fight Game",
+  "Racing Game": "Racing Game",
+  "Puzzle Game": "Puzzle Game",
   "unsaved": "неспасенный"
 }

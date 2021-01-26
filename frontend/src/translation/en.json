@@ -10,11 +10,11 @@
   "not exists": "not exists",
   "game(s) added successfully!": "game(s) added successfully!",
   "failed": "failed",
-  "Action Games": "Action Games",
-  "Shoot Games": "Shoot Games",
-  "Sport Games": "Sport Games",
-  "Fight Games": "Fight Games",
-  "Racing Games": "Racing Games",
-  "Puzzle Games": "Puzzle Games",
+  "Action Game": "Action Game",
+  "Shoot Game": "Shoot Game",
+  "Sport Game": "Sport Game",
+  "Fight Game": "Fight Game",
+  "Racing Game": "Racing Game",
+  "Puzzle Game": "Puzzle Game",
   "unsaved": "unsaved"
 }
