@@ -142,7 +142,7 @@ func main() {
 			return
 		}
 
-		if err := pkg.Add(rootDir, categoryID, newGamePaths, ""); err != nil {
+		if err := pkg.Add(rootDir, categoryID, newGamePaths, "", ""); err != nil {
 			messageWidget.SetText(fmt.Sprintf("Error: %s", err.Error()))
 		} else {
 			messageWidget.SetText("✅ Done")

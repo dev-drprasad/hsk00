@@ -8,8 +8,9 @@
   border-radius: 0.5em;
   margin-bottom: 1rem;
   white-space: nowrap;
-  overflow-x: auto;
   overflow: hidden;
+  overflow-x: auto;
+  -ms-scroll-limit: 0 0 0 0;
 }
 .alert-success {
   color: var(--color-pr-state-merged-text);
