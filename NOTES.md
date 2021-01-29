@@ -7,3 +7,18 @@
 - `.logXX`, `.binXX` are interchangeble
 - XOR of `c8` and value at offset: `04` (.bin, logXX) will give image starting first two bytes
 - In "(1400 + 520 rus) model", hsk00.asd contains animated mushroom slices, but in "Y2 model", hsk00.asd contains game list
+- `Menu.ocv` (both Y2 and Y2 plus) contains background music
+-
+- `classics_menu_ok.drm` (Not sure from which console) and `Menu.ocv` (from Y2) have same music. But their content is different though
+- Files that starts with `SP_ToneMaker`/`SPF2ALP` contains music/sound
+- I assumed `Menu.ocv` contains PCM raw data and played with audacity (8bit unsinged, Mono, saample rate: 22050), I hear music, but there is too much noise. Either my settings are wrong or its not PCM
+
+### REFERENCES
+
+- https://git.redump.net/mame/patch/?id=9bf6c963596e16381fd793e729420fdc14c7e326
+- https://ia802802.us.archive.org/20/items/gpac800/GPL162004A-507A_162005A-707AV10_code_reference-20147131205102.pdf
+- https://forums.bannister.org/ubbthreads.php?ubb=showflat&Number=112652#Post112652
+- https://www.generalplus.com/1LVlangLNxxSVyySNservice_n_support_d
+- https://github.com/alito/mamele/commit/d4ce622200de7a3b2088524e8798324c890b781b
+- https://github.com/search?p=2&q=adpcm36+decoding&type=Code
+- https://github.com/Jeija/bluefluff
