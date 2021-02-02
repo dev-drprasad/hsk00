@@ -86,41 +86,6 @@
   }
 }
 
-.ListBox {
-  position: relative;
-  border: 0.1rem solid var(--color-border-secondary);
-  border-radius: 0.5em;
-  > ul {
-    margin: 0;
-    overflow: auto;
-    height: 10rem;
-    > li {
-      list-style: none;
-      padding: 0 1rem;
-      height: 2rem;
-      line-height: 2rem;
-
-      &.unsaved {
-        font-weight: 700;
-        color: var(--color-gh-blue);
-        position: relative;
-        &::before {
-          content: "* ";
-          position: absolute;
-          left: 0;
-          padding: 0.2rem;
-        }
-      }
-    }
-  }
-
-  button {
-    position: absolute;
-    bottom: 0.5rem;
-    right: 0.5rem;
-  }
-}
-
 .SubmitButtonWrapper {
   text-align: center;
 }
@@ -162,12 +127,13 @@
   transition-duration: 0.1s;
 }
 .btn-lg {
-  height: 2.6rem;
+  height: 2.4rem;
   font-size: 1rem;
 }
 
 .btn-sm {
   height: 1.5rem;
+  min-width: 1.5rem;
   font-size: 0.7rem;
   line-height: 0.7rem;
   border-radius: 0.4em;

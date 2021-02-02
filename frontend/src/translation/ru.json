@@ -8,7 +8,7 @@
   "Save Changes": "Сохранить изменения",
   "directory": "каталог",
   "not exists": "не существует",
-  "game(s) added successfully!": "игры успешно добавлены!",
+  "Changes saved successfully!": "Изменения успешно сохранены!",
   "failed": "не удалось",
   "Action Game": "Action Game",
   "Shoot Game": "Shoot Game",
@@ -16,5 +16,6 @@
   "Fight Game": "Fight Game",
   "Racing Game": "Racing Game",
   "Puzzle Game": "Puzzle Game",
-  "unsaved": "неспасенный"
+  "unsaved": "неспасенный",
+  "Category": "Категория"
 }

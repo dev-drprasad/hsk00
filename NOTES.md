@@ -12,6 +12,11 @@
 - `classics_menu_ok.drm` (Not sure from which console) and `Menu.ocv` (from Y2) have same music. But their content is different though
 - Files that starts with `SP_ToneMaker`/`SPF2ALP` contains music/sound
 - I assumed `Menu.ocv` contains PCM raw data and played with audacity (8bit unsinged, Mono, saample rate: 22050), I hear music, but there is too much noise. Either my settings are wrong or its not PCM
+- G+ gadget audio file batch converter can be used to make "data frog Y2" supported music.
+  - [Download](https://www.generalplus.com/1LVlangLNxxSVyySNservice_n_support_d)
+  - Alogirthm: H/W PCM 16-Bit (DRM)
+  - I tried with sample rates: 22050, 11025 wav input files
+  - Output drm file more than 3MB didn't work for me
 
 ### REFERENCES
 
@@ -22,3 +27,8 @@
 - https://github.com/alito/mamele/commit/d4ce622200de7a3b2088524e8798324c890b781b
 - https://github.com/search?p=2&q=adpcm36+decoding&type=Code
 - https://github.com/Jeija/bluefluff
+- https://sites.google.com/site/devusb/waveformat
+- http://webcache.googleusercontent.com/search?q=cache:QPxE2Hil8_wJ:bootleg.games/BGC_Forum/index.php%3Faction%3Dprofile%3Barea%3Dshowposts%3Bsa%3Dtopics%3Bu%3D38
+- online-convert.com
+- https://hackmii.com/2010/04/sunplus-the-biggest-chip-company-youve-never-heard-of/
+- https://www.dl-sounds.com/royalty-free

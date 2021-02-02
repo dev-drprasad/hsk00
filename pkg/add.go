@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
-	"log"
 	"os"
 	"path"
 	"sort"
@@ -105,7 +104,7 @@ func Add(rootDir string, categoryID int, newGames []*GameItem, fontName string, 
 
 		hskID, err := gameList.NextHskID()
 		if err != nil {
-			return nil, fmt.Errorf("failed to get next hsk id: %s", err)
+			return nil, fmt.Errorf("failed to get next hsk id <- %s", err)
 		}
 		hskFileName := fmt.Sprintf("Hsk%02d.asd", hskID)
 		hskFilePath := path.Join(gamesPath, hskFileName)
@@ -128,6 +127,19 @@ func Add(rootDir string, categoryID int, newGames []*GameItem, fontName string, 
 		hskID++
 	}
 
+	gameList, err = GenerateMenu(gameList, gamesPath, fontName, bgName)
+	if err != nil {
+		return nil, fmt.Errorf("failed to generate menu <- %s", err)
+	}
+
+	if err := SaveGameList(gamesPath, gameList); err != nil {
+		return nil, err
+	}
+
+	return gameList, nil
+}
+
+func GenerateMenu(gameList GameItemList, gamesPath string, fontName string, bgName string) (GameItemList, error) {
 	binPrefixF, err := pkger.Open("/assets/binprefix")
 	if err != nil {
 		return nil, fmt.Errorf("failed to open binprefix file: %s", err)
@@ -138,6 +150,7 @@ func Add(rootDir string, categoryID int, newGames []*GameItem, fontName string, 
 	}
 
 	sort.Sort(gameList)
+
 	for i := 0; i < len(gameList); i += 10 {
 		start := i
 		end := (i + 10)
@@ -160,7 +173,7 @@ func Add(rootDir string, categoryID int, newGames []*GameItem, fontName string, 
 
 		imageBytes, err := generateMenuImage(menuItemTexts, fontName, bgName)
 		if err != nil {
-			return nil, fmt.Errorf("menu image generation failed: %s", err)
+			return nil, fmt.Errorf("menu image generation failed <- %s", err)
 		}
 
 		BGFilePath := path.Join(gamesPath, BGFilename)
@@ -173,23 +186,5 @@ func Add(rootDir string, categoryID int, newGames []*GameItem, fontName string, 
 			return nil, nil
 		}
 	}
-
-	if Debug {
-		log.Println("new game list:")
-		for _, g := range gameList {
-			log.Printf("%#v\n", g)
-		}
-	}
-
-	listZipBytes, err := makeHsk00(gameList)
-	if err != nil {
-		return nil, err
-	}
-
-	hsk00FilePath := path.Join(gamesPath, "hsk00.asd")
-	if err := ioutil.WriteFile(hsk00FilePath, PKToWQW(listZipBytes), 0644); err != nil {
-		return nil, err
-	}
-
 	return gameList, nil
 }

@@ -4,11 +4,11 @@ import Alert from "./Alert";
 import GitHubIcon from "./GitHubIcon";
 import { ReactComponent as Spinner } from "./spinner.svg";
 import { useTranslation } from "react-i18next";
+import GameList from "./GameList";
 const initialState = {
   rootDir: "",
   modified: false,
   games: [],
-  newGames: [],
   categoryID: -1,
   errors: { rootDir: "" },
   message: undefined,
@@ -21,7 +21,7 @@ const gameSorter = (a, b) => a.name.localeCompare(b.name);
 function App() {
   const { t, i18n } = useTranslation("translation");
   const [state, setState] = useState(initialState);
-  const { rootDir, newGames, games, categoryID, errors, message, modified, saving } = state;
+  const { rootDir, games, categoryID, errors, message, modified, saving } = state;
 
   const handleSelectRootClick = () => {
     window.backend.Runtime.SelectRootDir().then((selectedDir) => {
@@ -32,15 +32,15 @@ function App() {
   const handleSelectGamesClick = (e) => {
     window.backend.Runtime.SelectGames()
       .then((selected) => {
-        console.log("selected :>> ", selected);
-        const temp = [...newGames, ...selected];
+        const temp = [...games, ...selected];
+        console.log("temp :>> ", temp);
         let seen = {};
         const newGamesSet = [];
         temp.forEach((g) => {
-          if (!seen[g.srcPath]) newGamesSet.push((seen[g.srcPath] = g));
+          if (!(g.srcPath && seen[g.srcPath])) newGamesSet.push((seen[g.srcPath] = g));
         });
         seen = undefined;
-        setState((s) => ({ ...s, modified: true, newGames: newGamesSet }));
+        setState((s) => ({ ...s, modified: true, games: newGamesSet.sort(gameSorter) }));
       })
       .catch(setError);
   };
@@ -74,7 +74,7 @@ function App() {
           ...s,
           modified: false,
           newGames: [],
-          games: games,
+          games: games.sort(gameSorter),
           message: undefined,
         }));
       })
@@ -85,6 +85,16 @@ function App() {
     window.backend.Runtime.OpenURL("https://github.com/dev-drprasad/hsk00/");
   };
 
+  const handleGameToggleDelete = (id) => () => {
+    const g = { ...games[id], deleted: !games[id].deleted };
+    if (g.hsk) {
+      setState((s) => ({ ...s, modified: true, games: [...games.slice(0, id), g, ...games.slice(id + 1)] }));
+    } else {
+      // this is unsaved game, delete this from list
+      setState((s) => ({ ...s, modified: true, games: [...games.slice(0, id), ...games.slice(id + 1)] }));
+    }
+  };
+
   const handleSubmit = () => {
     const errors = {};
     if (!rootDir) {
@@ -93,17 +103,15 @@ function App() {
     if (categoryID < 0) {
       errors["categoryID"] = "select category";
     }
-    if (newGames.length === 0) {
-      errors["newGames"] = "select game(s) to add";
-    }
+
     if (errors.length > 0) {
       setState((s) => ({ ...s, errors: errors }));
       return;
     } else {
-      setState((s) => ({ ...s, saving: true, errors: {} }));
+      setState((s) => ({ ...s, saving: true, message: undefined, errors: {} }));
     }
-    console.log("rootDir, categoryID, newGames :>> ", rootDir, categoryID, newGames);
-    window.backend.Runtime.AddGames(rootDir, categoryID, newGames)
+    console.log("rootDir, categoryID, newGames :>> ", rootDir, categoryID, games);
+    window.backend.Runtime.Save(rootDir, categoryID, games)
       .then((res) => {
         setState((s) => ({
           ...s,
@@ -113,14 +121,24 @@ function App() {
           saving: false,
           message: {
             type: "success",
-            content: `🎉  ${newGames.length} ` + t("game(s) added successfully!") + `  🎉`,
+            content: "🎉  " + t("Changes saved successfully!") + "  🎉",
           },
         }));
       })
       .catch(setError);
   };
 
-  const allgames = [...games, ...newGames].sort(gameSorter);
+  // const allgames = [...games, ...newGames].sort(gameSorter);
+  const newGamesCount = games.filter(({ hsk }) => !hsk).length;
+  const deletedGamesCount = games.filter(({ deleted }) => !!deleted).length;
+
+  let totalGamesLabel = "";
+  if (games.length > 0) {
+    totalGamesLabel = `${games.length - newGamesCount}`;
+    if (newGamesCount) totalGamesLabel += ` + ${newGamesCount}`;
+    if (deletedGamesCount) totalGamesLabel += ` - ${deletedGamesCount}`;
+    totalGamesLabel = `(${totalGamesLabel})`;
+  }
 
   useEffect(() => {
     if (rootDir && categoryID > -1) {
@@ -129,13 +147,13 @@ function App() {
   }, [rootDir, categoryID, refreshGameList]);
 
   const categoryOptions = [
-    t("Action Game"),
-    t("Shoot Game"),
-    t("Sport Game"),
-    t("Fight Game"),
-    t("Racing Game"),
-    t("Puzzle Game"),
-  ].map((c, i) => ({ label: `${i}. ${c}`, value: i }));
+    "Action Game",
+    "Shoot Game",
+    "Sport Game",
+    "Fight Game",
+    "Racing Game",
+    "Puzzle Game",
+  ].map((c, i) => ({ label: `${t("Category")} ${i + 1} (${c})`, value: i }));
 
   return (
     <React.Fragment>
@@ -163,7 +181,12 @@ function App() {
             {t("Select game category")} :
           </div>
           <div>
-            <select className="FormControl Select CategorySelect" name="categoryID" onChange={handleCategoryChange}>
+            <select
+              className="FormControl Select CategorySelect"
+              name="categoryID"
+              onChange={handleCategoryChange}
+              value={categoryID}
+            >
               <option value={-1}>----------</option>
               {categoryOptions.map(({ label, value }) => (
                 <option key={label} value={value}>
@@ -176,8 +199,7 @@ function App() {
         </div>
         <div className="FormItem games-list">
           <label className="label" htmlFor="rootDir">
-            {t("Games")}{" "}
-            {games.length ? `(${games.length}` + (newGames.length ? ` + ${newGames.length} ${t("unsaved")})` : ")") : ""}:
+            {t("Games")} {totalGamesLabel}:
           </label>
           <div className="list-actions">
             <button className="FormControl btn btn-sm" onClick={refreshGameList} disabled={!rootDir || categoryID === -1}>
@@ -191,15 +213,7 @@ function App() {
               + {t("Add")}
             </button>
           </div>
-          <div className="ListBox">
-            <ul role="listbox">
-              {allgames.map((g) => (
-                <li key={`${g.filename}${g.srcPath}${g.id}`} className={!g.hsk ? "unsaved" : ""}>
-                  {g.name}
-                </li>
-              ))}
-            </ul>
-          </div>
+          <GameList games={games} onToggleDelete={handleGameToggleDelete} />
           <span className="FormError">{errors.rootDir}</span>
         </div>
         <Alert type={message?.type} message={message?.content} />

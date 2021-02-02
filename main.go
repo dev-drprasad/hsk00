@@ -52,6 +52,24 @@ func (r *Runtime) AddGames(rootDir string, categoryID int, newGamesIn []interfac
 	return pkg.Add(rootDir, categoryID, newGames, "", "")
 }
 
+func (r *Runtime) Save(rootDir string, categoryID int, gamesIn []interface{}) ([]*pkg.GameItem, error) {
+	var games []*pkg.GameItem
+	for _, gIn := range gamesIn {
+		gMap := gIn.(map[string]interface{})
+		g := pkg.GameItem{
+			ID:         int(gMap["id"].(float64)),
+			Hsk:        gMap["hsk"].(string),
+			Filename:   gMap["filename"].(string),
+			SourcePath: gMap["srcPath"].(string),
+			Name:       gMap["name"].(string),
+			Deleted:    gMap["deleted"].(bool),
+		}
+		games = append(games, &g)
+	}
+	pkg.Debug = true
+	return pkg.Save(rootDir, categoryID, games, "", "")
+}
+
 func (r *Runtime) GetGameList(rootDir string, categoryID int) ([]*pkg.GameItem, error) {
 	listMap, err := pkg.GetGameList(rootDir, categoryID)
 	if err != nil {
@@ -69,8 +87,8 @@ func main() {
 	js := mewn.String("./frontend/build/static/js/main.js")
 	css := mewn.String("./frontend/build/static/css/main.css")
 
-	windowWidth := 420
-	windowHeight := 520
+	windowWidth := 440
+	windowHeight := 580
 	if runtime.GOOS == "linux" {
 		clientDecorShadow := 200
 		windowWidth += clientDecorShadow
