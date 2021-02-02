@@ -1,17 +1,23 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
+	"net/http"
 	"path/filepath"
 	"runtime"
 
+	"github.com/Masterminds/semver"
 	"github.com/dev-drprasad/hsk00/pkg"
 	"github.com/leaanthony/mewn"
 	"github.com/ncruces/zenity"
 	browser "github.com/pkg/browser"
 	"github.com/wailsapp/wails"
 )
+
+// CurrentVersionStr will be assigned using -ldflags
+var CurrentVersionStr string
 
 type Runtime struct {
 	runtime *wails.Runtime
@@ -66,7 +72,7 @@ func (r *Runtime) Save(rootDir string, categoryID int, gamesIn []interface{}) ([
 		}
 		games = append(games, &g)
 	}
-	pkg.Debug = true
+
 	return pkg.Save(rootDir, categoryID, games, "", "")
 }
 
@@ -80,6 +86,40 @@ func (r *Runtime) GetGameList(rootDir string, categoryID int) ([]*pkg.GameItem, 
 
 func (r *Runtime) OpenURL(URL string) error {
 	return browser.OpenURL(URL)
+}
+
+func (r *Runtime) HasUpdate() (bool, error) {
+	resp, err := http.Get("https://api.github.com/repos/dev-drprasad/hsk00/releases/latest")
+	if err != nil {
+		fmt.Println(err)
+		return false, err
+	}
+	t := struct {
+		Draft      bool   `json:"draft"`
+		Prerelease bool   `json:"prerelease"`
+		TagName    string `json:"tag_name"`
+	}{}
+
+	if err := json.NewDecoder(resp.Body).Decode(&t); err != nil {
+		fmt.Println(err)
+		return false, fmt.Errorf("failed to read response <- %s", err)
+	}
+
+	latestVersion, err := semver.NewVersion(t.TagName)
+	if err != nil {
+		fmt.Println(err)
+		return false, fmt.Errorf("failed to parse version: %s <- %s", t.TagName, err)
+	}
+	currentVersion, err := semver.NewVersion(CurrentVersionStr)
+	if err != nil {
+		fmt.Println(err)
+		return false, fmt.Errorf("failed to parse version: %s <- %s", CurrentVersionStr, err)
+	}
+	if !latestVersion.GreaterThan(currentVersion) || t.Draft || t.Prerelease {
+		return false, nil
+	}
+
+	return true, nil
 }
 
 func main() {

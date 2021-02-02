@@ -4,7 +4,9 @@ import Alert from "./Alert";
 import GitHubIcon from "./GitHubIcon";
 import { ReactComponent as Spinner } from "./spinner.svg";
 import { useTranslation } from "react-i18next";
+import HasUpdate from "./HasUpdate";
 import GameList from "./GameList";
+
 const initialState = {
   rootDir: "",
   modified: false,
@@ -156,82 +158,82 @@ function App() {
   ].map((c, i) => ({ label: `${t("Category")} ${i + 1} (${c})`, value: i }));
 
   return (
-    <React.Fragment>
-      <div className="App">
-        <div className="FormItem">
-          <div className="label" htmlFor="rootDir">
-            {t("Choose root directory")} :
-          </div>
-          <div className="group RootDirGroup">
-            <input
-              className="FormControl Input"
-              name="rootDir"
-              placeholder={`${t("Choose root directory")} (SD Card)`}
-              onChange={handleRootDirChange}
-              value={rootDir}
-            />
-            <button className="FormControl btn" onClick={handleSelectRootClick}>
-              {t("Choose")}
-            </button>
-          </div>
-          <span className="FormError">{errors.rootDir}</span>
+    <div className="App">
+      <div className="FormItem">
+        <div className="label" htmlFor="rootDir">
+          {t("Choose root directory")} :
         </div>
-        <div className="FormItem">
-          <div className="label" htmlFor="rootDir">
-            {t("Select game category")} :
-          </div>
-          <div>
-            <select
-              className="FormControl Select CategorySelect"
-              name="categoryID"
-              onChange={handleCategoryChange}
-              value={categoryID}
-            >
-              <option value={-1}>----------</option>
-              {categoryOptions.map(({ label, value }) => (
-                <option key={label} value={value}>
-                  {label}
-                </option>
-              ))}
-            </select>
-          </div>
-          <span className="FormError">{errors.rootDir}</span>
-        </div>
-        <div className="FormItem games-list">
-          <label className="label" htmlFor="rootDir">
-            {t("Games")} {totalGamesLabel}:
-          </label>
-          <div className="list-actions">
-            <button className="FormControl btn btn-sm" onClick={refreshGameList} disabled={!rootDir || categoryID === -1}>
-              {t("Reset")}
-            </button>
-            <button
-              className="FormControl btn btn-sm btn-primary"
-              onClick={handleSelectGamesClick}
-              disabled={!rootDir || categoryID === -1}
-            >
-              + {t("Add")}
-            </button>
-          </div>
-          <GameList games={games} onToggleDelete={handleGameToggleDelete} />
-          <span className="FormError">{errors.rootDir}</span>
-        </div>
-        <Alert type={message?.type} message={message?.content} />
-        <div className="FormItem SubmitButtonWrapper">
-          <button className="FormControl SubmitButton btn btn-primary" disabled={!modified || saving} onClick={handleSubmit}>
-            {t("Save Changes")}
-            {saving && <Spinner className="spinner" />}
+        <div className="group RootDirGroup">
+          <input
+            className="FormControl Input"
+            name="rootDir"
+            placeholder={`${t("Choose root directory")} (SD Card)`}
+            onChange={handleRootDirChange}
+            value={rootDir}
+          />
+          <button className="FormControl btn" onClick={handleSelectRootClick}>
+            {t("Choose")}
           </button>
         </div>
+        <span className="FormError">{errors.rootDir}</span>
       </div>
-      <span onClick={handleGHClick} className="github-link">
-        <GitHubIcon />
-      </span>
+      <div className="FormItem">
+        <div className="label" htmlFor="rootDir">
+          {t("Select game category")} :
+        </div>
+        <div>
+          <select
+            className="FormControl Select CategorySelect"
+            name="categoryID"
+            onChange={handleCategoryChange}
+            value={categoryID}
+          >
+            <option value={-1}>----------</option>
+            {categoryOptions.map(({ label, value }) => (
+              <option key={label} value={value}>
+                {label}
+              </option>
+            ))}
+          </select>
+        </div>
+        <span className="FormError">{errors.rootDir}</span>
+      </div>
+      <div className="FormItem games-list">
+        <label className="label" htmlFor="rootDir">
+          {t("Games")} {totalGamesLabel}:
+        </label>
+        <div className="list-actions">
+          <button className="FormControl btn btn-sm" onClick={refreshGameList} disabled={!rootDir || categoryID === -1}>
+            {t("Reset")}
+          </button>
+          <button
+            className="FormControl btn btn-sm btn-primary"
+            onClick={handleSelectGamesClick}
+            disabled={!rootDir || categoryID === -1}
+          >
+            + {t("Add")}
+          </button>
+        </div>
+        <GameList games={games} onToggleDelete={handleGameToggleDelete} />
+        <span className="FormError">{errors.rootDir}</span>
+      </div>
+      <Alert type={message?.type} message={message?.content} />
+      <div className="FormItem SubmitButtonWrapper">
+        <button className="FormControl SubmitButton btn btn-primary" disabled={!modified || saving} onClick={handleSubmit}>
+          {t("Save Changes")}
+          {saving && <Spinner className="spinner" />}
+        </button>
+      </div>
+
       <select className="language-select FormControl form-control-sm" onChange={(e) => i18n.changeLanguage(e.target.value)}>
         <option value="en">English</option>
         <option value="ru">русский</option>
       </select>
-    </React.Fragment>
+      <HasUpdate className="has-update" />
+      <span onClick={handleGHClick} className="github-link">
+        <GitHubIcon />
+      </span>
+    </div>
   );
 }
 
