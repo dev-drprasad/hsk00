@@ -121,7 +121,7 @@ function App() {
           saving: false,
           message: {
             type: "success",
-            content: "🎉  Changes saved successfully!  🎉",
+            content: "🎉  " + t("Changes saved successfully!") + "  🎉",
           },
         }));
       })
@@ -181,7 +181,12 @@ function App() {
             {t("Select game category")} :
           </div>
           <div>
-            <select className="FormControl Select CategorySelect" name="categoryID" onChange={handleCategoryChange}>
+            <select
+              className="FormControl Select CategorySelect"
+              name="categoryID"
+              onChange={handleCategoryChange}
+              value={categoryID}
+            >
               <option value={-1}>----------</option>
               {categoryOptions.map(({ label, value }) => (
                 <option key={label} value={value}>

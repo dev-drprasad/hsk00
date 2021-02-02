@@ -1,4 +1,5 @@
 import React from "react";
+import Emoji from "./Emoji";
 import "./GameList.scss";
 
 const getClassName = (g) => {
@@ -16,9 +17,8 @@ function GameList({ games, onToggleDelete }) {
           <li key={`${g.filename}${g.srcPath}${g.id}`} className={getClassName(g)}>
             {g.name}
             <button className="delete-btn btn btn-sm" onClick={onToggleDelete(i)}>
-              <span role="img" aria-label="delete icon">
-                {g.deleted ? "✅" : "❌"}
-              </span>
+              <span className="emoji" role="img" aria-label="delete icon"></span>
+              <Emoji ariaLabel="delete icon">{g.deleted ? "✅" : "❌"}</Emoji>
             </button>
           </li>
         ))}
