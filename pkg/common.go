@@ -145,6 +145,7 @@ type GameItem struct {
 	SourcePath string `json:"srcPath"`  // source file path. unsaved file path
 	BGFilename string `json:"-"`        // ex: Game03.bin
 	Name       string `json:"name"`     // name of game in menu list
+	Deleted    bool   `json:"deleted"`
 }
 
 type GameItemList []*GameItem
@@ -162,7 +163,12 @@ func (l GameItemList) Swap(i, j int) {
 func (l GameItemList) NextHskID() (int, error) {
 	max := 0
 	for _, g := range l {
-		fmt.Println("g", g)
+
+		// unsaved games won't be having hskPath, so ignoring them
+		if g.Hsk == "" {
+			continue
+		}
+
 		matches := hskidrx.FindStringSubmatch(g.Hsk)
 		if len(matches) != 2 {
 			return 0, fmt.Errorf("for hsk '%s', expected match len is 2, but got %d", g.Hsk, len(matches))

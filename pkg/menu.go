@@ -10,6 +10,7 @@ import (
 	"image/jpeg"
 	_ "image/jpeg"
 	"io/ioutil"
+	"path/filepath"
 
 	"github.com/fogleman/gg"
 	"github.com/golang/freetype/truetype"
@@ -75,7 +76,11 @@ func generateMenuImage(gameNames []string, fontName string, bgName string) ([]by
 	if fn, ok := backgrounds[bgName]; ok {
 		bgFilename = fn
 	}
-	bgf, err := pkger.Open(fmt.Sprintf("/assets/%s", bgFilename))
+	fp := filepath.Join("/assets", bgFilename)
+	bgf, err := pkger.Open(fp)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read %s <- %s", fp, err)
+	}
 	im, _, err := image.Decode(bgf)
 	if err != nil {
 		return nil, err

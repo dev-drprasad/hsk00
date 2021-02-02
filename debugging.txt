@@ -111,3 +111,20 @@ narrator02      53505F54 6F6E654D 616B6572 00F31200 112B0000 C72B0000 00000000 0
 narrator07      53505F54 6F6E654D 616B6572 00F31200 112B0000 C72B0000 00000000 00000000 05000000 00000000   22376 (11207)
 whistle wav:
        5C307200 57415645 666D7420 10000000 01000100 80BB0000 00770100 02001000 63756520 34000000
+
+A3600 ADPCM36 💥
+A4800 (with event) probably not
+A6400 probably not
+ADPCM36 DRM 💥
+ADPCM66 💥
+H/W ADPCM (A340640) just constant sound
+H/W ADPCM (DRM) weird sound (high speed ???) (with 8uint resolution,8uint PCM,22050 sample rate 1 first iteration works)
+H/W PCM (A340640) 💥
+h/W PCM (GPFA) weird sound (high speed ???)
+H/W PCM 16-Bit constant sound
+H/W PCM 16-Bit (DRM) (works 8uint resolution,8uint PCM,22050 sample rate 1)
+
+Good Music:
+Chrono Trigger OST - 12 Battle
+Chrono Trigger OST - 31 Bike Chase
+Chrono Trigger OST - 32 Robo's Theme
