@@ -1,10 +1,9 @@
 import React, { useCallback, useEffect, useState } from "react";
 import "./App.scss";
 import Alert from "./Alert";
-import GitHubIcon from "./GitHubIcon";
 import { ReactComponent as Spinner } from "./spinner.svg";
 import { useTranslation } from "react-i18next";
-import HasUpdate from "./HasUpdate";
+import Footer from "./Footer";
 import GameList from "./GameList";
 
 const initialState = {
@@ -82,10 +81,6 @@ function App() {
       })
       .catch(setError);
   }, [rootDir, categoryID]);
-
-  const handleGHClick = () => {
-    window.backend.Runtime.OpenURL("https://github.com/dev-drprasad/hsk00/");
-  };
 
   const handleGameToggleDelete = (id) => () => {
     const g = { ...games[id], deleted: !games[id].deleted };
@@ -225,14 +220,7 @@ function App() {
         </button>
       </div>
 
-      <select className="language-select FormControl form-control-sm" onChange={(e) => i18n.changeLanguage(e.target.value)}>
-        <option value="en">English</option>
-        <option value="ru">русский</option>
-      </select>
-      <HasUpdate className="has-update" />
-      <span onClick={handleGHClick} className="github-link">
-        <GitHubIcon />
-      </span>
+      <Footer onLangChange={(l) => i18n.changeLanguage(l)} />
     </div>
   );
 }

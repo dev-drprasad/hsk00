@@ -88,11 +88,18 @@ func (r *Runtime) OpenURL(URL string) error {
 	return browser.OpenURL(URL)
 }
 
-func (r *Runtime) HasUpdate() (bool, error) {
+type Version struct {
+	Current   string `json:"current"`
+	Latest    string `json:"latest"`
+	HasUpdate bool   `json:"hasUpdate"`
+}
+
+func (r *Runtime) GetVersion() *Version {
+	v := &Version{Current: CurrentVersionStr}
 	resp, err := http.Get("https://api.github.com/repos/dev-drprasad/hsk00/releases/latest")
 	if err != nil {
 		fmt.Println(err)
-		return false, err
+		return v
 	}
 	t := struct {
 		Draft      bool   `json:"draft"`
@@ -102,24 +109,27 @@ func (r *Runtime) HasUpdate() (bool, error) {
 
 	if err := json.NewDecoder(resp.Body).Decode(&t); err != nil {
 		fmt.Println(err)
-		return false, fmt.Errorf("failed to read response <- %s", err)
+		return v
 	}
 
 	latestVersion, err := semver.NewVersion(t.TagName)
 	if err != nil {
 		fmt.Println(err)
-		return false, fmt.Errorf("failed to parse version: %s <- %s", t.TagName, err)
+		return v
 	}
+	v.Latest = t.TagName
+
 	currentVersion, err := semver.NewVersion(CurrentVersionStr)
 	if err != nil {
 		fmt.Println(err)
-		return false, fmt.Errorf("failed to parse version: %s <- %s", CurrentVersionStr, err)
-	}
-	if !latestVersion.GreaterThan(currentVersion) || t.Draft || t.Prerelease {
-		return false, nil
+		return v
 	}
 
-	return true, nil
+	if latestVersion.GreaterThan(currentVersion) && !t.Draft && !t.Prerelease {
+		v.HasUpdate = true
+	}
+
+	return v
 }
 
 func main() {

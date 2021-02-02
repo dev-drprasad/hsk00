@@ -1,0 +1,31 @@
+@import "variables.scss";
+
+.language-select {
+  bottom: 0.5rem;
+  left: 1rem;
+  width: 20%;
+  color: #cccccc;
+  position: absolute;
+}
+
+.version {
+  position: absolute;
+  bottom: 0.5rem;
+  width: 100%;
+  text-align: center;
+  line-height: 1.3rem;
+  font-size: 0.85em;
+  z-index: -1;
+
+  > a {
+    color: inherit;
+  }
+}
+
+.github-link {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 1rem;
+  font-size: 1.2rem;
+  color: #cccccc;
+}
