@@ -1,6 +1,6 @@
 # 🚧 hsk00 🚧
 
-Add/Replace games to your "Data Frog Y2 (568 in 1)" console.
+Add/Remove games to your "Data Frog Y2-HD (568 in 1)" console.
 
 <p align="center">
 <img src="app-screenshot.png" alt="hsk00-osx-screenshot" width="400" />
@@ -108,22 +108,17 @@ This command is removed in favour of `scrambled-zip` from v0.2.0.
 
 ## Supported Consoles
 
-- DATA FROG Y2 HD (568 in 1)
+- DATA FROG Y2-HD (568 in 1)
 - Extreme Mini HD Game Box
 - U-BOX EMX-041
 - DEXP RetroGAME Flash + 300 игр
-- Probably works with console whose SD card looks like below
+- Probably works with console with SD card which looks like below
 
 <p align="center">
 <img  src="./sd-layout.png" alt="data-frog-sd-card-files" width="500" />
 </p>
 
 Let me know if it works with other consoles. It helps other people
-
-## TODO
-
-- [ ] replace game
-- [ ] delete game
 
 ## Need Help
 
