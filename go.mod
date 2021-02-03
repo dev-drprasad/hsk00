@@ -3,6 +3,7 @@ module github.com/dev-drprasad/hsk00
 go 1.15
 
 require (
+	github.com/Masterminds/semver v1.4.2
 	github.com/dev-drprasad/qt v1.0.4
 	github.com/fogleman/gg v1.3.0
 	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0

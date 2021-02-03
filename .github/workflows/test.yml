@@ -27,6 +27,10 @@ jobs:
       if: ${{ matrix.os == 'ubuntu-20.04' }}
     - name: Checkout code
       uses: actions/checkout@v2
+    - name: Vars
+      id: vars
+      run: echo ::set-output name=tag::${GITHUB_REF/refs\/tags\//}
+      shell: bash
     - name: Install Project Dep
       run: |
         go mod download
@@ -49,7 +53,7 @@ jobs:
     - name: Setup Account
       run: mkdir -p ~/.wails && echo '{"email":"dev.drprasad@aim.com","name":"REDDY PRASAD"}' > ~/.wails/wails.json
     - name: Build GUI
-      run: wails build -p
+      run: wails build -p -ldflags "-X main.CurrentVersionStr=${{ steps.vars.outputs.tag }}"
     - name: Make DMG
       run: npx create-dmg ./build/hsk00.app ./build
       continue-on-error: true
