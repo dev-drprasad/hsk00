@@ -4,8 +4,8 @@ import "./GameList.scss";
 
 const getClassName = (g) => {
   let className = "";
-  if (!g.hsk) className += "unsaved ";
-  if (g.deleted) className += "mark-deleted";
+  if (!g.hsk) className += " unsaved ";
+  if (g.deleted) className += " mark-deleted ";
   return className;
 };
 

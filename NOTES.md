@@ -33,6 +33,10 @@
 - https://hackmii.com/2010/04/sunplus-the-biggest-chip-company-youve-never-heard-of/
 - https://www.dl-sounds.com/royalty-free
 
-### DUMPS
+### SD Card Backups
 
 - https://yadi.sk/d/rTNU4YlXHUIRyg
+- Y2 HD: https://4pda.ru/forum/dl/post/21973244/Y2-HD+-+games-EN.zip
+- Y2 HD (alternate link): https://disk.yandex.ru/d/JMBiacwqIiktOw?w=1
+- Y3: https://yadi.sk/d/POgSN-oMOxI-hw
+- Y2S 750+ https://drive.google.com/uc?id=1qKgWlQhW7WYfkd_vzOH1op5E5dfQwMEw&export=download
