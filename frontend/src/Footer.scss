@@ -6,6 +6,7 @@
   width: 20%;
   color: #cccccc;
   position: absolute;
+  z-index: 1;
 }
 
 .version {
@@ -15,10 +16,10 @@
   text-align: center;
   line-height: 1.3rem;
   font-size: 0.85em;
-  z-index: -1;
 
-  > a {
-    color: inherit;
+  .update-link {
+    text-decoration: underline;
+    cursor: pointer;
   }
 }
 
@@ -28,4 +29,5 @@
   right: 1rem;
   font-size: 1.2rem;
   color: #cccccc;
+  cursor: pointer;
 }

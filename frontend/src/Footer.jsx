@@ -7,8 +7,7 @@ function Footer({ onLangChange }) {
   const { t } = useTranslation("translation");
   const [version, setVersion] = useState({ current: undefined, latest: undefined, hasUpdate: false });
 
-  const handleUpdateClick = (e) => {
-    e.preventDefault();
+  const handleUpdateClick = () => {
     window.backend.Runtime.OpenURL("https://github.com/dev-drprasad/hsk00/releases/latest");
   };
 
@@ -30,9 +29,9 @@ function Footer({ onLangChange }) {
       <span className="version">
         {version.current}{" "}
         {version.hasUpdate && (
-          <a onClick={handleUpdateClick} href="https://github.com/dev-drprasad/hsk00/releases/latest">
-            ({"🎉"} {t("update available")} : {version.latest})
-          </a>
+          <span className="update-link" onClick={handleUpdateClick}>
+            ({t("update available")} : {version.latest})
+          </span>
         )}
       </span>
       <span onClick={handleGHClick} className="github-link">
