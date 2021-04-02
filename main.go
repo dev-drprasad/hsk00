@@ -26,6 +26,7 @@ type Runtime struct {
 // WailsInit initialize wails
 func (r *Runtime) WailsInit(wr *wails.Runtime) error {
 	r.runtime = wr
+
 	return nil
 }
 
@@ -53,6 +54,7 @@ func (r *Runtime) AddGames(rootDir string, categoryID int, newGamesIn []interfac
 			SourcePath: gMap["srcPath"].(string),
 			Name:       gMap["name"].(string),
 		}
+
 		newGames = append(newGames, &g)
 	}
 	return pkg.Add(rootDir, categoryID, newGames, "", "")
@@ -70,6 +72,7 @@ func (r *Runtime) Save(rootDir string, categoryID int, gamesIn []interface{}) ([
 			Name:       gMap["name"].(string),
 			Deleted:    gMap["deleted"].(bool),
 		}
+
 		games = append(games, &g)
 	}
 

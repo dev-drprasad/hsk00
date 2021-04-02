@@ -80,7 +80,6 @@ func Save(rootDir string, categoryID int, games []*GameItem, fontName string, bg
 
 		for _, game := range batch {
 			game.Hsk = hskFileName
-			gameListAfterDelete = append(gameListAfterDelete, game)
 		}
 		nextHskID++
 	}

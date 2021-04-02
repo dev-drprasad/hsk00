@@ -120,9 +120,13 @@ This command is removed in favour of `scrambled-zip` from v0.2.0.
 
 Let me know if it works with other consoles. It helps other people
 
-## Need Help
+## Development
 
-I am not able to understand what are `GameXX.bin`, `Menu.logXX` files. They have background images, and menu selection images hidden them. But I am not able to determine offset of these images. If you know anything about these files, please let me know.
+```
+go get github.com/markbates/pkger/cmd/pkger
+pkger -include /assets
+pkger -include /assets -o cmd/
+```
 
 ## References
 

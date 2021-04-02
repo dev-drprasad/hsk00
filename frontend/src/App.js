@@ -34,7 +34,7 @@ function App() {
     window.backend.Runtime.SelectGames()
       .then((selected) => {
         const temp = [...games, ...selected];
-        console.log("temp :>> ", temp);
+
         let seen = {};
         const newGamesSet = [];
         temp.forEach((g) => {
@@ -70,7 +70,6 @@ function App() {
   const refreshGameList = useCallback(() => {
     window.backend.Runtime.GetGameList(rootDir, categoryID)
       .then((games) => {
-        console.log("gameList :>> ", games);
         setState((s) => ({
           ...s,
           modified: false,
