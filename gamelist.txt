@@ -1,0 +1,654 @@
+========= Category 05 =========
+01 Angry Bird2
+02 Angry Bird3
+03 Adventures Of Lolo 1
+04 Adventures Of Lolo 2
+05 Adventures Of Lolo 3
+06 Adventures Of Dizzy
+07 Hello Kitty World 1
+08 Hello Kitty World 2
+09 Bubble Bobble 1
+10 Bubble Bobble 2
+11 Joe Mac
+12 Kaiketsu Yanchamaru 1
+13 Kaiketsu Yanchamaru 2
+14 Kaiketsu Yanchamaru 3
+15 Mickeys Adventures in Numberland
+16 Mickeys Safari in Letterland
+17 Mickey Mouse
+18 Mickey Mouse 3
+19 Metro Cross
+20 The Legend of Kage
+21 The Legend of Zelda
+22 The Legend of Zelda 2
+23 Meccano
+24 Kero Kero Keroppi 2
+25 Kickle Cubicle
+26 Kick Master
+27 Kid icarus
+28 Pac Man 1
+29 Pac Man 2
+30 Pac Man 3
+31 Aimless
+32 Animal Blockes
+33 Animal Contest
+34 Antarctic Adventure
+35 Antiquarium
+36 Aquarium
+37 Arabian
+38 Archery
+39 Arena
+40 Arkanoid
+41 Asmik
+42 Assart
+43 Astro Robo Sasa
+44 Av Card Game
+45 Av Mahjong
+46 Av Poker
+47 Awful Rushing
+48 Babel
+49 Balloon Shoot
+50 Baltron
+51 Banana Prince
+52 Battletoads 1
+53 Beankids
+54 Benthal
+55 Binary Land
+56 Bio Miracle Bokutte Upa
+57 Bird Week
+58 Blackjack
+59 Black White Chess
+60 Blocks World
+61 Block Puzzle
+62 Bokosuka Wars
+63 Bomberman 2
+64 BOMBJACK
+65 Bomb Sweeper
+66 Bonk's Adventure
+67 Booby Kids
+68 Boom Man
+69 Boulder Dash
+70 Box World
+71 Brother Ball
+72 Bubble
+73 Bug Catcher
+74 Burbles
+75 Burger Time
+76 Burrow Explorer
+77 Busy Bar
+78 Candy Workshop
+79 Cannonade
+80 Card Captor Sakura
+81 Castelian
+82 Chackpop
+83 Chess
+84 Chinese Chess
+85 Chu Da D
+86 Circus
+87 Ckaaan18
+88 Clucluland
+89 Coast Guard
+90 Contest
+91 Cookies Labyrinth
+92 Corridor
+93 Crayon Shin Chan
+94 Crisis
+95 Crystal Blast
+96 Cub Adventure
+97 Cute Fish
+98 Cyberball
+99 Danger Bridge
+100 Dark wing Duck
+101 Dejectile
+102 Difference
+103 Digger
+104 Dig Dug
+105 Dig Dug 2
+106 Donkey kong
+107 Donkey Kong3
+108 Donkey kong jr
+109 Don Doko Don 1
+110 Dough Boy
+111 Dragon
+112 Dream Master
+113 Dr Mario
+114 Duck
+115 Duck Tales 1
+116 Duck Tales 2
+117 Dune War
+118 Earth Worm Jim 3
+119 Egg Contest
+120 Eigo Asobi
+121 Escapeway
+122 Fairy's Treasure
+123 Falling Blocks
+124 Family Pinball
+125 Felix The Cat 1
+126 Felix the Cat 2
+127 Final Fantasy
+128 Fire'n Ice
+129 Fish Story
+130 Fish War
+131 Five Chess
+132 Flappy
+133 Fling Ball
+134 Flipull
+135 Four Mahjong
+136 Frantic Mouse
+137 Fruitdish
+138 Galaxy Patrol
+139 Gate
+140 Ghost Castle
+141 Glommy Chess
+142 Goal Keeper
+143 Goblet Tower
+144 Golden Bird
+145 Greeds
+146 Hallihoo
+147 Hammer And Nail
+148 Happy Birthday Bugs2
+149 Happy Match
+150 HARRY
+151 Heisei Tensai Bakabon
+152 Helicopter
+153 Hexapod War
+154 Hit Mouse
+155 Hudoumyouou Den
+156 Hydlide
+157 Iceclimber
+158 Ice Ocean
+159 Igo Shinan
+160 Iq Champion
+161 Island
+162 Jackie Chan
+163 Javelin
+164 Joust
+165 Joy Mech Fight
+166 Jump Jump
+167 Kabuki
+168 Kamen No Ninja-Hanamaru
+169 kamen no ninja
+170 Karateka
+171 Keroppi Keroleen Splash Bomb
+172 Kirbys adventure
+173 Klax
+174 Labyrinth
+175 Lattice Winner
+176 Legacyofthewizard
+177 Link
+178 Little Samson
+179 Lode Runner
+180 Long 2
+181 Lot Lot
+182 Lunarian
+183 Lunation
+184 Mad Xmas
+185 Magic Bubble
+186 Magic Egg
+187 Magic Mathe Matic
+188 Mahjang Companion
+189 Mahjong2
+190 Manhole
+191 Mappy
+192 Mappy Land
+193 Marble Madness
+194 Mars
+195 MAZE
+196 Metal Gear
+197 Millipede
+198 Miner1
+199 Mirror Devil Word
+200 Mission Impossible
+201 Moisjun's Wisdom
+202 Moon Crystal
+203 Motoboat
+204 Mouse Snare
+205 Move Box
+206 Mowing
+207 Music Moment
+208 Nadia Secretofthe Blue Water
+209 Naitou9 Dan Shougi Hiden
+210 New Zealand Story
+211 Ninja Jajamaru
+212 Ninja Kun
+213 Noah's Ark
+214 Nuts Milk
+215 Nut Cracky
+216 Octopus
+217 Onyanko Town
+218 Optimus Minor
+219 Othello2
+220 Pachi Com
+221 Pac Man3
+222 Panic Restaurant
+223 Panzer Attack
+224 Parallel World
+225 Penguin Kun Wars
+226 Penta Base
+227 Pillar
+228 Pindable
+229 Pin Ball
+230 Pizza Boy
+231 Plants Vs Zomb
+232 POKE
+233 Police Dog
+234 Police Vs Thief
+235 Polk
+236 Pong Pong
+237 Popeye
+238 Porter
+239 Power Blade
+240 Power Robot
+241 Pro Wrestling
+242 Pulveration
+243 Puzslot
+244 Puzzle
+245 Puzznic
+246 Quarth
+247 Questof Ki
+248 Rabbit Village
+249 Rainbow Islands
+250 Resistant
+251 River Jump
+252 Robocco Wars
+253 Rock'n'ball
+254 Rockin kats
+255 Rod Land
+256 Rollerblade Racer
+257 Rollergames
+258 Roller Ball
+259 Rural Goblin
+260 Salver
+261 SAMURAI 1
+262 Sanma No Mei Tantei
+263 Sanrio Carnival 2
+264 Seaport Guarl
+265 Sea Wolf
+266 Shanghai Mahjong
+267 Sharaku Hosuke
+268 Shatterhand
+269 Silent Hunter
+270 Small Dinosaur
+271 Snakes revenge
+272 Snow Brothers
+273 Sodoku
+274 Solomons Key
+275 Spider Man
+276 Spring World
+277 Spy Vs Spy
+278 Sqoon
+279 Stack Up
+280 StarTropics
+281 Star Luster
+282 Strafe
+283 Strider
+284 Stub Game
+285 Submarine
+286 Sunman
+287 Super Aladdin
+288 Surfg Sport
+289 Sword master
+290 Tactful
+291 TETRISA
+292 Tetris Flash
+293 The Archer
+294 The Chess Master
+295 The Farmer
+296 The flint stones 1
+297 The Flint stones 2
+298 The Forbidden City
+299 The Goonies
+300 The Goonies 2
+301 The Jungle Book
+302 The Little Mermaid
+303 The Penguin Seal
+304 The Super Shinobi
+305 The Terminator 1
+306 The Terminator 2
+307 Through Man
+308 Toad In The Hole
+309 Tom Jerry
+310 Tom Sawyer No Bouken
+311 Totally Rad
+312 Tower
+313 Toy Factory
+314 To To
+315 Transmission
+316 Trog
+317 Twin Boar
+318 Twin Cards
+319 Ultraman
+320 Undersea Arena
+321 Utmost Warfare
+322 Valkyrie No Bouken
+323 Wacky Races
+324 Wagan Land 1
+325 Wagan Land 2
+326 Wagan Land 3
+327 Wait and See
+328 Wario Woods
+329 Warpman
+330 Water Pipe
+331 Waynes World
+332 Where's Waldo
+333 Whomp EM 2
+334 Wild Worm
+335 Wisdom Boy
+336 Wonder Ball
+337 Wrath of the Black Manta
+338 Yoshi No Cookie
+339 Yume Penguin Monogatari
+340 Zoom
+
+========= Category 00 =========
+01 Super Mario Bros 1
+02 Super Mario Bros 3
+03 Super Mario Bros 2
+04 Super Mario 6
+05 Super Mario 9
+06 Super Mario 10
+07 Super Mario 14
+08 Mario's Time Machine
+09 Mariois Missing
+10 Mario Bros
+11 Small Maro
+12 Sonic 3D Blast 5
+13 Tiny Toon2
+14 Tiny Toon3
+15 Pocket Monster
+16 Battle City
+17 Chip To Dale No Daisakusen 1
+18 Chip To Dale No Daisakusen 2
+19 Adventure Island 1
+20 Adventure Island 2
+21 Adventure Island 3
+22 Adventure Island 4
+23 Spider Man
+24 Spiderman2
+25 Spiderman3
+26 Mega Man 1
+27 Mega Man 2
+28 Mega Man 3
+29 Mega Man 4
+30 Mega Man 5
+31 Mega Man 6
+32 Batman 1
+33 Batman 2
+34 Batman 3
+35 Castlevania
+36 Castlevania 2
+37 Daiku No Gen San 1
+38 Daiku No Gen San 2
+39 Ghostn Goblins
+40 Kamikaze
+41 Kamikaze2
+42 Kamikaze3
+43 The Legend Of Khresna
+44 The Ren Stimpy Show
+45 Time Zone
+46 Toxic Crusaders
+47 Wacky Races
+48 Widget
+49 Metroid
+50 Sky Dreamer
+51 Choujin Sentai
+52 Cliffhanger
+53 Conquest of the ciystal Palace
+54 KAGE
+55 Abscondee
+56 Balloon Fight
+57 Blaster Master
+58 darkman
+59 Forest Kid
+60 Home Alone
+61 Jumping Kid
+62 Magic Jony
+
+========= Category 01 =========
+01 Contra 1
+02 Contra 2
+03 Contra 3
+04 Contra Force 4
+05 Contra 7
+06 Super Contra8
+07 1945
+08 1943
+09 1942
+10 Gradirs
+11 Gradius
+12 Gyrodine
+13 Robo Cop 1
+14 Robo Cop 2
+15 Robocop3
+16 Robocop4
+17 Battle Tank
+18 Cobra Command
+19 Commando
+20 Gunsmoke
+21 Gun nac
+22 Battle Formula
+23 Captain Planetandthe Planeteers
+24 Captain Sky
+25 Galaga
+26 Galg
+27 Gallagant
+28 G I Joe
+29 Rock Man X
+30 Rush'n Attack
+31 Heavy Barrel
+32 Jackal
+33 Star Fighter
+34 Star Force
+35 Star Gate
+36 Super Turrican
+37 Super Xevious
+38 Thunder Cade
+39 Top Gun 1
+40 Twinbee
+41 Twinbee 3
+42 ZANAC
+43 Xevious
+44 Twin Cobra
+45 Twin Eagle
+46 Vigilant
+47 Taiyou No Yuusha Firebird
+48 Tale Spin
+49 Tetra Star
+50 The Low Gravity Man
+51 The Punisher
+52 The Terminator
+53 Cosmic Epsilon
+54 Crisis Force
+55 Defender2
+56 Dragon Spirit The New Legend
+57 Dual Fighters
+58 Fantasy Zone 1
+59 Fated Pirate
+60 Field Combat
+61 Final Blood
+62 Fire Base
+63 First Defender
+64 Five Days
+65 Front Line
+66 Fruit Gift
+67 Gauntlet
+68 Geimos
+69 Guardian Legend
+70 Guerilla war
+71 Hector 87
+72 ikari 3 the rescue
+73 Image Fight
+74 Infiltrator
+75 Salamander
+76 Silk Worm
+77 Sky Destroyer
+78 Smash Tv
+79 Space Base
+80 Space Invaders
+81 Star
+82 Levin Action
+83 Metal Storm
+84 Mobile Suit Z Gundam
+85 Over Horizon
+86 Pooyan
+87 Summer Carnival'92-Recca
+88 Zombie Nation
+89 Blaster Master
+90 breakthru
+91 Bucky O' Hare
+92 Burai Fighter
+93 B Wings
+94 Cabal
+95 Chuka Taisen
+96 Abarenbou Tengu
+97 Action In New York
+98 Aether Cruiser
+99 Aether Mission
+100 After Burner
+101 Aim Cruise
+102 Airial Hero
+103 Airway
+104 Air Alert
+105 Alien3
+106 Argus
+107 Attack Animal Gakuen
+108 Baltron
+109 Battle
+
+========= Category 02 =========
+01 Power Soccer
+02 Hot Blood High School
+03 Hot Blood New Record
+04 Hot Blood Soccer
+05 Hot Blood Soccer1
+06 Soccer
+07 Soccer League-Winner's Cup
+08 Soccer World Cup
+09 World Cup Soccer
+10 Av Soccer
+11 Punch Out
+12 Side Pocket
+13 Blades Of Steel
+14 Golf 92
+15 Goal
+16 Gold Medal Challenge
+17 Golf
+18 Top Golf
+19 Championship Bowling
+20 Dynamite Bowl
+21 Cricket
+22 Slalom
+23 American Gladiators
+24 Aussie Rules Footy
+25 J League Fighting Soccer
+26 Jimmy Connors Tennis
+27 Rbi Baseball
+28 Tennis
+29 Mvp Baseball
+30 Baseball
+31 Badmiton
+32 Hyper Sports
+33 Long Jump
+34 Magic Darts
+35 Olympic
+36 110M Hurdles
+37 Shot Put
+38 Triple Jump
+39 Base Wars
+40 Discus Put
+41 Breast Stroke
+42 Butterfly Stroke
+43 Backstroke
+44 100M Dush
+45 Ice Hockey
+46 I Love Softball
+47 LUNARBALL
+48 Mini Putt
+49 Perfect Bowling
+50 10 Yard Fight
+51 Sumo Wrestling
+52 Super Off Road
+53 Tecmo Bowl
+54 The Boy Street Challenge
+55 Track Field
+56 Us Championship V'ball
+57 Volley Ball
+58 World Champ
+59 Fast Break
+60 Championship Karate
+61 Cobra Triangle
+62 Break Time
+
+========= Category 03 =========
+01 Double Dragon1
+02 Double Dragon2
+03 Double Dragon3
+04 Ninja Turtles 1
+05 Ninja Turtles 2
+06 Ninja Turtles 3
+07 Ninja Turtles 4
+08 Street Fighter
+09 Street Fighter 2010
+10 Spartan X
+11 kart fighter
+12 Bird Fighter
+13 mortal kombat 4
+14 Mortal Kombat 5
+15 Mighty final fight
+16 URBAN CHAMPION
+17 Ninja2
+18 Ninja3
+19 Ninja Gaiden 1
+20 Ninja Gaiden 2
+21 Ninja Gaiden 3
+22 Prisoners Of War
+23 River City Brawl
+24 Secret Ties
+25 Super Chinese
+26 The Last Ninja
+27 X Men2
+28 Yie Ar Kung Fu
+29 Kung Fu
+30 Kung Fu Heroes
+31 Monster In My Pocket
+32 8 Eyes
+33 Astyanax
+34 Big Nose the Caveman
+35 Captain america
+36 code name viper
+37 Datsugoku
+38 Garou densetsu special
+39 Ikki
+
+========= Category 04 =========
+01 Al Unser Jr Turbo Racing
+02 Circle Racing
+03 Pro Am1
+04 Pro Am2
+05 World Championship Challenge
+06 Astro Fang Super Machine
+07 Metro Menia
+08 F1 Race
+09 Excitebike
+10 Mach Rider
+11 Colliding
+12 City Connection
+13 Cycle Race Road Man
+14 Dash Yarou
+15 Days Of Thunder
+16 Deformable
+17 Eliminator Boat Duel
+18 Lightning
+19 Project Doom
+20 Race America
+21 Roadblas
+22 Road Fighter
+23 Road Worker
+24 Route16 Turbo
+25 Seething
+26 Super Sprint
+27 Ufo Race
+28 Vindicators
+29 Zippy Race
+
+total: 641
